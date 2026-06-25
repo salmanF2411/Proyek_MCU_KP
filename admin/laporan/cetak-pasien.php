@@ -8,13 +8,19 @@ require_once __DIR__ . '/../../includes/functions.php';
 requireLogin();
 requireRole('pendaftaran');
 
+// Default/reset view shows today's data. Filters auto-apply from the form controls.
+$today = date('Y-m-d');
+$start_date = !empty($_GET['start_date']) ? $_GET['start_date'] : $today;
+$end_date = !empty($_GET['end_date']) ? $_GET['end_date'] : $today;
+$status = isset($_GET['status']) ? $_GET['status'] : 'all';
+$allowed_statuses = ['all', 'menunggu', 'proses', 'selesai'];
+if (!in_array($status, $allowed_statuses, true)) {
+    $status = 'all';
+}
+
 // Tambahkan fitur export Excel
 if (isset($_GET['export_excel']) && $_GET['export_excel'] == '1') {
     ob_clean();
-    // Filter parameters for export
-    $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-01');
-    $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-d');
-    $status = isset($_GET['status']) ? $_GET['status'] : 'all';
 
     // Build query (sama dengan query utama)
     $where = "1=1";
@@ -37,11 +43,6 @@ if (isset($_GET['export_excel']) && $_GET['export_excel'] == '1') {
     exportToExcel($result, $start_date, $end_date, $status);
     exit;
 }
-
-// Filter parameters for listing page
-$start_date = isset($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-01');
-$end_date = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-d');
-$status = isset($_GET['status']) ? $_GET['status'] : 'all';
 
 // Build query
 $where = "1=1";
@@ -99,16 +100,16 @@ $stats = mysqli_fetch_assoc($stats_result);
                         <div class="col-md-3">
                             <label class="form-label">Tanggal Mulai</label>
                             <input type="date" class="form-control" name="start_date" 
-                                   value="<?php echo $start_date; ?>">
+                                   value="<?php echo $start_date; ?>" onchange="this.form.submit()">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Tanggal Akhir</label>
                             <input type="date" class="form-control" name="end_date" 
-                                   value="<?php echo $end_date; ?>">
+                                   value="<?php echo $end_date; ?>" onchange="this.form.submit()">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Status</label>
-                            <select class="form-select" name="status">
+                            <select class="form-select" name="status" onchange="this.form.submit()">
                                 <option value="all" <?php echo $status == 'all' ? 'selected' : ''; ?>>Semua Status</option>
                                 <option value="menunggu" <?php echo $status == 'menunggu' ? 'selected' : ''; ?>>Menunggu</option>
                                 <option value="proses" <?php echo $status == 'proses' ? 'selected' : ''; ?>>Proses</option>
@@ -117,9 +118,9 @@ $stats = mysqli_fetch_assoc($stats_result);
                         </div>
                         <div class="col-md-3 d-flex align-items-end">
                             <div class="d-grid w-100">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-filter me-2"></i> Filter
-                                </button>
+                                <a href="cetak-pasien.php" class="btn btn-secondary">
+                                    <i class="fas fa-undo me-2"></i> Reset
+                                </a>
                             </div>
                         </div>
                     </form>
