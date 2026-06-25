@@ -5,6 +5,7 @@ require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../includes/functions.php';
 
 requireLogin();
+$can_access_reports = hasRole('pendaftaran');
 
 // Check role permissions - allow all medical staff roles
 $authorized_roles = ['super_admin', 'pendaftaran', 'dokter_mata', 'dokter_umum'];
@@ -243,12 +244,14 @@ $stats = mysqli_fetch_assoc($stats_result);
                                                         <?php endif; ?>
                                                     <?php endif; ?>
                                                     
-                                                    <a href="<?php echo ADMIN_URL; ?>/laporan/cetak-hasil.php?id=<?php echo $patient['id']; ?>"
-                                                       target="_blank"
-                                                       class="btn btn-secondary"
-                                                       title="Cetak Hasil">
-                                                        <i class="fas fa-print"></i>
-                                                    </a>
+                                                    <?php if ($can_access_reports): ?>
+                                                        <a href="<?php echo ADMIN_URL; ?>/laporan/cetak-hasil.php?id=<?php echo $patient['id']; ?>"
+                                                           target="_blank"
+                                                           class="btn btn-secondary"
+                                                           title="Cetak Hasil">
+                                                            <i class="fas fa-print"></i>
+                                                        </a>
+                                                    <?php endif; ?>
                                                 </div>
                                             </td>
                                         </tr>

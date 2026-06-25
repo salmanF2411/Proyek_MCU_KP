@@ -6,6 +6,10 @@ if (session_status() == PHP_SESSION_NONE) {
 
 // Include database
 require_once __DIR__ . '/../../config/database.php';
+
+$is_super_admin = ($_SESSION['role'] == 'super_admin');
+$can_manage_content = hasRole('pendaftaran') || $is_super_admin;
+$can_access_reports = hasRole('pendaftaran');
 ?>
 
 <!-- Admin Navigation -->
@@ -57,21 +61,29 @@ require_once __DIR__ . '/../../config/database.php';
                 </li>
                 <?php endif; ?> -->
                 
+                <?php if ($can_access_reports): ?>
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo ADMIN_URL; ?>/laporan/cetak-hasil.php">
                         <i class="fas fa-print"></i> Cetak Hasil MCU
                     </a>
                 </li>
+                <?php endif; ?>
                 
-                <?php if ($_SESSION['role'] == 'super_admin'): ?>
+                <?php if ($can_manage_content): ?>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown">
                         <i class="fas fa-cog"></i> Admin
                     </a>
                     <ul class="dropdown-menu">
+                        <?php if ($can_manage_content): ?>
                         <li><a class="dropdown-item" href="<?php echo ADMIN_URL; ?>/artikel/list.php">Artikel</a></li>
+                        <li><a class="dropdown-item" href="<?php echo ADMIN_URL; ?>/home-visit/list.php">Pengaturan Home Visit</a></li>
+                        <li><a class="dropdown-item" href="<?php echo ADMIN_URL; ?>/home-visit/process.php">Home Visit</a></li>
+                        <?php endif; ?>
+                        <?php if ($is_super_admin): ?>
                         <li><a class="dropdown-item" href="<?php echo ADMIN_URL; ?>/pengaturan.php">Pengaturan</a></li>
                         <li><a class="dropdown-item" href="<?php echo ADMIN_URL; ?>/users/list.php">Users</a></li>
+                        <?php endif; ?>
                     </ul>
                 </li>
                 <?php endif; ?>

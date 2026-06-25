@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../includes/functions.php';
 
 requireLogin();
-requireRole('super_admin');
+requireRole('pendaftaran');
 
 // Get visit ID
 $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;

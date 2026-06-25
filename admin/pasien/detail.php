@@ -5,10 +5,12 @@ require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../includes/functions.php';
 
 requireLogin();
+$can_access_reports = hasRole('pendaftaran');
 
 // Get patient ID and source page
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $from = isset($_GET['from']) ? $_GET['from'] : '';
+$back_url = ($from == 'cetak-hasil' && $can_access_reports) ? '../laporan/cetak-hasil.php' : 'list.php';
 
 if ($id == 0) {
     $_SESSION['error'] = "Pasien tidak ditemukan";
@@ -62,14 +64,16 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                         <i class="fas fa-user me-2"></i> Detail Pasien
                     </h5>
                     <div>
-                        <a href="<?php echo $from == 'cetak-hasil' ? '../laporan/cetak-hasil.php' : 'list.php'; ?>" class="btn btn-light btn-sm">
+                        <a href="<?php echo $back_url; ?>" class="btn btn-light btn-sm">
                             <i class="fas fa-arrow-left me-1"></i> Kembali
                         </a>
+                        <?php if ($can_access_reports): ?>
                         <a href="../laporan/cetak-hasil.php?id=<?php echo $id; ?>" 
                            target="_blank" 
                            class="btn btn-light btn-sm">
                             <i class="fas fa-print me-1"></i> Cetak
                         </a>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="card-body">

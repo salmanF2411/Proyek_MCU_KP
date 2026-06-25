@@ -12,6 +12,12 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
 $filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
 $search = isset($_GET['search']) ? escape($_GET['search']) : '';
 $arrival_month = isset($_GET['arrival_month']) ? $_GET['arrival_month'] : date('Y-m');
+$can_access_reports = hasRole('pendaftaran');
+
+if ($page == 'reports' && !$can_access_reports) {
+    $_SESSION['error'] = "Akses ditolak. Anda tidak memiliki izin.";
+    redirect(ADMIN_URL . '/dashboard.php');
+}
 
 if ($page == 'patients') {
     // Check role permissions
@@ -280,12 +286,14 @@ if ($page == 'patients') {
                                                             <?php endif; ?>
                                                         <?php endif; ?>
 
-                                                        <a href="laporan/cetak-hasil.php?id=<?php echo $patient['id']; ?>"
-                                                           target="_blank"
-                                                           class="btn btn-secondary"
-                                                           title="Cetak Hasil">
-                                                            <i class="fas fa-print"></i>
-                                                        </a>
+                                                        <?php if ($can_access_reports): ?>
+                                                            <a href="laporan/cetak-hasil.php?id=<?php echo $patient['id']; ?>"
+                                                               target="_blank"
+                                                               class="btn btn-secondary"
+                                                               title="Cetak Hasil">
+                                                                <i class="fas fa-print"></i>
+                                                            </a>
+                                                        <?php endif; ?>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -767,6 +775,7 @@ if ($page == 'patients') {
             <?php endif; ?>
 </div>
 
+<?php if ($page != 'patients'): ?>
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -833,6 +842,7 @@ var arrivalChart = new Chart(ctx2, {
     }
 });
 </script>
+<?php endif; ?>
 
 <!-- Add Patient Modal -->
 <?php if ($page == 'patients' && (hasRole('pendaftaran') || $_SESSION['role'] == 'super_admin')): ?>

@@ -47,7 +47,7 @@ function login($username, $password) {
  */
 function logout() {
     session_destroy();
-    redirect('../admin/index.php');
+    redirect(ADMIN_URL . '/index.php');
 }
 
 /**
@@ -63,7 +63,7 @@ function isLoggedIn() {
 function requireLogin() {
     if (!isLoggedIn()) {
         $_SESSION['error'] = "Silakan login terlebih dahulu";
-        redirect('index.php');
+        redirect(ADMIN_URL . '/index.php');
     }
 }
 
@@ -83,7 +83,7 @@ function requireRole($role) {
     requireLogin();
     if (!hasRole($role)) {
         $_SESSION['error'] = "Akses ditolak. Anda tidak memiliki izin.";
-        redirect('dashboard.php');
+        redirect(ADMIN_URL . '/dashboard.php');
     }
 }
 

@@ -4,6 +4,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
 // Check if we're on dashboard with patients page
 $is_patients_page = ($current_page == 'dashboard.php' && isset($_GET['page']) && $_GET['page'] == 'patients');
+$is_super_admin = ($_SESSION['role'] == 'super_admin');
+$can_manage_content = hasRole('pendaftaran') || $is_super_admin;
+$can_access_reports = hasRole('pendaftaran');
 ?>
 
 <!-- Admin Sidebar -->
@@ -61,6 +64,7 @@ $is_patients_page = ($current_page == 'dashboard.php' && isset($_GET['page']) &&
             </li>
             <?php endif; ?>
             
+            <?php if ($can_access_reports): ?>
             <li class="nav-item mt-2">
                 <small class="text-muted ps-3">LAPORAN</small>
             </li>
@@ -77,6 +81,7 @@ $is_patients_page = ($current_page == 'dashboard.php' && isset($_GET['page']) &&
                     <i class="fas fa-print"></i> Cetak Hasil MCU
                 </a>
             </li>
+            <?php endif; ?>
 
             <li class="nav-item mt-2">
                 <small class="text-muted ps-3">EVALUASI</small>
@@ -100,7 +105,7 @@ $is_patients_page = ($current_page == 'dashboard.php' && isset($_GET['page']) &&
                 </a>
             </li>
 
-            <?php if ($_SESSION['role'] == 'super_admin'): ?>
+            <?php if ($is_super_admin): ?>
             <li class="nav-item mt-2">
                 <small class="text-muted ps-3">MANAJEMEN USER</small>
             </li>
@@ -111,7 +116,9 @@ $is_patients_page = ($current_page == 'dashboard.php' && isset($_GET['page']) &&
                     <i class="fas fa-user-cog"></i> Kelola User
                 </a>
             </li>
+            <?php endif; ?>
 
+            <?php if ($can_manage_content): ?>
             <li class="nav-item mt-2">
                 <small class="text-muted ps-3">KONTEN</small>
             </li>
@@ -137,10 +144,12 @@ $is_patients_page = ($current_page == 'dashboard.php' && isset($_GET['page']) &&
             <li class="nav-item">
                 <a class="nav-link <?php echo ($current_page == 'process.php' && strpos($_SERVER['REQUEST_URI'], '/home-visit/') !== false) ? 'active' : ''; ?>"
                    href="<?php echo ADMIN_URL; ?>/home-visit/process.php">
-                    <i class="fas fa-home"></i>Home Visit
+                    <i class="fas fa-home"></i> Home Visit
                 </a>
             </li>
+            <?php endif; ?>
 
+            <?php if ($is_super_admin): ?>
             <li class="nav-item mt-2">
                 <small class="text-muted ps-3">PENGATURAN</small>
             </li>

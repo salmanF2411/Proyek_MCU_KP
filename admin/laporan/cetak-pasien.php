@@ -6,6 +6,7 @@ require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../includes/functions.php';
 
 requireLogin();
+requireRole('pendaftaran');
 
 // Tambahkan fitur export Excel
 if (isset($_GET['export_excel']) && $_GET['export_excel'] == '1') {

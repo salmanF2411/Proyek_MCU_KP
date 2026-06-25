@@ -5,7 +5,7 @@ require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../includes/functions.php';
 
 requireLogin();
-requireRole('super_admin');
+requireRole('pendaftaran');
 
 // Get article ID
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;

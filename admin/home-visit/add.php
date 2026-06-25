@@ -5,7 +5,7 @@ require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../includes/functions.php';
 
 requireLogin();
-requireRole('super_admin');
+requireRole('pendaftaran');
 
 // Process form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
