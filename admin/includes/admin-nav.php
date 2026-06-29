@@ -8,6 +8,7 @@ if (session_status() == PHP_SESSION_NONE) {
 require_once __DIR__ . '/../../config/database.php';
 
 $is_super_admin = ($_SESSION['role'] == 'super_admin');
+$is_doctor = in_array($_SESSION['role'], ['dokter_mata', 'dokter_umum']);
 $can_manage_content = hasRole('pendaftaran') || $is_super_admin;
 $can_access_reports = hasRole('pendaftaran');
 ?>
@@ -25,11 +26,13 @@ $can_access_reports = hasRole('pendaftaran');
         
         <div class="collapse navbar-collapse" id="adminNav">
             <ul class="navbar-nav me-auto">
+                <?php if (!$is_doctor): ?>
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo ADMIN_URL; ?>/dashboard.php">
                         <i class="fas fa-tachometer-alt"></i> Dashboard
                     </a>
                 </li>
+                <?php endif; ?>
                 
                 <?php if (hasRole('pendaftaran') || $_SESSION['role'] == 'super_admin'): ?>
                 <li class="nav-item dropdown">

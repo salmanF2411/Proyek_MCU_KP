@@ -55,11 +55,11 @@ $can_access_reports = hasRole('pendaftaran');
             </li>
             <?php endif; ?>
 
-            <?php if (hasRole('dokter_mata') || hasRole('dokter_umum') || $_SESSION['role'] == 'super_admin'): ?>
+            <?php if ((hasRole('dokter_mata') || hasRole('dokter_umum')) && !$is_super_admin): ?>
             <li class="nav-item">
                 <a class="nav-link <?php echo (($current_page == 'list.php' && strpos($_SERVER['REQUEST_URI'], '/pasien/') !== false) || $is_patients_page) ? 'active' : ''; ?>"
                    href="<?php echo ADMIN_URL; ?>/pasien/list.php">
-                    <i class="fas fa-stethoscope"></i> Pemeriksaan Pasien
+                    <i class="fas fa-users"></i> Daftar Pasien
                 </a>
             </li>
             <?php endif; ?>
