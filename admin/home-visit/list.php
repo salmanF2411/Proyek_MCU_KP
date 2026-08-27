@@ -119,11 +119,11 @@ $result = mysqli_query($conn, $query);
                                             <td>
                                                 <?php if ($service['gambar']): ?>
                                                     <img src="<?php echo ASSETS_URL . '/' . $service['gambar']; ?>"
-                                                         alt="<?php echo htmlspecialchars($service['judul_layanan']); ?>"
-                                                         class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
+                                                        alt="<?php echo htmlspecialchars($service['judul_layanan']); ?>"
+                                                        class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
                                                 <?php else: ?>
                                                     <div class="bg-light d-flex align-items-center justify-content-center"
-                                                         style="width: 60px; height: 60px; border-radius: 5px;">
+                                                        style="width: 60px; height: 60px; border-radius: 5px;">
                                                         <i class="fas fa-image text-muted"></i>
                                                     </div>
                                                 <?php endif; ?>
@@ -155,15 +155,15 @@ $result = mysqli_query($conn, $query);
                                             <td>
                                                 <div class="btn-group btn-group-sm">
                                                     <a href="edit.php?id=<?php echo $service['id_setting']; ?>"
-                                                       class="btn btn-warning"
-                                                       title="Edit">
+                                                        class="btn btn-warning"
+                                                        title="Edit">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                     <button type="button"
-                                                            class="btn btn-danger delete-service"
-                                                            data-id="<?php echo $service['id_setting']; ?>"
-                                                            data-title="<?php echo htmlspecialchars($service['judul_layanan']); ?>"
-                                                            title="Hapus">
+                                                        class="btn btn-danger delete-service"
+                                                        data-id="<?php echo $service['id_setting']; ?>"
+                                                        data-title="<?php echo htmlspecialchars($service['judul_layanan']); ?>"
+                                                        title="Hapus">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </div>
@@ -180,7 +180,7 @@ $result = mysqli_query($conn, $query);
                                 <ul class="pagination justify-content-center">
                                     <?php if ($page > 1): ?>
                                         <li class="page-item">
-                                            <a class="page-link" href="?page=<?php echo $page-1; ?>&status=<?php echo $status; ?>&search=<?php echo urlencode($search); ?>">
+                                            <a class="page-link" href="?page=<?php echo $page - 1; ?>&status=<?php echo $status; ?>&search=<?php echo urlencode($search); ?>">
                                                 &laquo;
                                             </a>
                                         </li>
@@ -196,7 +196,7 @@ $result = mysqli_query($conn, $query);
 
                                     <?php if ($page < $total_pages): ?>
                                         <li class="page-item">
-                                            <a class="page-link" href="?page=<?php echo $page+1; ?>&status=<?php echo $status; ?>&search=<?php echo urlencode($search); ?>">
+                                            <a class="page-link" href="?page=<?php echo $page + 1; ?>&status=<?php echo $status; ?>&search=<?php echo urlencode($search); ?>">
                                                 &raquo;
                                             </a>
                                         </li>
@@ -242,19 +242,19 @@ $result = mysqli_query($conn, $query);
 </div>
 
 <script>
-// Delete confirmation
-document.querySelectorAll('.delete-service').forEach(button => {
-    button.addEventListener('click', function() {
-        const id = this.getAttribute('data-id');
-        const title = this.getAttribute('data-title');
+    // Delete confirmation
+    document.querySelectorAll('.delete-service').forEach(button => {
+        button.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            const title = this.getAttribute('data-title');
 
-        document.getElementById('deleteId').value = id;
-        document.getElementById('serviceTitle').textContent = title;
+            document.getElementById('deleteId').value = id;
+            document.getElementById('serviceTitle').textContent = title;
 
-        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-        deleteModal.show();
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
+        });
     });
-});
 </script>
 
 <?php include '../../includes/admin-footer.php'; ?>

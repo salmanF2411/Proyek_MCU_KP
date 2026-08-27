@@ -7,6 +7,21 @@ require_once __DIR__ . '/../includes/functions.php';
 
 requireLogin();
 
+// Inisialisasi nilai default untuk menghindari warning undefined variable di static analyzer
+$result = null;
+$offset = 0;
+$total_records = 0;
+$total_pages = 0;
+$page_num = 1;
+$recent_result = null;
+
+// Inisialisasi variabel statistik & chart
+$fit_total = 0;
+$unfit_total = 0;
+$fit_note_total = 0;
+$arrival_dates = [];
+$arrival_counts = [];
+
 // Check if patients page is requested
 $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
 $filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
@@ -158,12 +173,12 @@ if ($page == 'patients') {
                     </h1>
                     <div>
                         <?php if (hasRole('pendaftaran') || $_SESSION['role'] == 'super_admin'): ?>
-                        <a href="javascript:void(0)" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPatientModal">
-                            <i class="fas fa-plus me-2"></i> Tambah Pasien
-                        </a>
-                            <?php endif; ?>
-                        </div>
+                            <a href="javascript:void(0)" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPatientModal">
+                                <i class="fas fa-plus me-2"></i> Tambah Pasien
+                            </a>
+                        <?php endif; ?>
                     </div>
+                </div>
 
                 <!-- Filter and Search -->
                 <div class="card mb-4">
@@ -251,46 +266,46 @@ if ($page == 'patients') {
                                                 <td>
                                                     <div class="btn-group btn-group-sm">
                                                         <a href="pasien/detail.php?id=<?php echo $patient['id']; ?>"
-                                                           class="btn btn-info"
-                                                           title="Detail">
+                                                            class="btn btn-info"
+                                                            title="Detail">
                                                             <i class="fas fa-eye"></i>
                                                         </a>
 
                                                         <?php if (hasRole('pendaftaran') || $_SESSION['role'] == 'super_admin'): ?>
                                                             <?php if (!$patient['cek_pendaftaran']): ?>
-                                                            <a href="pasien/pemeriksaan.php?role=pendaftaran&id=<?php echo $patient['id']; ?>"
-                                                               class="btn btn-warning"
-                                                               title="Pemeriksaan Pendaftaran">
-                                                                <i class="fas fa-edit"></i>
-                                                            </a>
+                                                                <a href="pasien/pemeriksaan.php?role=pendaftaran&id=<?php echo $patient['id']; ?>"
+                                                                    class="btn btn-warning"
+                                                                    title="Pemeriksaan Pendaftaran">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </a>
                                                             <?php endif; ?>
                                                         <?php endif; ?>
 
                                                         <?php if (hasRole('dokter_mata') || $_SESSION['role'] == 'super_admin'): ?>
                                                             <?php if ($patient['cek_pendaftaran'] && !$patient['cek_mata']): ?>
-                                                            <a href="pasien/pemeriksaan.php?role=dokter_mata&id=<?php echo $patient['id']; ?>"
-                                                               class="btn btn-primary"
-                                                               title="Pemeriksaan Mata">
-                                                                <i class="fas fa-eye"></i>
-                                                            </a>
+                                                                <a href="pasien/pemeriksaan.php?role=dokter_mata&id=<?php echo $patient['id']; ?>"
+                                                                    class="btn btn-primary"
+                                                                    title="Pemeriksaan Mata">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </a>
                                                             <?php endif; ?>
                                                         <?php endif; ?>
 
                                                         <?php if (hasRole('dokter_umum') || $_SESSION['role'] == 'super_admin'): ?>
                                                             <?php if ($patient['cek_mata'] && !$patient['cek_umum']): ?>
-                                                            <a href="pasien/pemeriksaan.php?role=dokter_umum&id=<?php echo $patient['id']; ?>"
-                                                               class="btn btn-success"
-                                                               title="Pemeriksaan Umum">
-                                                                <i class="fas fa-stethoscope"></i>
-                                                            </a>
+                                                                <a href="pasien/pemeriksaan.php?role=dokter_umum&id=<?php echo $patient['id']; ?>"
+                                                                    class="btn btn-success"
+                                                                    title="Pemeriksaan Umum">
+                                                                    <i class="fas fa-stethoscope"></i>
+                                                                </a>
                                                             <?php endif; ?>
                                                         <?php endif; ?>
 
                                                         <?php if ($can_access_reports): ?>
                                                             <a href="laporan/cetak-hasil.php?id=<?php echo $patient['id']; ?>"
-                                                               target="_blank"
-                                                               class="btn btn-secondary"
-                                                               title="Cetak Hasil">
+                                                                target="_blank"
+                                                                class="btn btn-secondary"
+                                                                title="Cetak Hasil">
                                                                 <i class="fas fa-print"></i>
                                                             </a>
                                                         <?php endif; ?>
@@ -308,7 +323,7 @@ if ($page == 'patients') {
                                     <ul class="pagination justify-content-center">
                                         <?php if ($page_num > 1): ?>
                                             <li class="page-item">
-                                                <a class="page-link" href="?page=patients&page_num=<?php echo $page_num-1; ?>&filter=<?php echo $filter; ?>&search=<?php echo urlencode($search); ?>">
+                                                <a class="page-link" href="?page=patients&page_num=<?php echo $page_num - 1; ?>&filter=<?php echo $filter; ?>&search=<?php echo urlencode($search); ?>">
                                                     &laquo;
                                                 </a>
                                             </li>
@@ -324,7 +339,7 @@ if ($page == 'patients') {
 
                                         <?php if ($page_num < $total_pages): ?>
                                             <li class="page-item">
-                                                <a class="page-link" href="?page=patients&page_num=<?php echo $page_num+1; ?>&filter=<?php echo $filter; ?>&search=<?php echo urlencode($search); ?>">
+                                                <a class="page-link" href="?page=patients&page_num=<?php echo $page_num + 1; ?>&filter=<?php echo $filter; ?>&search=<?php echo urlencode($search); ?>">
                                                     &raquo;
                                                 </a>
                                             </li>
@@ -495,7 +510,7 @@ if ($page == 'patients') {
                                                         <td>
                                                             <?php
                                                             $status_class = '';
-                                                            switch($mcu['status_mcu']) {
+                                                            switch ($mcu['status_mcu']) {
                                                                 case 'FIT':
                                                                     $status_class = 'bg-success';
                                                                     break;
@@ -524,7 +539,7 @@ if ($page == 'patients') {
                         </div>
                     </div>
                 <?php endif; ?>
-        <?php else: ?>
+            <?php else: ?>
                 <!-- Dashboard Page -->
                 <!-- Page Title -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -725,45 +740,45 @@ if ($page == 'patients') {
                                         <tbody>
                                             <?php $no = 1; ?>
                                             <?php while ($patient = mysqli_fetch_assoc($recent_result)): ?>
-                                            <tr>
-                                                <td><?php echo $no++; ?></td>
-                                                <td>
-                                                    <strong><?php echo $patient['kode_mcu']; ?></strong>
-                                                </td>
-                                                <td>
-                                                    <div class="fw-bold"><?php echo htmlspecialchars($patient['nama']); ?></div>
-                                                    <small class="text-muted"><?php echo $patient['no_telp']; ?></small>
-                                                </td>
-                                                <td><?php echo $patient['usia']; ?> thn</td>
-                                                <td><?php echo $patient['perusahaan'] ?: '-'; ?></td>
-                                                <td><?php echo formatDateIndo($patient['tanggal_mcu']); ?></td>
-                                                <td><?php echo getStatusBadge($patient['status_pendaftaran']); ?></td>
-                                                <td>
-                                                    <div class="d-flex gap-1">
-                                                        <span class="badge <?php echo $patient['cek_pendaftaran'] ? 'bg-success' : 'bg-secondary'; ?>">
-                                                            P
-                                                        </span>
-                                                        <span class="badge <?php echo $patient['cek_mata'] ? 'bg-success' : 'bg-secondary'; ?>">
-                                                            M
-                                                        </span>
-                                                        <span class="badge <?php echo $patient['cek_umum'] ? 'bg-success' : 'bg-secondary'; ?>">
-                                                            U
-                                                        </span>
-                                                    </div>
-                                                    <small class="d-block text-muted">P=Reg, M=Mata, U=Umum</small>
-                                                </td>
-                                                <td>
-                                                    <a href="pasien/detail.php?id=<?php echo $patient['id']; ?>" class="btn btn-sm btn-info" title="Detail">
-                                                        <i class="fas fa-eye"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                                <tr>
+                                                    <td><?php echo $no++; ?></td>
+                                                    <td>
+                                                        <strong><?php echo $patient['kode_mcu']; ?></strong>
+                                                    </td>
+                                                    <td>
+                                                        <div class="fw-bold"><?php echo htmlspecialchars($patient['nama']); ?></div>
+                                                        <small class="text-muted"><?php echo $patient['no_telp']; ?></small>
+                                                    </td>
+                                                    <td><?php echo $patient['usia']; ?> thn</td>
+                                                    <td><?php echo $patient['perusahaan'] ?: '-'; ?></td>
+                                                    <td><?php echo formatDateIndo($patient['tanggal_mcu']); ?></td>
+                                                    <td><?php echo getStatusBadge($patient['status_pendaftaran']); ?></td>
+                                                    <td>
+                                                        <div class="d-flex gap-1">
+                                                            <span class="badge <?php echo $patient['cek_pendaftaran'] ? 'bg-success' : 'bg-secondary'; ?>">
+                                                                P
+                                                            </span>
+                                                            <span class="badge <?php echo $patient['cek_mata'] ? 'bg-success' : 'bg-secondary'; ?>">
+                                                                M
+                                                            </span>
+                                                            <span class="badge <?php echo $patient['cek_umum'] ? 'bg-success' : 'bg-secondary'; ?>">
+                                                                U
+                                                            </span>
+                                                        </div>
+                                                        <small class="d-block text-muted">P=Reg, M=Mata, U=Umum</small>
+                                                    </td>
+                                                    <td>
+                                                        <a href="pasien/detail.php?id=<?php echo $patient['id']; ?>" class="btn btn-sm btn-info" title="Detail">
+                                                            <i class="fas fa-eye"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
                                             <?php endwhile; ?>
 
                                             <?php if (mysqli_num_rows($recent_result) == 0): ?>
-                                            <tr>
-                                                <td colspan="9" class="text-center">Belum ada data pasien</td>
-                                            </tr>
+                                                <tr>
+                                                    <td colspan="9" class="text-center">Belum ada data pasien</td>
+                                                </tr>
                                             <?php endif; ?>
                                         </tbody>
                                     </table>
@@ -773,133 +788,133 @@ if ($page == 'patients') {
                     </div>
                 </div>
             <?php endif; ?>
-</div>
-
-<?php if ($page != 'patients'): ?>
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-// MCU Status Chart
-var ctx = document.getElementById('mcuChart').getContext('2d');
-var mcuChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-        labels: ['FIT', 'UNFIT', 'FIT WITH NOTE'],
-        datasets: [{
-            data: [<?php echo $fit_total; ?>, <?php echo $unfit_total; ?>, <?php echo $fit_note_total; ?>],
-            backgroundColor: [
-                '#28a745',
-                '#dc3545',
-                '#ffc107'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: 'bottom'
-            }
-        }
-    }
-});
-
-// Patient Arrival Chart
-var ctx2 = document.getElementById('arrivalChart').getContext('2d');
-var arrivalChart = new Chart(ctx2, {
-    type: 'line',
-    data: {
-        labels: [<?php echo '"' . implode('","', $arrival_dates) . '"'; ?>],
-        datasets: [{
-            label: 'Kedatangan Pasien',
-            data: [<?php echo implode(',', $arrival_counts); ?>],
-            borderColor: '#007bff',
-            backgroundColor: 'rgba(0, 123, 255, 0.1)',
-            borderWidth: 2,
-            fill: true,
-            tension: 0.4
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display: false
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    stepSize: 1
-                }
-            }
-        }
-    }
-});
-</script>
-<?php endif; ?>
-
-<!-- Add Patient Modal -->
-<?php if ($page == 'patients' && (hasRole('pendaftaran') || $_SESSION['role'] == 'super_admin')): ?>
-<div class="modal fade" id="addPatientModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">
-                    <i class="fas fa-user-plus me-2"></i> Tambah Pasien Manual
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form id="addPatientForm" action="pasien/add-patient.php" method="POST">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Nama Lengkap *</label>
-                            <input type="text" class="form-control" name="nama" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Jenis Kelamin *</label>
-                            <select class="form-select" name="jenis_kelamin" required>
-                                <option value="">- Pilih -</option>
-                                <option value="L">Laki-laki</option>
-                                <option value="P">Perempuan</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Tanggal Lahir *</label>
-                            <input type="date" class="form-control" name="tanggal_lahir" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">No. Telepon *</label>
-                            <input type="tel" class="form-control" name="no_telp" required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Perusahaan</label>
-                            <input type="text" class="form-control" name="perusahaan">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Tanggal MCU *</label>
-                            <input type="date" class="form-control" name="tanggal_mcu" required>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="submit" form="addPatientForm" class="btn btn-primary">Simpan</button>
-            </div>
         </div>
-    </div>
-</div>
-<?php endif; ?>
 
-<?php include '../includes/admin-footer.php'; ?>
+        <?php if ($page != 'patients'): ?>
+            <!-- Chart.js -->
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            <script>
+                // MCU Status Chart
+                var ctx = document.getElementById('mcuChart').getContext('2d');
+                var mcuChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['FIT', 'UNFIT', 'FIT WITH NOTE'],
+                        datasets: [{
+                            data: [<?php echo $fit_total; ?>, <?php echo $unfit_total; ?>, <?php echo $fit_note_total; ?>],
+                            backgroundColor: [
+                                '#28a745',
+                                '#dc3545',
+                                '#ffc107'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+
+                // Patient Arrival Chart
+                var ctx2 = document.getElementById('arrivalChart').getContext('2d');
+                var arrivalChart = new Chart(ctx2, {
+                    type: 'line',
+                    data: {
+                        labels: [<?php echo '"' . implode('","', $arrival_dates) . '"'; ?>],
+                        datasets: [{
+                            label: 'Kedatangan Pasien',
+                            data: [<?php echo implode(',', $arrival_counts); ?>],
+                            borderColor: '#007bff',
+                            backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    }
+                });
+            </script>
+        <?php endif; ?>
+
+        <!-- Add Patient Modal -->
+        <?php if ($page == 'patients' && (hasRole('pendaftaran') || $_SESSION['role'] == 'super_admin')): ?>
+            <div class="modal fade" id="addPatientModal" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title">
+                                <i class="fas fa-user-plus me-2"></i> Tambah Pasien Manual
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="addPatientForm" action="pasien/add-patient.php" method="POST">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Nama Lengkap *</label>
+                                        <input type="text" class="form-control" name="nama" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Jenis Kelamin *</label>
+                                        <select class="form-select" name="jenis_kelamin" required>
+                                            <option value="">- Pilih -</option>
+                                            <option value="L">Laki-laki</option>
+                                            <option value="P">Perempuan</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Tanggal Lahir *</label>
+                                        <input type="date" class="form-control" name="tanggal_lahir" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">No. Telepon *</label>
+                                        <input type="tel" class="form-control" name="no_telp" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Perusahaan</label>
+                                        <input type="text" class="form-control" name="perusahaan">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Tanggal MCU *</label>
+                                        <input type="date" class="form-control" name="tanggal_mcu" required>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" form="addPatientForm" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <?php include '../includes/admin-footer.php'; ?>

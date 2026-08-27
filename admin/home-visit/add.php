@@ -112,7 +112,7 @@ include '../../includes/admin-header.php';
                                         <div class="mb-3">
                                             <label class="form-label">Gambar Layanan *</label>
                                             <input type="file" class="form-control" name="gambar"
-                                                   accept="image/*" required>
+                                                accept="image/*" required>
                                             <small class="text-muted">Max. 5MB, format: JPG, PNG, GIF</small>
                                             <div id="imagePreview" class="mt-2"></div>
                                         </div>
@@ -135,15 +135,15 @@ include '../../includes/admin-header.php';
 </div>
 
 <script>
-// Image preview
-document.querySelector('input[name="gambar"]').addEventListener('change', function(e) {
-    const preview = document.getElementById('imagePreview');
-    const file = e.target.files[0];
+    // Image preview
+    document.querySelector('input[name="gambar"]').addEventListener('change', function(e) {
+        const preview = document.getElementById('imagePreview');
+        const file = e.target.files[0];
 
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.innerHTML = `
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.innerHTML = `
                 <div class="border p-2 rounded">
                     <img src="${e.target.result}" class="img-fluid rounded" style="max-height: 200px;">
                     <div class="mt-2 text-center">
@@ -151,61 +151,61 @@ document.querySelector('input[name="gambar"]').addEventListener('change', functi
                     </div>
                 </div>
             `;
+            }
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = '';
         }
-        reader.readAsDataURL(file);
-    } else {
-        preview.innerHTML = '';
-    }
-});
+    });
 
-// Form validation
-document.getElementById('serviceForm').addEventListener('submit', function(e) {
-    const title = this.querySelector('input[name="judul_layanan"]');
-    const description = this.querySelector('textarea[name="deskripsi"]');
-    const price = this.querySelector('input[name="harga"]');
-    const image = this.querySelector('input[name="gambar"]');
+    // Form validation
+    document.getElementById('serviceForm').addEventListener('submit', function(e) {
+        const title = this.querySelector('input[name="judul_layanan"]');
+        const description = this.querySelector('textarea[name="deskripsi"]');
+        const price = this.querySelector('input[name="harga"]');
+        const image = this.querySelector('input[name="gambar"]');
 
-    let isValid = true;
+        let isValid = true;
 
-    if (!title.value.trim()) {
-        title.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        title.classList.remove('is-invalid');
-    }
+        if (!title.value.trim()) {
+            title.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            title.classList.remove('is-invalid');
+        }
 
-    if (!description.value.trim()) {
-        description.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        description.classList.remove('is-invalid');
-    }
+        if (!description.value.trim()) {
+            description.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            description.classList.remove('is-invalid');
+        }
 
-    if (!price.value || price.value <= 0) {
-        price.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        price.classList.remove('is-invalid');
-    }
+        if (!price.value || price.value <= 0) {
+            price.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            price.classList.remove('is-invalid');
+        }
 
-    if (!image.files[0]) {
-        image.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        image.classList.remove('is-invalid');
-    }
+        if (!image.files[0]) {
+            image.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            image.classList.remove('is-invalid');
+        }
 
-    if (!isValid) {
-        e.preventDefault();
-        alert('Harap lengkapi semua field yang wajib diisi!');
-    }
-});
+        if (!isValid) {
+            e.preventDefault();
+            alert('Harap lengkapi semua field yang wajib diisi!');
+        }
+    });
 </script>
 
 <style>
-.is-invalid {
-    border-color: #dc3545;
-}
+    .is-invalid {
+        border-color: #dc3545;
+    }
 </style>
 
 <?php include '../../includes/admin-footer.php'; ?>

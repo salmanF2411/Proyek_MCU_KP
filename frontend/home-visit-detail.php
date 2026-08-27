@@ -46,12 +46,12 @@ if (!$service) {
                     <div class="text-center mb-4">
                         <?php if ($service['gambar']): ?>
                             <img src="<?php echo ASSETS_URL . '/' . $service['gambar']; ?>"
-                                 class="img-fluid rounded shadow"
-                                 alt="<?php echo htmlspecialchars($service['judul_layanan']); ?>"
-                                 style="max-height: 400px; width: auto;">
+                                class="img-fluid rounded shadow"
+                                alt="<?php echo htmlspecialchars($service['judul_layanan']); ?>"
+                                style="max-height: 400px; width: auto;">
                         <?php else: ?>
                             <div class="bg-light rounded d-flex align-items-center justify-content-center mx-auto"
-                                 style="height: 300px; width: 100%; max-width: 500px;">
+                                style="height: 300px; width: 100%; max-width: 500px;">
                                 <i class="fas fa-home fa-5x text-muted"></i>
                             </div>
                         <?php endif; ?>
@@ -86,9 +86,9 @@ if (!$service) {
                     <!-- Action Buttons -->
                     <div class="d-grid gap-2 d-md-flex justify-content-md-center">
                         <button type="button" class="btn btn-primary btn-lg select-service"
-                                data-id="<?php echo $service['id_setting']; ?>"
-                                data-title="<?php echo htmlspecialchars($service['judul_layanan']); ?>"
-                                data-price="<?php echo $service['harga']; ?>">
+                            data-id="<?php echo $service['id_setting']; ?>"
+                            data-title="<?php echo htmlspecialchars($service['judul_layanan']); ?>"
+                            data-price="<?php echo $service['harga']; ?>">
                             <i class="fas fa-calendar-plus me-2"></i>Pilih Layanan Ini
                         </button>
                         <a href="home-visit.php" class="btn btn-outline-secondary btn-lg">
@@ -102,45 +102,45 @@ if (!$service) {
 </div>
 
 <script>
-// Service selection - redirect to booking page with pre-selected service
-document.querySelectorAll('.select-service').forEach(button => {
-    button.addEventListener('click', function() {
-        const serviceId = this.getAttribute('data-id');
-        const serviceTitle = this.getAttribute('data-title');
-        const servicePrice = this.getAttribute('data-price');
+    // Service selection - redirect to booking page with pre-selected service
+    document.querySelectorAll('.select-service').forEach(button => {
+        button.addEventListener('click', function() {
+            const serviceId = this.getAttribute('data-id');
+            const serviceTitle = this.getAttribute('data-title');
+            const servicePrice = this.getAttribute('data-price');
 
-        // Store service data in sessionStorage for the booking page
-        sessionStorage.setItem('selectedService', JSON.stringify({
-            id: serviceId,
-            title: serviceTitle,
-            price: servicePrice
-        }));
+            // Store service data in sessionStorage for the booking page
+            sessionStorage.setItem('selectedService', JSON.stringify({
+                id: serviceId,
+                title: serviceTitle,
+                price: servicePrice
+            }));
 
-        // Redirect to booking page
-        window.location.href = 'home-visit.php';
+            // Redirect to booking page
+            window.location.href = 'home-visit.php';
+        });
     });
-});
 </script>
 
 <style>
-.service-description {
-    line-height: 1.6;
-    font-size: 1.1rem;
-}
+    .service-description {
+        line-height: 1.6;
+        font-size: 1.1rem;
+    }
 
-.breadcrumb {
-    background-color: #f8f9fa;
-    border-radius: 0.375rem;
-}
+    .breadcrumb {
+        background-color: #f8f9fa;
+        border-radius: 0.375rem;
+    }
 
-.card {
-    border: none;
-    border-radius: 0.75rem;
-}
+    .card {
+        border: none;
+        border-radius: 0.75rem;
+    }
 
-.card-header {
-    border-radius: 0.75rem 0.75rem 0 0 !important;
-}
+    .card-header {
+        border-radius: 0.75rem 0.75rem 0 0 !important;
+    }
 </style>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

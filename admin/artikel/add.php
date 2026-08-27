@@ -83,7 +83,7 @@ include '../../includes/admin-header.php';
                     <li class="breadcrumb-item active">Tambah Baru</li>
                 </ol>
             </nav>
-            
+
             <!-- Article Form -->
             <div class="card">
                 <div class="card-header bg-primary text-white">
@@ -105,14 +105,14 @@ include '../../includes/admin-header.php';
                                         </div>
                                     <?php endif; ?>
                                 </div>
-                                
+
                                 <!-- Content -->
                                 <div class="mb-3">
                                     <label class="form-label">Konten *</label>
                                     <textarea class="form-control" name="konten" id="editor" rows="15" required></textarea>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-4">
                                 <!-- Sidebar -->
                                 <div class="card">
@@ -125,33 +125,33 @@ include '../../includes/admin-header.php';
                                                 <option value="published">Published</option>
                                             </select>
                                         </div>
-                                        
+
                                         <!-- Category -->
                                         <div class="mb-3">
                                             <label class="form-label">Kategori</label>
-                                            <input type="text" class="form-control" name="kategori" 
-                                                   placeholder="Kesehatan, Tips, dll">
+                                            <input type="text" class="form-control" name="kategori"
+                                                placeholder="Kesehatan, Tips, dll">
                                         </div>
-                                        
+
                                         <!-- Author -->
                                         <div class="mb-3">
                                             <label class="form-label">Penulis *</label>
-                                            <input type="text" class="form-control" name="penulis" 
-                                                   value="<?php echo $_SESSION['nama_lengkap']; ?>" required>
+                                            <input type="text" class="form-control" name="penulis"
+                                                value="<?php echo $_SESSION['nama_lengkap']; ?>" required>
                                         </div>
-                                        
+
                                         <!-- Publish Date -->
                                         <div class="mb-3">
                                             <label class="form-label">Tanggal Publikasi</label>
-                                            <input type="date" class="form-control" name="tanggal_publish" 
-                                                   value="<?php echo date('Y-m-d'); ?>" required>
+                                            <input type="date" class="form-control" name="tanggal_publish"
+                                                value="<?php echo date('Y-m-d'); ?>" required>
                                         </div>
-                                        
+
                                         <!-- Featured Image -->
                                         <div class="mb-3">
                                             <label class="form-label">Gambar Utama</label>
                                             <input type="file" class="form-control" name="gambar"
-                                                   accept="image/*">
+                                                accept="image/*">
                                             <small class="text-muted">Max. 5MB, format: JPG, PNG, GIF</small>
                                             <div id="imagePreview" class="mt-2"></div>
                                         </div>
@@ -160,7 +160,7 @@ include '../../includes/admin-header.php';
                                         <div class="mb-3">
                                             <label class="form-label">Video Utama</label>
                                             <input type="file" class="form-control" name="video"
-                                                   accept="video/*">
+                                                accept="video/*">
                                             <small class="text-muted">Max. 50MB, format: MP4, AVI, MOV, WMV, FLV</small>
                                             <div id="videoPreview" class="mt-2"></div>
                                         </div>
@@ -205,15 +205,15 @@ tinymce.init({
 -->
 
 <script>
-// Simple image preview
-document.querySelector('input[name="gambar"]').addEventListener('change', function(e) {
-    const preview = document.getElementById('imagePreview');
-    const file = e.target.files[0];
+    // Simple image preview
+    document.querySelector('input[name="gambar"]').addEventListener('change', function(e) {
+        const preview = document.getElementById('imagePreview');
+        const file = e.target.files[0];
 
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.innerHTML = `
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.innerHTML = `
                 <div class="border p-2 rounded">
                     <img src="${e.target.result}" class="img-fluid rounded" style="max-height: 200px;">
                     <div class="mt-2 text-center">
@@ -221,22 +221,22 @@ document.querySelector('input[name="gambar"]').addEventListener('change', functi
                     </div>
                 </div>
             `;
+            }
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = '';
         }
-        reader.readAsDataURL(file);
-    } else {
-        preview.innerHTML = '';
-    }
-});
+    });
 
-// Simple video preview
-document.querySelector('input[name="video"]').addEventListener('change', function(e) {
-    const preview = document.getElementById('videoPreview');
-    const file = e.target.files[0];
+    // Simple video preview
+    document.querySelector('input[name="video"]').addEventListener('change', function(e) {
+        const preview = document.getElementById('videoPreview');
+        const file = e.target.files[0];
 
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.innerHTML = `
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.innerHTML = `
                 <div class="border p-2 rounded">
                     <video src="${e.target.result}" class="img-fluid rounded" style="max-height: 200px;" controls></video>
                     <div class="mt-2 text-center">
@@ -244,59 +244,59 @@ document.querySelector('input[name="video"]').addEventListener('change', functio
                     </div>
                 </div>
             `;
+            }
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = '';
         }
-        reader.readAsDataURL(file);
-    } else {
-        preview.innerHTML = '';
-    }
-});
+    });
 
-// Form validation
-document.getElementById('articleForm').addEventListener('submit', function(e) {
-    const title = this.querySelector('input[name="judul"]');
-    const content = this.querySelector('textarea[name="konten"]');
-    const author = this.querySelector('input[name="penulis"]');
-    
-    let isValid = true;
-    
-    if (!title.value.trim()) {
-        title.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        title.classList.remove('is-invalid');
-    }
-    
-    if (!content.value.trim()) {
-        content.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        content.classList.remove('is-invalid');
-    }
-    
-    if (!author.value.trim()) {
-        author.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        author.classList.remove('is-invalid');
-    }
-    
-    if (!isValid) {
-        e.preventDefault();
-        alert('Harap lengkapi semua field yang wajib diisi!');
-    }
-});
+    // Form validation
+    document.getElementById('articleForm').addEventListener('submit', function(e) {
+        const title = this.querySelector('input[name="judul"]');
+        const content = this.querySelector('textarea[name="konten"]');
+        const author = this.querySelector('input[name="penulis"]');
+
+        let isValid = true;
+
+        if (!title.value.trim()) {
+            title.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            title.classList.remove('is-invalid');
+        }
+
+        if (!content.value.trim()) {
+            content.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            content.classList.remove('is-invalid');
+        }
+
+        if (!author.value.trim()) {
+            author.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            author.classList.remove('is-invalid');
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+            alert('Harap lengkapi semua field yang wajib diisi!');
+        }
+    });
 </script>
 
 <style>
-#editor {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-}
+    #editor {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+    }
 
-.is-invalid {
-    border-color: #dc3545;
-}
+    .is-invalid {
+        border-color: #dc3545;
+    }
 </style>
 
 <?php include '../../includes/admin-footer.php'; ?>

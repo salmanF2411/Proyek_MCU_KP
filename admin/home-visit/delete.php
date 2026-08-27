@@ -39,4 +39,3 @@ if (mysqli_query($conn, $query)) {
 }
 
 redirect('list.php');
-?>

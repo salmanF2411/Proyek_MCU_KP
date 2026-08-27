@@ -80,10 +80,18 @@ if (!$registration) {
                     <?php
                     $status_class = '';
                     switch ($registration['status']) {
-                        case 'pending': $status_class = 'text-warning'; break;
-                        case 'diproses': $status_class = 'text-info'; break;
-                        case 'selesai': $status_class = 'text-success'; break;
-                        case 'batal': $status_class = 'text-danger'; break;
+                        case 'pending':
+                            $status_class = 'text-warning';
+                            break;
+                        case 'diproses':
+                            $status_class = 'text-info';
+                            break;
+                        case 'selesai':
+                            $status_class = 'text-success';
+                            break;
+                        case 'batal':
+                            $status_class = 'text-danger';
+                            break;
                     }
                     ?>
                     <span class="fw-bold <?php echo $status_class; ?>">

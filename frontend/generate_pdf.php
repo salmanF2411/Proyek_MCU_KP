@@ -10,7 +10,8 @@ $tanggal = isset($_GET['tanggal']) ? $_GET['tanggal'] : date('Y-m-d');
 
 // Fallback jika fungsi getSetting belum ada (untuk mencegah error)
 if (!function_exists('getSetting')) {
-    function getSetting($key) {
+    function getSetting($key)
+    {
         $settings = [
             'alamat' => 'Jl. Kesehatan No. 123, Jakarta Pusat 12125',
             'telepon' => '(021) 12345671122',
@@ -21,42 +22,72 @@ if (!function_exists('getSetting')) {
 }
 // Fallback formatDateIndo
 if (!function_exists('formatDateIndo')) {
-    function formatDateIndo($date) { return date('d F Y', strtotime($date)); }
+    function formatDateIndo($date)
+    {
+        return date('d F Y', strtotime($date));
+    }
 }
 
-class PDF extends FPDF {
+class PDF extends FPDF
+{
     // Fungsi bantuan untuk menggambar lingkaran dengan warna solid
-    function Circle($x, $y, $r, $style='D') {
+    function Circle($x, $y, $r, $style = 'D')
+    {
         $this->Ellipse($x, $y, $r, $r, $style);
     }
 
-    function Ellipse($x, $y, $rx, $ry, $style='D') {
-        if($style=='F') $op='f'; elseif($style=='FD' || $style=='DF') $op='B'; else $op='S';
-        $lx=4/3*(M_SQRT2-1)*$rx;
-        $ly=4/3*(M_SQRT2-1)*$ry;
-        $k=$this->k;
-        $h=$this->h;
-        $this->_out(sprintf('%.2F %.2F m %.2F %.2F %.2F %.2F %.2F %.2F c',
-            ($x+$rx)*$k,($h-$y)*$k,
-            ($x+$rx)*$k,($h-($y-$ly))*$k,
-            ($x+$lx)*$k,($h-($y-$ry))*$k,
-            $x*$k,($h-($y-$ry))*$k));
-        $this->_out(sprintf('%.2F %.2F %.2F %.2F %.2F %.2F c',
-            ($x-$lx)*$k,($h-($y-$ry))*$k,
-            ($x-$rx)*$k,($h-($y-$ly))*$k,
-            ($x-$rx)*$k,($h-$y)*$k));
-        $this->_out(sprintf('%.2F %.2F %.2F %.2F %.2F %.2F c',
-            ($x-$rx)*$k,($h-($y+$ly))*$k,
-            ($x-$lx)*$k,($h-($y+$ry))*$k,
-            $x*$k,($h-($y+$ry))*$k));
-        $this->_out(sprintf('%.2F %.2F %.2F %.2F %.2F %.2F c %s',
-            ($x+$lx)*$k,($h-($y+$ry))*$k,
-            ($x+$rx)*$k,($h-($y+$ly))*$k,
-            ($x+$rx)*$k,($h-$y)*$k,
-            $op));
+    function Ellipse($x, $y, $rx, $ry, $style = 'D')
+    {
+        if ($style == 'F') $op = 'f';
+        elseif ($style == 'FD' || $style == 'DF') $op = 'B';
+        else $op = 'S';
+        $lx = 4 / 3 * (M_SQRT2 - 1) * $rx;
+        $ly = 4 / 3 * (M_SQRT2 - 1) * $ry;
+        $k = $this->k;
+        $h = $this->h;
+        $this->_out(sprintf(
+            '%.2F %.2F m %.2F %.2F %.2F %.2F %.2F %.2F c',
+            ($x + $rx) * $k,
+            ($h - $y) * $k,
+            ($x + $rx) * $k,
+            ($h - ($y - $ly)) * $k,
+            ($x + $lx) * $k,
+            ($h - ($y - $ry)) * $k,
+            $x * $k,
+            ($h - ($y - $ry)) * $k
+        ));
+        $this->_out(sprintf(
+            '%.2F %.2F %.2F %.2F %.2F %.2F c',
+            ($x - $lx) * $k,
+            ($h - ($y - $ry)) * $k,
+            ($x - $rx) * $k,
+            ($h - ($y - $ly)) * $k,
+            ($x - $rx) * $k,
+            ($h - $y) * $k
+        ));
+        $this->_out(sprintf(
+            '%.2F %.2F %.2F %.2F %.2F %.2F c',
+            ($x - $rx) * $k,
+            ($h - ($y + $ly)) * $k,
+            ($x - $lx) * $k,
+            ($h - ($y + $ry)) * $k,
+            $x * $k,
+            ($h - ($y + $ry)) * $k
+        ));
+        $this->_out(sprintf(
+            '%.2F %.2F %.2F %.2F %.2F %.2F c %s',
+            ($x + $lx) * $k,
+            ($h - ($y + $ry)) * $k,
+            ($x + $rx) * $k,
+            ($h - ($y + $ly)) * $k,
+            ($x + $rx) * $k,
+            ($h - $y) * $k,
+            $op
+        ));
     }
 
-    function Footer() {
+    function Footer()
+    {
         $this->SetY(-20);
         $this->SetFont('Arial', '', 9);
         $this->SetTextColor(128, 128, 128); // Abu-abu
@@ -163,7 +194,8 @@ $lineHeight = 9;
 $iconSpace = 8; // Spasi untuk simulasi ikon
 
 // Fungsi helper baris
-function printInfoRow($pdf, $label, $value, $x, $w) {
+function printInfoRow($pdf, $label, $value, $x, $w)
+{
     global $lineHeight, $iconSpace;
     $pdf->SetX($x);
     // Jika Anda punya file gambar ikon: $pdf->Image('icon.png', $x, $pdf->GetY()+1, 4);
@@ -175,7 +207,7 @@ function printInfoRow($pdf, $label, $value, $x, $w) {
 }
 
 // Layout kolom manual agar rapi seperti tabel
-$labelW = 35; 
+$labelW = 35;
 $pdf->SetX($boxX + 5);
 
 // Row 1: Tanggal
@@ -211,4 +243,3 @@ header('Content-Type: application/pdf');
 header('Content-Disposition: attachment; filename="pendaftaran-mcu-' . $kode_mcu . '.pdf"');
 ob_clean();
 $pdf->Output('D', 'pendaftaran-mcu-' . $kode_mcu . '.pdf');
-?>

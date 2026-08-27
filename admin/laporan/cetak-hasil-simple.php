@@ -43,48 +43,58 @@ $settings = mysqli_fetch_assoc($settings_result);
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cetak Hasil MCU - <?php echo $patient['kode_mcu']; ?></title>
     <style>
         @media print {
-            .no-print { display: none !important; }
-            @page { size: A4; margin: 20mm; }
-            body { font-size: 12pt; }
+            .no-print {
+                display: none !important;
+            }
+
+            @page {
+                size: A4;
+                margin: 20mm;
+            }
+
+            body {
+                font-size: 12pt;
+            }
         }
-        
+
         body {
             font-family: 'Arial', sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 20px;
         }
-        
+
         .print-container {
             max-width: 210mm;
             margin: 0 auto;
             background: white;
         }
-        
+
         .header {
             text-align: center;
             margin-bottom: 30px;
             border-bottom: 2px solid #000;
             padding-bottom: 10px;
         }
-        
+
         .clinic-name {
             font-size: 20pt;
             font-weight: bold;
             margin-bottom: 5px;
         }
-        
+
         .clinic-address {
             font-size: 11pt;
             margin-bottom: 5px;
         }
-        
+
         .report-title {
             font-size: 16pt;
             font-weight: bold;
@@ -92,13 +102,13 @@ $settings = mysqli_fetch_assoc($settings_result);
             text-align: center;
             text-decoration: underline;
         }
-        
+
         .patient-info table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
-        
+
         .patient-info th,
         .patient-info td {
             padding: 8px;
@@ -106,13 +116,13 @@ $settings = mysqli_fetch_assoc($settings_result);
             vertical-align: top;
             border: 1px solid #ddd;
         }
-        
+
         .patient-info th {
             background-color: #f5f5f5;
             font-weight: bold;
             width: 25%;
         }
-        
+
         .section-title {
             font-size: 14pt;
             font-weight: bold;
@@ -120,73 +130,73 @@ $settings = mysqli_fetch_assoc($settings_result);
             padding-bottom: 5px;
             border-bottom: 1px solid #000;
         }
-        
+
         .exam-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 15px;
         }
-        
+
         .exam-table th,
         .exam-table td {
             padding: 8px;
             border: 1px solid #ddd;
             text-align: left;
         }
-        
+
         .exam-table th {
             background-color: #f5f5f5;
             font-weight: bold;
         }
-        
+
         .conclusion {
             margin: 30px 0;
             padding: 15px;
             border: 1px solid #000;
             background-color: #f9f9f9;
         }
-        
+
         .signature {
             margin-top: 60px;
             text-align: right;
         }
-        
+
         .signature-line {
             margin-top: 60px;
             border-top: 1px solid #000;
             width: 200px;
             display: inline-block;
         }
-        
+
         .footer-note {
             margin-top: 40px;
             font-size: 9pt;
             font-style: italic;
             color: #666;
         }
-        
+
         .status-badge {
             padding: 3px 10px;
             border-radius: 3px;
             font-weight: bold;
             display: inline-block;
         }
-        
+
         .status-fit {
             background-color: #d4edda;
             color: #155724;
         }
-        
+
         .status-unfit {
             background-color: #f8d7da;
             color: #721c24;
         }
-        
+
         .status-note {
             background-color: #fff3cd;
             color: #856404;
         }
-        
+
         .print-actions {
             margin-bottom: 20px;
             text-align: center;
@@ -196,6 +206,7 @@ $settings = mysqli_fetch_assoc($settings_result);
         }
     </style>
 </head>
+
 <body>
     <!-- Print Actions -->
     <div class="print-actions no-print">
@@ -206,7 +217,7 @@ $settings = mysqli_fetch_assoc($settings_result);
             ↩ Kembali ke Detail Pasien
         </a>
     </div>
-    
+
     <!-- Print Content -->
     <div class="print-container">
         <!-- Header -->
@@ -218,16 +229,16 @@ $settings = mysqli_fetch_assoc($settings_result);
                 <?php echo htmlspecialchars($settings['alamat'] ?? ''); ?>
             </div>
             <div class="clinic-address">
-                Telp: <?php echo $settings['telepon'] ?? ''; ?> | 
+                Telp: <?php echo $settings['telepon'] ?? ''; ?> |
                 Email: <?php echo $settings['email'] ?? ''; ?>
             </div>
         </div>
-        
+
         <!-- Report Title -->
         <div class="report-title">
             HASIL PEMERIKSAAN MEDICAL CHECK UP
         </div>
-        
+
         <!-- Patient Information -->
         <div class="patient-info">
             <table>
@@ -261,7 +272,7 @@ $settings = mysqli_fetch_assoc($settings_result);
                 </tr>
             </table>
         </div>
-        
+
         <!-- SIRKULASI -->
         <?php if (isset($exams['pendaftaran'])): ?>
             <div class="section-title">SIRKULASI</div>
@@ -286,7 +297,7 @@ $settings = mysqli_fetch_assoc($settings_result);
                 </tr>
             </table>
         <?php endif; ?>
-        
+
         <!-- PEMERIKSAAN MATA -->
         <?php if (isset($exams['dokter_mata'])): ?>
             <div class="section-title">PEMERIKSAAN MATA</div>
@@ -309,11 +320,11 @@ $settings = mysqli_fetch_assoc($settings_result);
                 </tr>
             </table>
         <?php endif; ?>
-        
+
         <!-- PEMERIKSAAN UMUM -->
         <?php if (isset($exams['dokter_umum'])): ?>
             <div class="section-title">PEMERIKSAAN UMUM</div>
-            
+
             <!-- THT & Gigi -->
             <h4>TELINGA, HIDUNG, TENGGOROKAN</h4>
             <table class="exam-table">
@@ -330,7 +341,7 @@ $settings = mysqli_fetch_assoc($settings_result);
                     <td><?php echo $exams['dokter_umum']['gigi_keterangan'] ?: 'Normal'; ?></td>
                 </tr>
             </table>
-            
+
             <!-- Thorax -->
             <h4>PEMERIKSAAN THORAX</h4>
             <table class="exam-table">
@@ -345,7 +356,7 @@ $settings = mysqli_fetch_assoc($settings_result);
                     <td colspan="3"><?php echo $exams['dokter_umum']['paru_perkusi'] ?: 'Sonor'; ?></td>
                 </tr>
             </table>
-            
+
             <!-- Abdominal -->
             <h4>ABDOMINAL</h4>
             <table class="exam-table">
@@ -362,13 +373,13 @@ $settings = mysqli_fetch_assoc($settings_result);
                     <td><?php echo $exams['dokter_umum']['hernia'] ? 'Ya' : 'Tidak'; ?></td>
                 </tr>
                 <?php if ($exams['dokter_umum']['hepatomegali']): ?>
-                <tr>
-                    <th>Hepatomegali</th>
-                    <td colspan="3"><?php echo $exams['dokter_umum']['hepatomegali']; ?></td>
-                </tr>
+                    <tr>
+                        <th>Hepatomegali</th>
+                        <td colspan="3"><?php echo $exams['dokter_umum']['hepatomegali']; ?></td>
+                    </tr>
                 <?php endif; ?>
             </table>
-            
+
             <!-- Refleks -->
             <h4>REFLEKS</h4>
             <table class="exam-table">
@@ -389,25 +400,25 @@ $settings = mysqli_fetch_assoc($settings_result);
                     <td colspan="3"><?php echo $exams['dokter_umum']['plantar_response'] ?: 'Normal'; ?></td>
                 </tr>
             </table>
-            
+
             <!-- KESIMPULAN -->
             <div class="conclusion">
                 <h4>KESIMPULAN HASIL MCU</h4>
-                
+
                 <?php if ($exams['dokter_umum']['kesimpulan']): ?>
-                <p><strong>Kesimpulan:</strong><br>
-                <?php echo nl2br(htmlspecialchars($exams['dokter_umum']['kesimpulan'])); ?>
-                </p>
+                    <p><strong>Kesimpulan:</strong><br>
+                        <?php echo nl2br(htmlspecialchars($exams['dokter_umum']['kesimpulan'])); ?>
+                    </p>
                 <?php endif; ?>
-                
+
                 <?php if ($exams['dokter_umum']['saran']): ?>
-                <p><strong>Saran:</strong><br>
-                <?php echo nl2br(htmlspecialchars($exams['dokter_umum']['saran'])); ?>
-                </p>
+                    <p><strong>Saran:</strong><br>
+                        <?php echo nl2br(htmlspecialchars($exams['dokter_umum']['saran'])); ?>
+                    </p>
                 <?php endif; ?>
-                
-                <p><strong>Status MCU:</strong> 
-                    <?php 
+
+                <p><strong>Status MCU:</strong>
+                    <?php
                     $status_class = '';
                     if ($exams['dokter_umum']['status_mcu'] == 'FIT') {
                         $status_class = 'status-fit';
@@ -418,7 +429,7 @@ $settings = mysqli_fetch_assoc($settings_result);
                     }
                     ?>
                     <span class="status-badge <?php echo $status_class; ?>">
-                        <?php 
+                        <?php
                         if ($exams['dokter_umum']['status_mcu'] == 'FIT') echo 'FIT TO WORK';
                         elseif ($exams['dokter_umum']['status_mcu'] == 'UNFIT') echo 'UNFIT';
                         elseif ($exams['dokter_umum']['status_mcu'] == 'FIT WITH NOTE') echo 'FIT WITH NOTE';
@@ -426,21 +437,21 @@ $settings = mysqli_fetch_assoc($settings_result);
                         ?>
                     </span>
                 </p>
-                
+
                 <?php if ($exams['dokter_umum']['dokter_pemeriksa']): ?>
-                <p><strong>Dokter Pemeriksa:</strong><br>
-                <?php echo htmlspecialchars($exams['dokter_umum']['dokter_pemeriksa']); ?>
-                </p>
+                    <p><strong>Dokter Pemeriksa:</strong><br>
+                        <?php echo htmlspecialchars($exams['dokter_umum']['dokter_pemeriksa']); ?>
+                    </p>
                 <?php endif; ?>
             </div>
         <?php endif; ?>
-        
+
         <!-- Signature -->
         <div class="signature">
             <div class="signature-line"></div>
             <p>Dokter Pemeriksa</p>
         </div>
-        
+
         <!-- Footer Note -->
         <div class="footer-note">
             <p><strong>Catatan:</strong></p>
@@ -449,19 +460,19 @@ $settings = mysqli_fetch_assoc($settings_result);
             <p>3. Dokumen ini dicetak secara elektronik dan tidak memerlukan tanda tangan basah.</p>
         </div>
     </div>
-    
+
     <script>
         // Auto print when page loads (optional)
         window.onload = function() {
             // Uncomment to auto print
             // window.print();
         };
-        
+
         // Print button
         document.querySelector('.btn-print').addEventListener('click', function() {
             window.print();
         });
-        
+
         // Style buttons
         const style = document.createElement('style');
         style.textContent = `
@@ -498,4 +509,5 @@ $settings = mysqli_fetch_assoc($settings_result);
         document.head.appendChild(style);
     </script>
 </body>
+
 </html>

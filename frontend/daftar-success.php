@@ -23,15 +23,15 @@ require_once __DIR__ . '/../includes/header.php';
                     <div class="mb-4">
                         <i class="fas fa-check-circle fa-5x text-success"></i>
                     </div>
-                    
+
                     <h3 class="card-title mb-3">Terima kasih telah mendaftar MCU</h3>
-                    
+
                     <div class="info mb-4">
                         <h5>Kode MCU Anda:</h5>
                         <div class="display-4 fw-bold text-primary"><?php echo $kode_mcu; ?></div>
                         <p class="mt-2"><strong>Harap Tunjukan Kode Ini Pada Saat Akan Melakukan Pemeriksaan.</strong></p>
                     </div>
-                    
+
                     <div class="card mb-4">
                         <div class="card-header bg-light">
                             <h5 class="mb-0">Informasi Penting</h5>
@@ -45,7 +45,7 @@ require_once __DIR__ . '/../includes/header.php';
                             </ul>
                         </div>
                     </div>
-                    
+
                     <div class="mt-4">
                         <a href="<?php echo BASE_URL; ?>" class="btn btn-primary btn-lg me-2">
                             <i class="fas fa-home me-2"></i> Kembali ke Beranda
@@ -67,14 +67,17 @@ require_once __DIR__ . '/../includes/header.php';
 
 <style>
     @media print {
-        .navbar, footer, .btn {
+
+        .navbar,
+        footer,
+        .btn {
             display: none !important;
         }
-        
+
         .card {
             border: 2px solid #000 !important;
         }
-        
+
         .alert-info {
             background-color: #d1ecf1 !important;
             border-color: #bee5eb !important;

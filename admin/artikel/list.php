@@ -61,7 +61,7 @@ $result = mysqli_query($conn, $query);
                     <i class="fas fa-plus me-2"></i> Artikel Baru
                 </a>
             </div>
-            
+
             <!-- Filter and Search -->
             <div class="card mb-4">
                 <div class="card-body">
@@ -87,7 +87,7 @@ $result = mysqli_query($conn, $query);
                     </form>
                 </div>
             </div>
-            
+
             <!-- Articles Table -->
             <div class="card">
                 <div class="card-header">
@@ -142,15 +142,15 @@ $result = mysqli_query($conn, $query);
                                             <td>
                                                 <div class="btn-group btn-group-sm">
                                                     <a href="edit.php?id=<?php echo $article['id']; ?>"
-                                                       class="btn btn-warning"
-                                                       title="Edit">
+                                                        class="btn btn-warning"
+                                                        title="Edit">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                     <button type="button"
-                                                            class="btn btn-danger delete-article"
-                                                            data-id="<?php echo $article['id']; ?>"
-                                                            data-title="<?php echo htmlspecialchars($article['judul']); ?>"
-                                                            title="Hapus">
+                                                        class="btn btn-danger delete-article"
+                                                        data-id="<?php echo $article['id']; ?>"
+                                                        data-title="<?php echo htmlspecialchars($article['judul']); ?>"
+                                                        title="Hapus">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </div>
@@ -160,19 +160,19 @@ $result = mysqli_query($conn, $query);
                                 </tbody>
                             </table>
                         </div>
-                        
+
                         <!-- Pagination -->
                         <?php if ($total_pages > 1): ?>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-center">
                                     <?php if ($page > 1): ?>
                                         <li class="page-item">
-                                            <a class="page-link" href="?page=<?php echo $page-1; ?>&status=<?php echo $status; ?>&search=<?php echo urlencode($search); ?>">
+                                            <a class="page-link" href="?page=<?php echo $page - 1; ?>&status=<?php echo $status; ?>&search=<?php echo urlencode($search); ?>">
                                                 &laquo;
                                             </a>
                                         </li>
                                     <?php endif; ?>
-                                    
+
                                     <?php for ($i = 1; $i <= $total_pages; $i++): ?>
                                         <li class="page-item <?php echo $i == $page ? 'active' : ''; ?>">
                                             <a class="page-link" href="?page=<?php echo $i; ?>&status=<?php echo $status; ?>&search=<?php echo urlencode($search); ?>">
@@ -180,10 +180,10 @@ $result = mysqli_query($conn, $query);
                                             </a>
                                         </li>
                                     <?php endfor; ?>
-                                    
+
                                     <?php if ($page < $total_pages): ?>
                                         <li class="page-item">
-                                            <a class="page-link" href="?page=<?php echo $page+1; ?>&status=<?php echo $status; ?>&search=<?php echo urlencode($search); ?>">
+                                            <a class="page-link" href="?page=<?php echo $page + 1; ?>&status=<?php echo $status; ?>&search=<?php echo urlencode($search); ?>">
                                                 &raquo;
                                             </a>
                                         </li>
@@ -191,7 +191,7 @@ $result = mysqli_query($conn, $query);
                                 </ul>
                             </nav>
                         <?php endif; ?>
-                        
+
                     <?php else: ?>
                         <div class="alert alert-info">
                             <i class="fas fa-info-circle me-2"></i> Tidak ada artikel.
@@ -229,19 +229,19 @@ $result = mysqli_query($conn, $query);
 </div>
 
 <script>
-// Delete confirmation
-document.querySelectorAll('.delete-article').forEach(button => {
-    button.addEventListener('click', function() {
-        const id = this.getAttribute('data-id');
-        const title = this.getAttribute('data-title');
-        
-        document.getElementById('deleteId').value = id;
-        document.getElementById('articleTitle').textContent = title;
-        
-        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-        deleteModal.show();
+    // Delete confirmation
+    document.querySelectorAll('.delete-article').forEach(button => {
+        button.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            const title = this.getAttribute('data-title');
+
+            document.getElementById('deleteId').value = id;
+            document.getElementById('articleTitle').textContent = title;
+
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
+        });
     });
-});
 </script>
 
 <?php include '../../includes/admin-footer.php'; ?>

@@ -33,12 +33,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $penulis = escape($_POST['penulis']);
     $tanggal_publish = escape($_POST['tanggal_publish']);
     $status = escape($_POST['status']);
-    
+
     // Generate slug
     $slug = strtolower(str_replace(' ', '-', $judul));
     $slug = preg_replace('/[^a-z0-9\-]/', '', $slug);
     $slug = preg_replace('/-+/', '-', $slug);
-    
+
     // Handle image upload
     $gambar = $article['gambar']; // Keep existing image
 
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               status = '$status',
               updated_at = NOW()
               WHERE id = $id";
-    
+
     if (mysqli_query($conn, $query)) {
         $_SESSION['success'] = "Artikel berhasil diperbarui!";
         redirect('list.php');
@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <li class="breadcrumb-item active">Edit Artikel</li>
                 </ol>
             </nav>
-            
+
             <!-- Article Form -->
             <div class="card">
                 <div class="card-header bg-warning text-white">
@@ -138,17 +138,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <!-- Title -->
                                 <div class="mb-3">
                                     <label class="form-label">Judul Artikel *</label>
-                                    <input type="text" class="form-control" name="judul" 
-                                           value="<?php echo htmlspecialchars($article['judul']); ?>" required>
+                                    <input type="text" class="form-control" name="judul"
+                                        value="<?php echo htmlspecialchars($article['judul']); ?>" required>
                                 </div>
-                                
+
                                 <!-- Content -->
                                 <div class="mb-3">
                                     <label class="form-label">Konten *</label>
                                     <textarea class="form-control" name="konten" id="editor" rows="15" required><?php echo htmlspecialchars($article['konten']); ?></textarea>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-4">
                                 <!-- Sidebar -->
                                 <div class="card">
@@ -161,85 +161,85 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                 <option value="published" <?php echo $article['status'] == 'published' ? 'selected' : ''; ?>>Published</option>
                                             </select>
                                         </div>
-                                        
+
                                         <!-- Category -->
                                         <div class="mb-3">
                                             <label class="form-label">Kategori</label>
-                                            <input type="text" class="form-control" name="kategori" 
-                                                   value="<?php echo htmlspecialchars($article['kategori']); ?>"
-                                                   placeholder="Kesehatan, Tips, dll">
+                                            <input type="text" class="form-control" name="kategori"
+                                                value="<?php echo htmlspecialchars($article['kategori']); ?>"
+                                                placeholder="Kesehatan, Tips, dll">
                                         </div>
-                                        
+
                                         <!-- Author -->
                                         <div class="mb-3">
                                             <label class="form-label">Penulis *</label>
-                                            <input type="text" class="form-control" name="penulis" 
-                                                   value="<?php echo htmlspecialchars($article['penulis']); ?>" required>
+                                            <input type="text" class="form-control" name="penulis"
+                                                value="<?php echo htmlspecialchars($article['penulis']); ?>" required>
                                         </div>
-                                        
+
                                         <!-- Publish Date -->
                                         <div class="mb-3">
                                             <label class="form-label">Tanggal Publikasi</label>
-                                            <input type="date" class="form-control" name="tanggal_publish" 
-                                                   value="<?php echo $article['tanggal_publish']; ?>" required>
+                                            <input type="date" class="form-control" name="tanggal_publish"
+                                                value="<?php echo $article['tanggal_publish']; ?>" required>
                                         </div>
-                                        
+
                                         <!-- Current Image -->
                                         <?php if ($article['gambar']): ?>
-                                        <div class="mb-3">
-                                            <label class="form-label">Gambar Saat Ini</label>
-                                            <div class="border p-2 rounded text-center">
-                                                <img src="<?php echo ASSETS_URL . '/' . $article['gambar']; ?>" 
-                                                     class="img-fluid rounded" 
-                                                     style="max-height: 150px;">
-                                                <div class="mt-2">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" 
-                                                               name="delete_image" value="1" id="deleteImage">
-                                                        <label class="form-check-label text-danger" for="deleteImage">
-                                                            Hapus gambar ini
-                                                        </label>
+                                            <div class="mb-3">
+                                                <label class="form-label">Gambar Saat Ini</label>
+                                                <div class="border p-2 rounded text-center">
+                                                    <img src="<?php echo ASSETS_URL . '/' . $article['gambar']; ?>"
+                                                        class="img-fluid rounded"
+                                                        style="max-height: 150px;">
+                                                    <div class="mt-2">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="delete_image" value="1" id="deleteImage">
+                                                            <label class="form-check-label text-danger" for="deleteImage">
+                                                                Hapus gambar ini
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
                                         <?php endif; ?>
-                                        
+
                                         <!-- New Image -->
                                         <div class="mb-3">
                                             <label class="form-label"><?php echo $article['gambar'] ? 'Ganti Gambar' : 'Tambah Gambar'; ?></label>
                                             <input type="file" class="form-control" name="gambar"
-                                                   accept="image/*">
+                                                accept="image/*">
                                             <small class="text-muted">Max. 5MB, format: JPG, PNG, GIF</small>
                                             <div id="imagePreview" class="mt-2"></div>
                                         </div>
 
                                         <!-- Current Video -->
                                         <?php if ($article['video']): ?>
-                                        <div class="mb-3">
-                                            <label class="form-label">Video Saat Ini</label>
-                                            <div class="border p-2 rounded text-center">
-                                                <video src="<?php echo ASSETS_URL . '/' . $article['video']; ?>"
-                                                       class="img-fluid rounded"
-                                                       style="max-height: 150px;" controls></video>
-                                                <div class="mt-2">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                               name="delete_video" value="1" id="deleteVideo">
-                                                        <label class="form-check-label text-danger" for="deleteVideo">
-                                                            Hapus video ini
-                                                        </label>
+                                            <div class="mb-3">
+                                                <label class="form-label">Video Saat Ini</label>
+                                                <div class="border p-2 rounded text-center">
+                                                    <video src="<?php echo ASSETS_URL . '/' . $article['video']; ?>"
+                                                        class="img-fluid rounded"
+                                                        style="max-height: 150px;" controls></video>
+                                                    <div class="mt-2">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="delete_video" value="1" id="deleteVideo">
+                                                            <label class="form-check-label text-danger" for="deleteVideo">
+                                                                Hapus video ini
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
                                         <?php endif; ?>
 
                                         <!-- New Video -->
                                         <div class="mb-3">
                                             <label class="form-label"><?php echo $article['video'] ? 'Ganti Video' : 'Tambah Video'; ?></label>
                                             <input type="file" class="form-control" name="video"
-                                                   accept="video/*">
+                                                accept="video/*">
                                             <small class="text-muted">Max. 50MB, format: MP4, AVI, MOV, WMV, FLV</small>
                                             <div id="videoPreview" class="mt-2"></div>
                                         </div>
@@ -264,7 +264,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                 </table>
                                             </div>
                                         </div>
-                                        
+
                                         <!-- Submit Button -->
                                         <div class="d-grid gap-2">
                                             <button type="submit" class="btn btn-success">
@@ -286,17 +286,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </div>
 
 <script>
-// Image preview
-const imageInput = document.querySelector('input[name="gambar"]');
-if (imageInput) {
-    imageInput.addEventListener('change', function(e) {
-        const preview = document.getElementById('imagePreview');
-        const file = e.target.files[0];
-        
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                preview.innerHTML = `
+    // Image preview
+    const imageInput = document.querySelector('input[name="gambar"]');
+    if (imageInput) {
+        imageInput.addEventListener('change', function(e) {
+            const preview = document.getElementById('imagePreview');
+            const file = e.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `
                     <div class="border p-2 rounded">
                         <img src="${e.target.result}" class="img-fluid rounded" style="max-height: 200px;">
                         <div class="mt-2 text-center">
@@ -304,37 +304,37 @@ if (imageInput) {
                         </div>
                     </div>
                 `;
+                }
+                reader.readAsDataURL(file);
+            } else {
+                preview.innerHTML = '';
             }
-            reader.readAsDataURL(file);
-        } else {
-            preview.innerHTML = '';
-        }
-    });
-}
+        });
+    }
 
-// Delete image checkbox
-const deleteCheckbox = document.getElementById('deleteImage');
-if (deleteCheckbox) {
-    deleteCheckbox.addEventListener('change', function() {
-        if (this.checked) {
-            if (!confirm('Yakin ingin menghapus gambar ini?')) {
-                this.checked = false;
+    // Delete image checkbox
+    const deleteCheckbox = document.getElementById('deleteImage');
+    if (deleteCheckbox) {
+        deleteCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                if (!confirm('Yakin ingin menghapus gambar ini?')) {
+                    this.checked = false;
+                }
             }
-        }
-    });
-}
+        });
+    }
 
-// Video preview
-const videoInput = document.querySelector('input[name="video"]');
-if (videoInput) {
-    videoInput.addEventListener('change', function(e) {
-        const preview = document.getElementById('videoPreview');
-        const file = e.target.files[0];
+    // Video preview
+    const videoInput = document.querySelector('input[name="video"]');
+    if (videoInput) {
+        videoInput.addEventListener('change', function(e) {
+            const preview = document.getElementById('videoPreview');
+            const file = e.target.files[0];
 
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                preview.innerHTML = `
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `
                     <div class="border p-2 rounded">
                         <video src="${e.target.result}" class="img-fluid rounded" style="max-height: 200px;" controls></video>
                         <div class="mt-2 text-center">
@@ -342,60 +342,60 @@ if (videoInput) {
                         </div>
                     </div>
                 `;
+                }
+                reader.readAsDataURL(file);
+            } else {
+                preview.innerHTML = '';
             }
-            reader.readAsDataURL(file);
+        });
+    }
+
+    // Delete video checkbox
+    const deleteVideoCheckbox = document.getElementById('deleteVideo');
+    if (deleteVideoCheckbox) {
+        deleteVideoCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                if (!confirm('Yakin ingin menghapus video ini?')) {
+                    this.checked = false;
+                }
+            }
+        });
+    }
+
+    // Form validation
+    document.getElementById('articleForm').addEventListener('submit', function(e) {
+        const title = this.querySelector('input[name="judul"]');
+        const content = this.querySelector('textarea[name="konten"]');
+        const author = this.querySelector('input[name="penulis"]');
+
+        let isValid = true;
+
+        if (!title.value.trim()) {
+            title.classList.add('is-invalid');
+            isValid = false;
         } else {
-            preview.innerHTML = '';
+            title.classList.remove('is-invalid');
+        }
+
+        if (!content.value.trim()) {
+            content.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            content.classList.remove('is-invalid');
+        }
+
+        if (!author.value.trim()) {
+            author.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            author.classList.remove('is-invalid');
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+            alert('Harap lengkapi semua field yang wajib diisi!');
         }
     });
-}
-
-// Delete video checkbox
-const deleteVideoCheckbox = document.getElementById('deleteVideo');
-if (deleteVideoCheckbox) {
-    deleteVideoCheckbox.addEventListener('change', function() {
-        if (this.checked) {
-            if (!confirm('Yakin ingin menghapus video ini?')) {
-                this.checked = false;
-            }
-        }
-    });
-}
-
-// Form validation
-document.getElementById('articleForm').addEventListener('submit', function(e) {
-    const title = this.querySelector('input[name="judul"]');
-    const content = this.querySelector('textarea[name="konten"]');
-    const author = this.querySelector('input[name="penulis"]');
-    
-    let isValid = true;
-    
-    if (!title.value.trim()) {
-        title.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        title.classList.remove('is-invalid');
-    }
-    
-    if (!content.value.trim()) {
-        content.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        content.classList.remove('is-invalid');
-    }
-    
-    if (!author.value.trim()) {
-        author.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        author.classList.remove('is-invalid');
-    }
-    
-    if (!isValid) {
-        e.preventDefault();
-        alert('Harap lengkapi semua field yang wajib diisi!');
-    }
-});
 </script>
 
 <?php include '../../includes/admin-footer.php'; ?>

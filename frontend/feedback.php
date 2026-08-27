@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <i class="fas fa-smile me-2 text-success"></i> Kesan Anda terhadap pelayanan kami
                             </label>
                             <textarea class="form-control" id="kesan" name="kesan" rows="4"
-                                      placeholder="Ceritakan kesan Anda selama menggunakan layanan MCU di klinik kami..."></textarea>
+                                placeholder="Ceritakan kesan Anda selama menggunakan layanan MCU di klinik kami..."></textarea>
                             <div class="form-text">Opsional - bagikan pengalaman positif Anda</div>
                         </div>
 
@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <i class="fas fa-lightbulb me-2 text-primary"></i> Saran untuk perbaikan
                             </label>
                             <textarea class="form-control" id="saran" name="saran" rows="4"
-                                      placeholder="Berikan saran Anda untuk meningkatkan pelayanan MCU kami..."></textarea>
+                                placeholder="Berikan saran Anda untuk meningkatkan pelayanan MCU kami..."></textarea>
                             <div class="form-text">Opsional - bantu kami menjadi lebih baik</div>
                         </div>
 
@@ -142,136 +142,136 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </div>
 
 <style>
-.rating-stars {
-    margin: 20px 0;
-}
+    .rating-stars {
+        margin: 20px 0;
+    }
 
-.stars {
-    font-size: 2rem;
-    cursor: pointer;
-}
+    .stars {
+        font-size: 2rem;
+        cursor: pointer;
+    }
 
-.stars i {
-    margin: 0 5px;
-    transition: color 0.2s;
-}
+    .stars i {
+        margin: 0 5px;
+        transition: color 0.2s;
+    }
 
-.stars i:hover,
-.stars i.active {
-    color: #ffc107;
-}
+    .stars i:hover,
+    .stars i.active {
+        color: #ffc107;
+    }
 
-.rating-text {
-    color: #6c757d;
-    font-weight: 500;
-}
+    .rating-text {
+        color: #6c757d;
+        font-weight: 500;
+    }
 
-.card {
-    border-radius: 15px;
-}
+    .card {
+        border-radius: 15px;
+    }
 
-.card-header {
-    border-radius: 15px 15px 0 0 !important;
-}
+    .card-header {
+        border-radius: 15px 15px 0 0 !important;
+    }
 
-.btn {
-    border-radius: 25px;
-}
+    .btn {
+        border-radius: 25px;
+    }
 
-.form-control {
-    border-radius: 10px;
-    border: 2px solid #e9ecef;
-}
+    .form-control {
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+    }
 
-.form-control:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-}
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
 </style>
 
 <script>
-// Rating functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const stars = document.querySelectorAll('#ratingStars i');
-    const ratingInput = document.getElementById('ratingInput');
-    const ratingText = document.getElementById('ratingText');
-    const submitBtn = document.getElementById('submitBtn');
+    // Rating functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const stars = document.querySelectorAll('#ratingStars i');
+        const ratingInput = document.getElementById('ratingInput');
+        const ratingText = document.getElementById('ratingText');
+        const submitBtn = document.getElementById('submitBtn');
 
-    const ratingTexts = {
-        1: 'Sangat Buruk',
-        2: 'Buruk',
-        3: 'Cukup',
-        4: 'Baik',
-        5: 'Sangat Baik'
-    };
+        const ratingTexts = {
+            1: 'Sangat Buruk',
+            2: 'Buruk',
+            3: 'Cukup',
+            4: 'Baik',
+            5: 'Sangat Baik'
+        };
 
-    stars.forEach(star => {
-        star.addEventListener('click', function() {
-            const rating = parseInt(this.dataset.rating);
-            ratingInput.value = rating;
-            ratingText.textContent = ratingTexts[rating];
-            ratingText.style.color = '#28a745';
-
-            // Update star display
-            stars.forEach(s => {
-                if (parseInt(s.dataset.rating) <= rating) {
-                    s.classList.remove('far');
-                    s.classList.add('fas', 'active');
-                } else {
-                    s.classList.remove('fas', 'active');
-                    s.classList.add('far');
-                }
-            });
-        });
-
-        star.addEventListener('mouseover', function() {
-            const rating = parseInt(this.dataset.rating);
-            stars.forEach(s => {
-                if (parseInt(s.dataset.rating) <= rating) {
-                    s.style.color = '#ffc107';
-                } else {
-                    s.style.color = '#6c757d';
-                }
-            });
-        });
-
-        star.addEventListener('mouseout', function() {
-            stars.forEach(s => {
-                s.style.color = '';
-            });
-        });
-    });
-
-    // Form validation
-    document.getElementById('feedbackForm').addEventListener('submit', function(e) {
-        if (!ratingInput.value) {
-            e.preventDefault();
-            alert('Silakan pilih rating terlebih dahulu!');
-            return false;
-        }
-
-        // Disable submit button to prevent double submission
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Mengirim...';
-    });
-
-    // Reset functionality
-    document.getElementById('resetBtn').addEventListener('click', function() {
-        // Reset stars
         stars.forEach(star => {
-            star.classList.remove('fas', 'active');
-            star.classList.add('far');
+            star.addEventListener('click', function() {
+                const rating = parseInt(this.dataset.rating);
+                ratingInput.value = rating;
+                ratingText.textContent = ratingTexts[rating];
+                ratingText.style.color = '#28a745';
+
+                // Update star display
+                stars.forEach(s => {
+                    if (parseInt(s.dataset.rating) <= rating) {
+                        s.classList.remove('far');
+                        s.classList.add('fas', 'active');
+                    } else {
+                        s.classList.remove('fas', 'active');
+                        s.classList.add('far');
+                    }
+                });
+            });
+
+            star.addEventListener('mouseover', function() {
+                const rating = parseInt(this.dataset.rating);
+                stars.forEach(s => {
+                    if (parseInt(s.dataset.rating) <= rating) {
+                        s.style.color = '#ffc107';
+                    } else {
+                        s.style.color = '#6c757d';
+                    }
+                });
+            });
+
+            star.addEventListener('mouseout', function() {
+                stars.forEach(s => {
+                    s.style.color = '';
+                });
+            });
         });
 
-        // Reset rating
-        ratingInput.value = '';
-        ratingText.textContent = 'Pilih rating (1-5 bintang)';
-        ratingText.style.color = '#6c757d';
+        // Form validation
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            if (!ratingInput.value) {
+                e.preventDefault();
+                alert('Silakan pilih rating terlebih dahulu!');
+                return false;
+            }
 
-        // Reset form
-        document.getElementById('feedbackForm').reset();
+            // Disable submit button to prevent double submission
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Mengirim...';
+        });
+
+        // Reset functionality
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            // Reset stars
+            stars.forEach(star => {
+                star.classList.remove('fas', 'active');
+                star.classList.add('far');
+            });
+
+            // Reset rating
+            ratingInput.value = '';
+            ratingText.textContent = 'Pilih rating (1-5 bintang)';
+            ratingText.style.color = '#6c757d';
+
+            // Reset form
+            document.getElementById('feedbackForm').reset();
+        });
     });
-});
 </script>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

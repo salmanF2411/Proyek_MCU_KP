@@ -109,7 +109,7 @@ include '../../includes/admin-header.php';
                                 <div class="mb-3">
                                     <label class="form-label">Judul Layanan *</label>
                                     <input type="text" class="form-control" name="judul_layanan"
-                                           value="<?php echo htmlspecialchars($service['judul_layanan']); ?>" required>
+                                        value="<?php echo htmlspecialchars($service['judul_layanan']); ?>" required>
                                 </div>
 
                                 <!-- Description -->
@@ -122,7 +122,7 @@ include '../../includes/admin-header.php';
                                 <div class="mb-3">
                                     <label class="form-label">Harga (Rp) *</label>
                                     <input type="number" class="form-control" name="harga" min="0" step="0.01"
-                                           value="<?php echo $service['harga']; ?>" required>
+                                        value="<?php echo $service['harga']; ?>" required>
                                 </div>
                             </div>
 
@@ -141,23 +141,23 @@ include '../../includes/admin-header.php';
 
                                         <!-- Current Image -->
                                         <?php if ($service['gambar']): ?>
-                                        <div class="mb-3">
-                                            <label class="form-label">Gambar Saat Ini</label>
-                                            <div class="border p-2 rounded text-center">
-                                                <img src="<?php echo ASSETS_URL . '/' . $service['gambar']; ?>"
-                                                     alt="<?php echo htmlspecialchars($service['judul_layanan']); ?>"
-                                                     class="img-fluid rounded" style="max-height: 150px;">
-                                                <div class="mt-2">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                               name="delete_image" value="1" id="deleteImage">
-                                                        <label class="form-check-label text-danger" for="deleteImage">
-                                                            Hapus gambar ini
-                                                        </label>
+                                            <div class="mb-3">
+                                                <label class="form-label">Gambar Saat Ini</label>
+                                                <div class="border p-2 rounded text-center">
+                                                    <img src="<?php echo ASSETS_URL . '/' . $service['gambar']; ?>"
+                                                        alt="<?php echo htmlspecialchars($service['judul_layanan']); ?>"
+                                                        class="img-fluid rounded" style="max-height: 150px;">
+                                                    <div class="mt-2">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="delete_image" value="1" id="deleteImage">
+                                                            <label class="form-check-label text-danger" for="deleteImage">
+                                                                Hapus gambar ini
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
                                         <?php endif; ?>
 
                                         <!-- New Image -->
@@ -206,17 +206,17 @@ include '../../includes/admin-header.php';
 </div>
 
 <script>
-// Image preview
-const imageInput = document.querySelector('input[name="gambar"]');
-if (imageInput) {
-    imageInput.addEventListener('change', function(e) {
-        const preview = document.getElementById('imagePreview');
-        const file = e.target.files[0];
+    // Image preview
+    const imageInput = document.querySelector('input[name="gambar"]');
+    if (imageInput) {
+        imageInput.addEventListener('change', function(e) {
+            const preview = document.getElementById('imagePreview');
+            const file = e.target.files[0];
 
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                preview.innerHTML = `
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `
                     <div class="border p-2 rounded">
                         <img src="${e.target.result}" class="img-fluid rounded" style="max-height: 200px;">
                         <div class="mt-2 text-center">
@@ -224,66 +224,66 @@ if (imageInput) {
                         </div>
                     </div>
                 `;
+                }
+                reader.readAsDataURL(file);
+            } else {
+                preview.innerHTML = '';
             }
-            reader.readAsDataURL(file);
+        });
+    }
+
+    // Delete image checkbox
+    const deleteCheckbox = document.getElementById('deleteImage');
+    if (deleteCheckbox) {
+        deleteCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                if (!confirm('Yakin ingin menghapus gambar ini?')) {
+                    this.checked = false;
+                }
+            }
+        });
+    }
+
+    // Form validation
+    document.getElementById('serviceForm').addEventListener('submit', function(e) {
+        const title = this.querySelector('input[name="judul_layanan"]');
+        const description = this.querySelector('textarea[name="deskripsi"]');
+        const price = this.querySelector('input[name="harga"]');
+
+        let isValid = true;
+
+        if (!title.value.trim()) {
+            title.classList.add('is-invalid');
+            isValid = false;
         } else {
-            preview.innerHTML = '';
+            title.classList.remove('is-invalid');
+        }
+
+        if (!description.value.trim()) {
+            description.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            description.classList.remove('is-invalid');
+        }
+
+        if (!price.value || price.value <= 0) {
+            price.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            price.classList.remove('is-invalid');
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+            alert('Harap lengkapi semua field yang wajib diisi!');
         }
     });
-}
-
-// Delete image checkbox
-const deleteCheckbox = document.getElementById('deleteImage');
-if (deleteCheckbox) {
-    deleteCheckbox.addEventListener('change', function() {
-        if (this.checked) {
-            if (!confirm('Yakin ingin menghapus gambar ini?')) {
-                this.checked = false;
-            }
-        }
-    });
-}
-
-// Form validation
-document.getElementById('serviceForm').addEventListener('submit', function(e) {
-    const title = this.querySelector('input[name="judul_layanan"]');
-    const description = this.querySelector('textarea[name="deskripsi"]');
-    const price = this.querySelector('input[name="harga"]');
-
-    let isValid = true;
-
-    if (!title.value.trim()) {
-        title.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        title.classList.remove('is-invalid');
-    }
-
-    if (!description.value.trim()) {
-        description.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        description.classList.remove('is-invalid');
-    }
-
-    if (!price.value || price.value <= 0) {
-        price.classList.add('is-invalid');
-        isValid = false;
-    } else {
-        price.classList.remove('is-invalid');
-    }
-
-    if (!isValid) {
-        e.preventDefault();
-        alert('Harap lengkapi semua field yang wajib diisi!');
-    }
-});
 </script>
 
 <style>
-.is-invalid {
-    border-color: #dc3545;
-}
+    .is-invalid {
+        border-color: #dc3545;
+    }
 </style>
 
 <?php include '../../includes/admin-footer.php'; ?>

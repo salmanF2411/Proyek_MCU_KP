@@ -89,7 +89,7 @@ $stats = mysqli_fetch_assoc($stats_result);
                     <i class="fas fa-print me-2"></i> Cetak Data Pasien
                 </h1>
             </div>
-            
+
             <!-- Filter Card -->
             <div class="card mb-4">
                 <div class="card-header">
@@ -99,13 +99,13 @@ $stats = mysqli_fetch_assoc($stats_result);
                     <form method="GET" action="" class="row g-3">
                         <div class="col-md-3">
                             <label class="form-label">Tanggal Mulai</label>
-                            <input type="date" class="form-control" name="start_date" 
-                                   value="<?php echo $start_date; ?>" onchange="this.form.submit()">
+                            <input type="date" class="form-control" name="start_date"
+                                value="<?php echo $start_date; ?>" onchange="this.form.submit()">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Tanggal Akhir</label>
-                            <input type="date" class="form-control" name="end_date" 
-                                   value="<?php echo $end_date; ?>" onchange="this.form.submit()">
+                            <input type="date" class="form-control" name="end_date"
+                                value="<?php echo $end_date; ?>" onchange="this.form.submit()">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Status</label>
@@ -126,7 +126,7 @@ $stats = mysqli_fetch_assoc($stats_result);
                     </form>
                 </div>
             </div>
-            
+
             <!-- Statistics Card -->
             <div class="card mb-4">
                 <div class="card-body">
@@ -170,7 +170,7 @@ $stats = mysqli_fetch_assoc($stats_result);
                     </div>
                 </div>
             </div>
-            
+
             <!-- Report Card -->
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -183,7 +183,7 @@ $stats = mysqli_fetch_assoc($stats_result);
                             <i class="fas fa-print me-2"></i> Cetak Semua
                         </button>
                         <a href="?export_excel=1&start_date=<?php echo $start_date; ?>&end_date=<?php echo $end_date; ?>&status=<?php echo $status; ?>"
-                           class="btn btn-primary">
+                            class="btn btn-primary">
                             <i class="fas fa-file-excel me-2"></i> Excel
                         </a>
                     </div>
@@ -201,7 +201,7 @@ $stats = mysqli_fetch_assoc($stats_result);
                             <p>Dicetak pada: <?php echo date('d/m/Y H:i:s'); ?></p>
                         </div>
                     </div>
-                    
+
                     <?php if (mysqli_num_rows($result) > 0): ?>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="reportTable">
@@ -254,14 +254,14 @@ $stats = mysqli_fetch_assoc($stats_result);
 </div>
 
 <script>
-// Print function
-function printReport() {
-    const printContent = document.getElementById('printHeader').innerHTML + 
-                         document.getElementById('reportTable').outerHTML;
-    
-    const originalContent = document.body.innerHTML;
-    
-    document.body.innerHTML = `
+    // Print function
+    function printReport() {
+        const printContent = document.getElementById('printHeader').innerHTML +
+            document.getElementById('reportTable').outerHTML;
+
+        const originalContent = document.body.innerHTML;
+
+        document.body.innerHTML = `
         <html>
         <head>
             <title>Laporan Data Pasien</title>
@@ -280,20 +280,19 @@ function printReport() {
         </body>
         </html>
     `;
-    
-    window.print();
-    document.body.innerHTML = originalContent;
-    window.location.reload();
-}
 
-
+        window.print();
+        document.body.innerHTML = originalContent;
+        window.location.reload();
+    }
 </script>
 
 <?php
 /**
  * Fungsi untuk ekspor data ke Excel menggunakan PHPSpreadsheet
  */
-function exportToExcel($result, $start_date, $end_date, $status) {
+function exportToExcel($result, $start_date, $end_date, $status)
+{
     // Require PHPSpreadsheet
     require '../../vendor/autoload.php';
 
@@ -306,10 +305,10 @@ function exportToExcel($result, $start_date, $end_date, $status) {
 
     // Header informasi
     $sheet->setCellValue('A1', 'LAPORAN DATA PASIEN')
-          ->setCellValue('A2', getSetting('nama_klinik'))
-          ->setCellValue('A3', 'Periode: ' . formatDateIndo($start_date) . ' - ' . formatDateIndo($end_date))
-          ->setCellValue('A4', 'Status: ' . ($status == 'all' ? 'Semua Status' : ucfirst($status)))
-          ->setCellValue('A5', 'Tanggal Cetak: ' . date('d/m/Y H:i:s'));
+        ->setCellValue('A2', getSetting('nama_klinik'))
+        ->setCellValue('A3', 'Periode: ' . formatDateIndo($start_date) . ' - ' . formatDateIndo($end_date))
+        ->setCellValue('A4', 'Status: ' . ($status == 'all' ? 'Semua Status' : ucfirst($status)))
+        ->setCellValue('A5', 'Tanggal Cetak: ' . date('d/m/Y H:i:s'));
 
     // Header tabel
     $headers = ['No', 'Kode MCU', 'Nama', 'Usia', 'Perusahaan', 'Tanggal MCU', 'Alamat', 'No HP', 'Status'];
@@ -326,16 +325,17 @@ function exportToExcel($result, $start_date, $end_date, $status) {
 
     while ($patient = mysqli_fetch_assoc($result)) {
         $sheet->setCellValue('A' . $row, $no)
-              ->setCellValue('B' . $row, $patient['kode_mcu'])
-              ->setCellValue('C' . $row, $patient['nama'])
-              ->setCellValue('D' . $row, $patient['usia'] . ' thn')
-              ->setCellValue('E' . $row, $patient['perusahaan'] ?: '-')
-              ->setCellValue('F' . $row, formatDateIndo($patient['tanggal_mcu']))
-              ->setCellValue('G' . $row, $patient['alamat'])
-              ->setCellValue('H' . $row, $patient['no_telp'])
-              ->setCellValue('I' . $row,
-                  $patient['status_pendaftaran'] == 'menunggu' ? 'Menunggu' :
-                  ($patient['status_pendaftaran'] == 'proses' ? 'Proses' : 'Selesai'));
+            ->setCellValue('B' . $row, $patient['kode_mcu'])
+            ->setCellValue('C' . $row, $patient['nama'])
+            ->setCellValue('D' . $row, $patient['usia'] . ' thn')
+            ->setCellValue('E' . $row, $patient['perusahaan'] ?: '-')
+            ->setCellValue('F' . $row, formatDateIndo($patient['tanggal_mcu']))
+            ->setCellValue('G' . $row, $patient['alamat'])
+            ->setCellValue('H' . $row, $patient['no_telp'])
+            ->setCellValue(
+                'I' . $row,
+                $patient['status_pendaftaran'] == 'menunggu' ? 'Menunggu' : ($patient['status_pendaftaran'] == 'proses' ? 'Proses' : 'Selesai')
+            );
 
         $no++;
         $row++;
@@ -355,8 +355,8 @@ function exportToExcel($result, $start_date, $end_date, $status) {
 
     // Style untuk header tabel
     $sheet->getStyle('A7:I7')->getFill()
-          ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-          ->getStartColor()->setARGB('FFE0E0E0');
+        ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+        ->getStartColor()->setARGB('FFE0E0E0');
 
     // Border untuk tabel
     $lastRow = $row - 1;

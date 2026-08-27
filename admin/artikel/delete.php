@@ -8,7 +8,7 @@ requireRole('pendaftaran');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
-    
+
     if ($id > 0) {
         // Get article data to delete image and video
         $query = "SELECT gambar, video FROM artikel WHERE id = $id";
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($article && $article['video'] && file_exists('../../assets/' . $article['video'])) {
             unlink('../../assets/' . $article['video']);
         }
-        
+
         // Delete article
         $delete_query = "DELETE FROM artikel WHERE id = $id";
         if (mysqli_query($conn, $delete_query)) {
@@ -38,4 +38,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 redirect('list.php');
-?>

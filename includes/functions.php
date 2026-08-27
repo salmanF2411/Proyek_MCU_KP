@@ -5,7 +5,8 @@ require_once __DIR__ . '/../config/database.php';
 /**
  * Generate kode MCU
  */
-function generateKodeMCU() {
+function generateKodeMCU()
+{
     $prefix = 'MCU';
     $date = date('Ymd');
     $random = rand(1000, 9999);
@@ -15,7 +16,8 @@ function generateKodeMCU() {
 /**
  * Get age from birth date
  */
-function calculateAge($birth_date) {
+function calculateAge($birth_date)
+{
     $birth = new DateTime($birth_date);
     $today = new DateTime();
     return $today->diff($birth)->y;
@@ -24,33 +26,45 @@ function calculateAge($birth_date) {
 /**
  * Format date Indonesian
  */
-function formatDateIndo($date, $with_time = false) {
+function formatDateIndo($date, $with_time = false)
+{
     if (empty($date)) return '-';
-    
+
     $months = array(
-        1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        1 => 'Januari',
+        'Februari',
+        'Maret',
+        'April',
+        'Mei',
+        'Juni',
+        'Juli',
+        'Agustus',
+        'September',
+        'Oktober',
+        'November',
+        'Desember'
     );
-    
+
     $timestamp = strtotime($date);
     $day = date('d', $timestamp);
     $month = $months[date('n', $timestamp)];
     $year = date('Y', $timestamp);
-    
+
     $formatted = $day . ' ' . $month . ' ' . $year;
-    
+
     if ($with_time) {
         $time = date('H:i', $timestamp);
         $formatted .= ' ' . $time;
     }
-    
+
     return $formatted;
 }
 
 /**
  * Get setting value
  */
-function getSetting($key) {
+function getSetting($key)
+{
     global $conn;
     $query = "SELECT $key FROM pengaturan LIMIT 1";
     $result = mysqli_query($conn, $query);
@@ -61,7 +75,8 @@ function getSetting($key) {
 /**
  * Upload file
  */
-function uploadFile($file, $folder = 'uploads/', $type = 'image') {
+function uploadFile($file, $folder = 'uploads/', $type = 'image')
+{
     $target_dir = __DIR__ . '/../assets/' . $folder;
     if (!file_exists($target_dir)) {
         mkdir($target_dir, 0777, true);
@@ -102,8 +117,9 @@ function uploadFile($file, $folder = 'uploads/', $type = 'image') {
 /**
  * Get patient status badge
  */
-function getStatusBadge($status) {
-    switch($status) {
+function getStatusBadge($status)
+{
+    switch ($status) {
         case 'menunggu':
             return '<span class="badge bg-warning">Menunggu</span>';
         case 'proses':
@@ -118,8 +134,9 @@ function getStatusBadge($status) {
 /**
  * Get MCU status badge
  */
-function getMCUStatusBadge($status) {
-    switch($status) {
+function getMCUStatusBadge($status)
+{
+    switch ($status) {
         case 'FIT':
             return '<span class="badge bg-success">FIT TO WORK</span>';
         case 'UNFIT':
@@ -134,7 +151,8 @@ function getMCUStatusBadge($status) {
 /**
  * Check pemeriksaan status
  */
-function getPemeriksaanStatus($pasien_id, $role) {
+function getPemeriksaanStatus($pasien_id, $role)
+{
     global $conn;
     $query = "SELECT COUNT(*) as total FROM pemeriksaan 
               WHERE pasien_id = $pasien_id AND pemeriksa_role = '$role'";
@@ -146,26 +164,28 @@ function getPemeriksaanStatus($pasien_id, $role) {
 /**
  * Get pemeriksaan status badges
  */
-function getPemeriksaanBadges($pasien_id) {
-    $pendaftaran = getPemeriksaanStatus($pasien_id, 'pendaftaran') ? 
-        '<span class="badge bg-success">✓</span>' : 
+function getPemeriksaanBadges($pasien_id)
+{
+    $pendaftaran = getPemeriksaanStatus($pasien_id, 'pendaftaran') ?
+        '<span class="badge bg-success">✓</span>' :
         '<span class="badge bg-secondary">○</span>';
-    
-    $mata = getPemeriksaanStatus($pasien_id, 'dokter_mata') ? 
-        '<span class="badge bg-success">✓</span>' : 
+
+    $mata = getPemeriksaanStatus($pasien_id, 'dokter_mata') ?
+        '<span class="badge bg-success">✓</span>' :
         '<span class="badge bg-secondary">○</span>';
-    
-    $umum = getPemeriksaanStatus($pasien_id, 'dokter_umum') ? 
-        '<span class="badge bg-success">✓</span>' : 
+
+    $umum = getPemeriksaanStatus($pasien_id, 'dokter_umum') ?
+        '<span class="badge bg-success">✓</span>' :
         '<span class="badge bg-secondary">○</span>';
-    
+
     return $pendaftaran . ' ' . $mata . ' ' . $umum;
 }
 
 /**
  * Get latest pemeriksaan data
  */
-function getPemeriksaanData($pasien_id, $role) {
+function getPemeriksaanData($pasien_id, $role)
+{
     global $conn;
     $query = "SELECT * FROM pemeriksaan
               WHERE pasien_id = $pasien_id AND pemeriksa_role = '$role'
@@ -177,12 +197,13 @@ function getPemeriksaanData($pasien_id, $role) {
 /**
  * Check if examination value is abnormal
  */
-function isAbnormal($parameter, $value) {
+function isAbnormal($parameter, $value)
+{
     if (empty($value) || $value === '-') {
         return false;
     }
 
-    switch($parameter) {
+    switch ($parameter) {
         case 'suhu':
             // Normal temperature: 36.5 - 37.5 °C
             $temp = floatval($value);
@@ -228,21 +249,24 @@ function isAbnormal($parameter, $value) {
 /**
  * Get CSS class for examination value display
  */
-function getValueClass($parameter, $value) {
+function getValueClass($parameter, $value)
+{
     return isAbnormal($parameter, $value) ? 'text-danger fw-bold' : '';
 }
 
 /**
  * Get CSS class for status display (abnormal = red)
  */
-function getStatusClass($status) {
+function getStatusClass($status)
+{
     return (strtolower($status) == 'abnormal') ? 'text-danger fw-bold' : '';
 }
 
 /**
  * Calculate BMI
  */
-function calculateBMI($weight, $height) {
+function calculateBMI($weight, $height)
+{
     if (!$weight || !$height || $height == 0) return null;
     $height_m = $height / 100; // convert cm to m
     return $weight / ($height_m * $height_m);
@@ -251,7 +275,8 @@ function calculateBMI($weight, $height) {
 /**
  * Check if BMI is abnormal (underweight or overweight)
  */
-function isBMIAbnormal($weight, $height) {
+function isBMIAbnormal($weight, $height)
+{
     $bmi = calculateBMI($weight, $height);
     if (!$bmi) return false;
     // Normal BMI range: 18.5 - 24.9
@@ -261,7 +286,7 @@ function isBMIAbnormal($weight, $height) {
 /**
  * Get CSS class for description display (if has content = red)
  */
-function getDescriptionClass($value) {
+function getDescriptionClass($value)
+{
     return (!empty($value) && $value !== '-') ? 'text-danger fw-bold' : '';
 }
-?>

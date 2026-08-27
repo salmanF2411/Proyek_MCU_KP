@@ -64,7 +64,7 @@ if ($role == 'dokter_mata') {
 // Process form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errors = [];
-    
+
     if ($role == 'pendaftaran') {
         $tekanan_darah = escape($_POST['tekanan_darah']);
         $nadi = (int)$_POST['nadi'];
@@ -72,15 +72,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $respirasi = (int)$_POST['respirasi'];
         $tinggi_badan = (int)$_POST['tinggi_badan'];
         $berat_badan = (int)$_POST['berat_badan'];
-        
+
         // Update patient status
         $update_query = "UPDATE pasien SET status_pendaftaran = 'proses' WHERE id = $id";
         mysqli_query($conn, $update_query);
-        
+
         // Insert pemeriksaan
         $insert_query = "INSERT INTO pemeriksaan (pasien_id, pemeriksa_role, tekanan_darah, nadi, suhu, respirasi, tinggi_badan, berat_badan, pemeriksa_id) 
                          VALUES ($id, '$role', '$tekanan_darah', $nadi, $suhu, $respirasi, $tinggi_badan, $berat_badan, {$_SESSION['admin_id']})";
-        
     } elseif ($role == 'dokter_mata') {
         $visus_kanan_jauh = escape($_POST['visus_kanan_jauh']);
         $visus_kanan_dekat = '';
@@ -95,7 +94,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $insert_query = "INSERT INTO pemeriksaan (pasien_id, pemeriksa_role, visus_kanan_jauh, visus_kanan_dekat, visus_kiri_jauh, visus_kiri_dekat, anemia,ikterik_keterangan, buta_warna,buta_warna_keterangan, lapang_pandang,lapang_pandang_keterangan, pemeriksa_id)
                          VALUES ($id, '$role', '$visus_kanan_jauh', '$visus_kanan_dekat', '$visus_kiri_jauh', '$visus_kiri_dekat', '$anemia', '$ikterik_keterangan', '$buta_warna','$buta_warna_keterangan', '$lapang_pandang','$lapang_pandang_keterangan', {$_SESSION['admin_id']})";
-        
     } elseif ($role == 'dokter_umum') {
         // THT & Gigi
         $telinga_status = escape($_POST['telinga_status']);
@@ -107,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $gigi_status = escape($_POST['gigi_status']);
         $gigi_keterangan = escape($_POST['gigi_keterangan']);
         $leher_kgb = escape($_POST['leher_kgb']);
-        
+
         // Thorax Paru - Paru
         $paru_auskultasi = escape($_POST['paru_auskultasi']);
         $auskultasi_keterangan = escape($_POST['auskultasi_keterangan']);
@@ -118,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $jantung_auskultasi = escape($_POST['jantung_auskultasi']);
         $jantung_keterangan = escape($_POST['jantung_keterangan']);
         $jantung_perkusi = escape($_POST['jantung_perkusi']);
-        
+
         // Abdominal (boolean fields)
         $operasi = isset($_POST['operasi']) ? 1 : 0;
         $keterangan_operasi = escape($_POST['keterangan_operasi']);
@@ -134,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $psoas_sign = escape($_POST['psoas_sign']);
         $hepatomegali = escape($_POST['hepatomegali']);
         // $keterangan_perut = escape($_POST['keterangan_perut']);
-        
+
         // Refleks
         $biceps = escape($_POST['biceps']);
         $triceps = escape($_POST['triceps']);
@@ -147,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //Hasil Lanjutan
         $hasil_lab = escape($_POST['hasil_lab']);
         $keterangan_penyakit = escape($_POST['keterangan_penyakit']);
-        
+
         // Kesimpulan
         // $kesimpulan = escape($_POST['kesimpulan']);
 
@@ -157,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $saran_combined = '';
 
         if (!empty($saran_options)) {
-            $saran_combined = implode("\n", array_map(function($saran) {
+            $saran_combined = implode("\n", array_map(function ($saran) {
                 return "- " . $saran;
             }, $saran_options));
         }
@@ -173,11 +171,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $saran = $saran_combined;
         $status_mcu = escape($_POST['status_mcu']);
         $dokter_pemeriksa = escape($_POST['dokter_pemeriksa']);
-        
+
         // Update patient status to completed
         $update_query = "UPDATE pasien SET status_pendaftaran = 'selesai' WHERE id = $id";
         mysqli_query($conn, $update_query);
-        
+
         $insert_query = "INSERT INTO pemeriksaan (
             pasien_id, pemeriksa_role, 
             telinga_status, telinga_keterangan, hidung_status, hidung_keterangan, 
@@ -196,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             '$biceps', '$triceps', '$patella', '$achilles', '$plantar_response','$keterangan_tangan','$keterangan_kaki','$hasil_lab', '$keterangan_penyakit', '$saran', '$status_mcu', '$dokter_pemeriksa', {$_SESSION['admin_id']}
         )";
     }
-    
+
     if (mysqli_query($conn, $insert_query)) {
         $_SESSION['success'] = "Pemeriksaan berhasil disimpan!";
         redirect('detail.php?id=' . $id);
@@ -234,7 +232,7 @@ $role_title = $role_titles[$role];
                     <li class="breadcrumb-item active">Pemeriksaan <?php echo $role_title; ?></li>
                 </ol>
             </nav>
-            
+
             <!-- Patient Info Card -->
             <div class="card mb-4">
                 <div class="card-header bg-primary text-white">
@@ -279,7 +277,7 @@ $role_title = $role_titles[$role];
                     </div>
                 </div>
             </div>
-            
+
             <!-- Examination Form -->
             <div class="card">
                 <div class="card-header bg-success text-white">
@@ -289,65 +287,65 @@ $role_title = $role_titles[$role];
                 </div>
                 <div class="card-body">
                     <form method="POST" action="" id="examinationForm">
-                        
+
                         <?php if ($role == 'pendaftaran'): ?>
                             <!-- SIRKULASI FORM -->
                             <h6 class="border-bottom pb-2 mb-3">SIRKULASI</h6>
-                            
+
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label class="form-label">Tekanan Darah (mmHg)</label>
-                                    <input type="text" class="form-control" name="tekanan_darah" 
-                                           placeholder="120/80" required>
+                                    <input type="text" class="form-control" name="tekanan_darah"
+                                        placeholder="120/80" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Nadi (x/menit)</label>
-                                    <input type="number" class="form-control" name="nadi" 
-                                           min="40" max="200" required>
+                                    <input type="number" class="form-control" name="nadi"
+                                        min="40" max="200" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Suhu (°C)</label>
-                                    <input type="number" step="0.1" class="form-control" name="suhu" 
-                                           min="20" max="50" required>
+                                    <input type="number" step="0.1" class="form-control" name="suhu"
+                                        min="20" max="50" required>
                                 </div>
                             </div>
-                            
+
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label class="form-label">Respirasi (x/menit)</label>
-                                    <input type="number" class="form-control" name="respirasi" 
-                                           min="10" max="40" required>
+                                    <input type="number" class="form-control" name="respirasi"
+                                        min="10" max="40" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Tinggi Badan (cm)</label>
-                                    <input type="number" class="form-control" name="tinggi_badan" 
-                                           min="100" max="250" required>
+                                    <input type="number" class="form-control" name="tinggi_badan"
+                                        min="100" max="250" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Berat Badan (kg)</label>
-                                    <input type="number" step="0.1" class="form-control" name="berat_badan" 
-                                           min="20" max="200" required>
+                                    <input type="number" step="0.1" class="form-control" name="berat_badan"
+                                        min="20" max="200" required>
                                 </div>
                             </div>
-                            
+
                         <?php elseif ($role == 'dokter_mata'): ?>
                             <!-- MATA FORM -->
                             <h6 class="border-bottom pb-2 mb-3">PEMERIKSAAN MATA</h6>
-                            
+
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label">VISUS KANAN</label>
                                     <textarea class="form-control" name="visus_kanan_jauh"
-                                              rows="1" placeholder="6/"></textarea>
+                                        rows="1" placeholder="6/"></textarea>
                                 </div>
 
                                 <div class="col-md-6">
                                     <label class="form-label">VISUS KIRI</label>
                                     <textarea class="form-control" name="visus_kiri_jauh"
-                                              rows="1" placeholder="6/"></textarea>
+                                        rows="1" placeholder="6/"></textarea>
                                 </div>
                             </div>
-                            
+
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label class="form-label">Anemis : Ikterik</label>
@@ -357,8 +355,8 @@ $role_title = $role_titles[$role];
                                         <option value="Ikterik(+)">Ikterik (+) </option>
                                         <option value="Anemis">Anemis</option>
                                     </select>
-                                    <textarea class="form-control mt-2" name="ikterik_keterangan" 
-                                                      rows="2" placeholder="Keterangan Anemis : Ikterik/Anemis..."></textarea>
+                                    <textarea class="form-control mt-2" name="ikterik_keterangan"
+                                        rows="2" placeholder="Keterangan Anemis : Ikterik/Anemis..."></textarea>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Buta Warna</label>
@@ -368,8 +366,8 @@ $role_title = $role_titles[$role];
                                         <option value="Merah/Hijau">Merah/Hijau</option>
                                         <option value="Lainnya">Lainnya</option>
                                     </select>
-                                    <textarea class="form-control mt-2" name="buta_warna_keterangan" 
-                                                      rows="2" placeholder="Keterangan Buta Warna..."></textarea>
+                                    <textarea class="form-control mt-2" name="buta_warna_keterangan"
+                                        rows="2" placeholder="Keterangan Buta Warna..."></textarea>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Lapang Pandang</label>
@@ -378,14 +376,14 @@ $role_title = $role_titles[$role];
                                         <option value="Normal">Normal</option>
                                         <option value="Abnormal">Abnormal</option>
                                     </select>
-                                    <textarea class="form-control mt-2" name="lapang_pandang_keterangan" 
-                                                      rows="2" placeholder="Keterangan Lapang Pandang..."></textarea>
+                                    <textarea class="form-control mt-2" name="lapang_pandang_keterangan"
+                                        rows="2" placeholder="Keterangan Lapang Pandang..."></textarea>
                                 </div>
                             </div>
-                            
+
                         <?php elseif ($role == 'dokter_umum'): ?>
                             <!-- DOKTER UMUM FORM -->
-                            
+
                             <!-- TELINGA, HIDUNG, TENGGOROKAN -->
                             <div class="card mb-4">
                                 <div class="card-header bg-light">
@@ -399,8 +397,8 @@ $role_title = $role_titles[$role];
                                                 <option value="Normal">Normal</option>
                                                 <option value="Abnormal">Abnormal</option>
                                             </select>
-                                            <textarea class="form-control mt-2" name="telinga_keterangan" 
-                                                      rows="2" placeholder="Keterangan Telinga..."></textarea>
+                                            <textarea class="form-control mt-2" name="telinga_keterangan"
+                                                rows="2" placeholder="Keterangan Telinga..."></textarea>
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label">Hidung</label>
@@ -408,8 +406,8 @@ $role_title = $role_titles[$role];
                                                 <option value="Normal">Normal</option>
                                                 <option value="Abnormal">Abnormal</option>
                                             </select>
-                                            <textarea class="form-control mt-2" name="hidung_keterangan" 
-                                                      rows="2" placeholder="Keterangan Hidung..."></textarea>
+                                            <textarea class="form-control mt-2" name="hidung_keterangan"
+                                                rows="2" placeholder="Keterangan Hidung..."></textarea>
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label">Tenggorokan</label>
@@ -417,11 +415,11 @@ $role_title = $role_titles[$role];
                                                 <option value="Normal">Normal</option>
                                                 <option value="Abnormal">Abnormal</option>
                                             </select>
-                                            <textarea class="form-control mt-2" name="tenggorokan_keterangan" 
-                                                      rows="2" placeholder="Keterangan Tenggorokan..."></textarea>
+                                            <textarea class="form-control mt-2" name="tenggorokan_keterangan"
+                                                rows="2" placeholder="Keterangan Tenggorokan..."></textarea>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label class="form-label">Gigi</label>
@@ -429,18 +427,18 @@ $role_title = $role_titles[$role];
                                                 <option value="Normal">Normal</option>
                                                 <option value="Abnormal">Abnormal</option>
                                             </select>
-                                            <textarea class="form-control mt-2" name="gigi_keterangan" 
-                                                      rows="2" placeholder="Keterangan Gigi..."></textarea>
+                                            <textarea class="form-control mt-2" name="gigi_keterangan"
+                                                rows="2" placeholder="Keterangan Gigi..."></textarea>
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label">Leher (KGB)</label>
-                                            <textarea class="form-control" name="leher_kgb" 
-                                                      rows="2" placeholder="Pembesaran KGB..."></textarea>
+                                            <textarea class="form-control" name="leher_kgb"
+                                                rows="2" placeholder="Pembesaran KGB..."></textarea>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- PEMERIKSAAN THORAX PARU - PARU-->
                             <div class="card mb-4">
                                 <div class="card-header bg-light">
@@ -456,13 +454,13 @@ $role_title = $role_titles[$role];
                                                 <option value="Ronchi">Ronchi</option>
                                                 <option value="Crackles">Crackles</option>
                                             </select>
-                                            <textarea class="form-control mt-2" name="auskultasi_keterangan" 
-                                                      rows="2" placeholder="Keterangan Auskultasi Paru..."></textarea>
+                                            <textarea class="form-control mt-2" name="auskultasi_keterangan"
+                                                rows="2" placeholder="Keterangan Auskultasi Paru..."></textarea>
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label">Palpasi</label>
-                                            <input type="text" class="form-control" name="paru_palpasi" 
-                                                   placeholder="Vokal Fremitus...">
+                                            <input type="text" class="form-control" name="paru_palpasi"
+                                                placeholder="Vokal Fremitus...">
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label">Perkusi</label>
@@ -489,8 +487,8 @@ $role_title = $role_titles[$role];
                                                 <option value="Suara Normal">Suara Normal</option>
                                                 <option value="Suara Tambahan">Suara Tambahan</option>
                                             </select>
-                                            <textarea class="form-control mt-2" name="jantung_keterangan" 
-                                                      rows="2" placeholder="Keterangan Auskultasi Jantung..."></textarea>
+                                            <textarea class="form-control mt-2" name="jantung_keterangan"
+                                                rows="2" placeholder="Keterangan Auskultasi Jantung..."></textarea>
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label">Perkusi (Batas Jantung)</label>
@@ -502,7 +500,7 @@ $role_title = $role_titles[$role];
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- ABDOMINAL -->
                             <div class="card mb-4">
                                 <div class="card-header bg-light">
@@ -517,8 +515,8 @@ $role_title = $role_titles[$role];
                                                     Riwayat Operasi
                                                 </label>
                                             </div>
-                                            <textarea class="form-control" name="keterangan_operasi" 
-                                                      rows="2" placeholder="Keterangan operasi/penyakit perut..."></textarea>
+                                            <textarea class="form-control" name="keterangan_operasi"
+                                                rows="2" placeholder="Keterangan operasi/penyakit perut..."></textarea>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-check mb-2">
@@ -592,7 +590,7 @@ $role_title = $role_titles[$role];
                                         <div class="col-md-12">
                                             <label class="form-label">PSOAS SIGN</label>
                                             <input type="text" class="form-control" name="psoas_sign"
-                                                   placeholder="PSOAS SIGN...">
+                                                placeholder="PSOAS SIGN...">
                                         </div>
                                     </div>
                                     <br>
@@ -600,12 +598,12 @@ $role_title = $role_titles[$role];
                                         <div class="col-md-12">
                                             <label class="form-label">GENITALIA</label>
                                             <input type="text" class="form-control" name="hepatomegali"
-                                                   placeholder="Genitalia...">
+                                                placeholder="Genitalia...">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- REFLEKS -->
                             <div class="card mb-4">
                                 <div class="card-header bg-light">
@@ -654,15 +652,15 @@ $role_title = $role_titles[$role];
                                     <div class="row mt-3">
                                         <div class="row-md-6">
                                             <label class="form-label">Penyakit Tangan</label>
-                                            <textarea class="form-control" name="keterangan_tangan" 
-                                                      rows="2" placeholder="Keterangan Penyakit Tangan..."></textarea>
+                                            <textarea class="form-control" name="keterangan_tangan"
+                                                rows="2" placeholder="Keterangan Penyakit Tangan..."></textarea>
                                         </div>
                                     </div>
                                     <div class="row mt-3">
                                         <div class="row-md-6">
                                             <label class="form-label">Penyakit Kaki</label>
-                                            <textarea class="form-control" name="keterangan_kaki" 
-                                                      rows="2" placeholder="Keterangan Penyakit Kaki..."></textarea>
+                                            <textarea class="form-control" name="keterangan_kaki"
+                                                rows="2" placeholder="Keterangan Penyakit Kaki..."></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -677,116 +675,116 @@ $role_title = $role_titles[$role];
                                     <div class="row">
                                         <div class="row-md-6">
                                             <label class="form-label">Pemeriksaan Laboratorium</label>
-                                            <textarea class="form-control" name="hasil_lab" 
-                                                      rows="2" placeholder="Pemeriksaan Lab..."></textarea>
+                                            <textarea class="form-control" name="hasil_lab"
+                                                rows="2" placeholder="Pemeriksaan Lab..."></textarea>
                                         </div>
                                         <div class="row-md-6">
                                             <label class="form-label">Riwayat Penyakit Dahulu / Sekarang</label>
-                                            <textarea class="form-control" name="keterangan_penyakit" 
-                                                      rows="2" placeholder="Riwayat Penyakit Dahulu / Sekarang..."></textarea>
-                                        </div>
-                                </div>
-                            </div>
-                            
-                            <!-- KESIMPULAN -->
-                            <div class="card mb-4">
-                                <div class="card-header bg-light">
-                                    <h6 class="mb-0">KESIMPULAN HASIL MCU</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Nama Dokter Pemeriksa</label>
-                                            <input type="text" class="form-control" name="dokter_pemeriksa" 
-                                                   value="<?php echo $_SESSION['nama_lengkap']; ?>" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Status MCU</label>
-                                            <select class="form-select" name="status_mcu" required>
-                                                <option value="">- Pilih -</option>
-                                                <option value="FIT">FIT TO WORK</option>
-                                                <option value="UNFIT">UNFIT</option>
-                                                <option value="FIT WITH NOTE">FIT WITH NOTE</option>
-                                            </select>
+                                            <textarea class="form-control" name="keterangan_penyakit"
+                                                rows="2" placeholder="Riwayat Penyakit Dahulu / Sekarang..."></textarea>
                                         </div>
                                     </div>
-                                    
-                                    <!-- <div class="row mb-3">
+                                </div>
+
+                                <!-- KESIMPULAN -->
+                                <div class="card mb-4">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0">KESIMPULAN HASIL MCU</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Nama Dokter Pemeriksa</label>
+                                                <input type="text" class="form-control" name="dokter_pemeriksa"
+                                                    value="<?php echo $_SESSION['nama_lengkap']; ?>" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Status MCU</label>
+                                                <select class="form-select" name="status_mcu" required>
+                                                    <option value="">- Pilih -</option>
+                                                    <option value="FIT">FIT TO WORK</option>
+                                                    <option value="UNFIT">UNFIT</option>
+                                                    <option value="FIT WITH NOTE">FIT WITH NOTE</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- <div class="row mb-3">
                                         <div class="col-md-12">
                                             <label class="form-label">Kesimpulan</label>
                                             <textarea class="form-control" name="kesimpulan" 
                                                       rows="4" placeholder="Kesimpulan pemeriksaan..." required></textarea>
                                         </div>
                                     </div> -->
-                                    
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <label class="form-label">Saran</label>
-                                            <div class="mb-3">
-                                                <small class="text-muted">Pilih saran yang sesuai (boleh lebih dari satu):</small>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="saran_options[]" value="Jika terdapat keluhan mengenai Gigi, Konsultasi ke Dentist" id="saran1">
-                                                            <label class="form-check-label" for="saran1">
-                                                                - Jika terdapat keluhan mengenai Gigi, Konsultasi ke Dentist
-                                                            </label>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label class="form-label">Saran</label>
+                                                <div class="mb-3">
+                                                    <small class="text-muted">Pilih saran yang sesuai (boleh lebih dari satu):</small>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" name="saran_options[]" value="Jika terdapat keluhan mengenai Gigi, Konsultasi ke Dentist" id="saran1">
+                                                                <label class="form-check-label" for="saran1">
+                                                                    - Jika terdapat keluhan mengenai Gigi, Konsultasi ke Dentist
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" name="saran_options[]" value="Konsultasi ke Opthalmologist jika penglihatan makin menurun" id="saran2">
+                                                                <label class="form-check-label" for="saran2">
+                                                                    - Konsultasi ke Opthalmologist jika penglihatan makin menurun
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" name="saran_options[]" value="Diet Tinggi Zat Besi" id="saran3">
+                                                                <label class="form-check-label" for="saran3">
+                                                                    - Diet Tinggi Zat Besi
+                                                                </label>
+                                                            </div>
                                                         </div>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="saran_options[]" value="Konsultasi ke Opthalmologist jika penglihatan makin menurun" id="saran2">
-                                                            <label class="form-check-label" for="saran2">
-                                                                - Konsultasi ke Opthalmologist jika penglihatan makin menurun
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="saran_options[]" value="Diet Tinggi Zat Besi" id="saran3">
-                                                            <label class="form-check-label" for="saran3">
-                                                                - Diet Tinggi Zat Besi
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="saran_options[]" value="Jangan mengkonsumsi alkohol sehari sebelum bekerja." id="saran4">
-                                                            <label class="form-check-label" for="saran4">
-                                                                - Jangan mengkonsumsi alkohol sehari sebelum bekerja.
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="saran_options[]" value="Batasi aktivitas yang dapat mengganggu kesehatan saat kehamilan." id="saran5">
-                                                            <label class="form-check-label" for="saran5">
-                                                                - Batasi aktivitas yang dapat mengganggu kesehatan saat kehamilan.
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="saran_options[]" value="Jaga kebersihan telinga secara rutin dan berkala" id="saran6">
-                                                            <label class="form-check-label" for="saran6">
-                                                                - Jaga kebersihan telinga secara rutin dan berkala
-                                                            </label>
+                                                        <div class="col-md-6">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" name="saran_options[]" value="Jangan mengkonsumsi alkohol sehari sebelum bekerja." id="saran4">
+                                                                <label class="form-check-label" for="saran4">
+                                                                    - Jangan mengkonsumsi alkohol sehari sebelum bekerja.
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" name="saran_options[]" value="Batasi aktivitas yang dapat mengganggu kesehatan saat kehamilan." id="saran5">
+                                                                <label class="form-check-label" for="saran5">
+                                                                    - Batasi aktivitas yang dapat mengganggu kesehatan saat kehamilan.
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" name="saran_options[]" value="Jaga kebersihan telinga secara rutin dan berkala" id="saran6">
+                                                                <label class="form-check-label" for="saran6">
+                                                                    - Jaga kebersihan telinga secara rutin dan berkala
+                                                                </label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <textarea class="form-control" name="saran_manual"
+                                                    rows="3" placeholder="Saran tambahan (manual)..."></textarea>
                                             </div>
-                                            <textarea class="form-control" name="saran_manual" 
-                                                      rows="3" placeholder="Saran tambahan (manual)..."></textarea>
                                         </div>
                                     </div>
                                 </div>
+
+                            <?php endif; ?>
+
+                            <!-- Form Actions -->
+                            <div class="row mt-4">
+                                <div class="col-md-12 text-center">
+                                    <a href="../dashboard.php?page=patients" class="btn btn-secondary me-2">
+                                        <i class="fas fa-times me-1"></i> Batal
+                                    </a>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-save me-1"></i> Simpan Pemeriksaan
+                                    </button>
+                                </div>
                             </div>
-                            
-                        <?php endif; ?>
-                        
-                        <!-- Form Actions -->
-                        <div class="row mt-4">
-                            <div class="col-md-12 text-center">
-                                <a href="../dashboard.php?page=patients" class="btn btn-secondary me-2">
-                                    <i class="fas fa-times me-1"></i> Batal
-                                </a>
-                                <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-save me-1"></i> Simpan Pemeriksaan
-                                </button>
-                            </div>
-                        </div>
                     </form>
                 </div>
             </div>
@@ -795,33 +793,33 @@ $role_title = $role_titles[$role];
 </div>
 
 <script>
-// Form validation
-document.getElementById('examinationForm').addEventListener('submit', function(e) {
-    var isValid = true;
-    var requiredFields = this.querySelectorAll('[required]');
-    
-    requiredFields.forEach(function(field) {
-        if (!field.value.trim()) {
-            isValid = false;
-            field.classList.add('is-invalid');
-        } else {
-            field.classList.remove('is-invalid');
+    // Form validation
+    document.getElementById('examinationForm').addEventListener('submit', function(e) {
+        var isValid = true;
+        var requiredFields = this.querySelectorAll('[required]');
+
+        requiredFields.forEach(function(field) {
+            if (!field.value.trim()) {
+                isValid = false;
+                field.classList.add('is-invalid');
+            } else {
+                field.classList.remove('is-invalid');
+            }
+        });
+
+        if (!isValid) {
+            e.preventDefault();
+            alert('Harap lengkapi semua field yang wajib diisi!');
         }
     });
-    
-    if (!isValid) {
-        e.preventDefault();
-        alert('Harap lengkapi semua field yang wajib diisi!');
-    }
-});
 
-// Remove invalid class when user starts typing
-var inputs = document.querySelectorAll('input, select, textarea');
-inputs.forEach(function(input) {
-    input.addEventListener('input', function() {
-        this.classList.remove('is-invalid');
+    // Remove invalid class when user starts typing
+    var inputs = document.querySelectorAll('input, select, textarea');
+    inputs.forEach(function(input) {
+        input.addEventListener('input', function() {
+            this.classList.remove('is-invalid');
+        });
     });
-});
 </script>
 
 <?php include '../../includes/admin-footer.php'; ?>

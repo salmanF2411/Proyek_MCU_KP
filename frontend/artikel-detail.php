@@ -49,7 +49,7 @@ $related_result = mysqli_query($conn, $related_query);
             <article>
                 <header class="mb-4">
                     <h1 class="fw-bold mb-3"><?php echo htmlspecialchars($article['judul']); ?></h1>
-                    
+
                     <div class="text-muted mb-4">
                         <i class="fas fa-calendar me-1"></i> <?php echo formatDateIndo($article['tanggal_publish']); ?>
                         <i class="fas fa-user ms-3 me-1"></i> <?php echo $article['penulis']; ?>
@@ -58,18 +58,18 @@ $related_result = mysqli_query($conn, $related_query);
                             <span class="badge bg-primary ms-3"><?php echo $article['kategori']; ?></span>
                         <?php endif; ?>
                     </div>
-                    
+
                     <?php if (!empty($article['gambar'])): ?>
                         <img src="<?php echo ASSETS_URL . '/' . $article['gambar']; ?>"
-                             class="img-fluid rounded mb-4"
-                             alt="<?php echo htmlspecialchars($article['judul']); ?>">
+                            class="img-fluid rounded mb-4"
+                            alt="<?php echo htmlspecialchars($article['judul']); ?>">
                     <?php endif; ?>
 
                     <?php if (!empty($article['video'])): ?>
                         <video src="<?php echo ASSETS_URL . '/' . $article['video']; ?>"
-                               class="img-fluid rounded mb-4"
-                               controls
-                               style="max-width: 100%; height: auto;">
+                            class="img-fluid rounded mb-4"
+                            controls
+                            style="max-width: 100%; height: auto;">
                             Your browser does not support the video tag.
                         </video>
                     <?php endif; ?>
@@ -78,7 +78,7 @@ $related_result = mysqli_query($conn, $related_query);
                 <div class="article-content">
                     <?php echo nl2br($article['konten']); ?>
                 </div>
-                
+
                 <footer class="mt-3 pt-3 border-top">
                     <div class="text-center">
                         <small class="text-muted">
@@ -123,18 +123,18 @@ $related_result = mysqli_query($conn, $related_query);
                     <?php
                     $categories_query = "SELECT DISTINCT kategori FROM artikel WHERE status = 'published' AND kategori IS NOT NULL";
                     $categories_result = mysqli_query($conn, $categories_query);
-                    
+
                     if (mysqli_num_rows($categories_result) > 0):
                         while ($cat = mysqli_fetch_assoc($categories_result)):
                     ?>
-                        <a href="artikel.php?kategori=<?php echo urlencode($cat['kategori']); ?>" 
-                           class="badge bg-light text-dark me-1 mb-1 text-decoration-none">
-                            <?php echo $cat['kategori']; ?>
-                        </a>
-                    <?php 
+                            <a href="artikel.php?kategori=<?php echo urlencode($cat['kategori']); ?>"
+                                class="badge bg-light text-dark me-1 mb-1 text-decoration-none">
+                                <?php echo $cat['kategori']; ?>
+                            </a>
+                        <?php
                         endwhile;
                     else:
-                    ?>
+                        ?>
                         <p class="text-muted mb-0">Belum ada kategori</p>
                     <?php endif; ?>
                 </div>
@@ -153,24 +153,24 @@ $related_result = mysqli_query($conn, $related_query);
                                      ORDER BY tanggal_publish DESC 
                                      LIMIT 5";
                     $latest_result = mysqli_query($conn, $latest_query);
-                    
+
                     if (mysqli_num_rows($latest_result) > 0):
                         while ($latest = mysqli_fetch_assoc($latest_result)):
                     ?>
-                        <div class="mb-2">
-                            <a href="artikel-detail.php?id=<?php echo $latest['id']; ?>" class="text-decoration-none">
-                                <?php echo htmlspecialchars($latest['judul']); ?>
-                            </a>
-                            <br>
-                            <small class="text-muted">
-                                <i class="fas fa-calendar"></i> <?php echo formatDateIndo($latest['tanggal_publish']); ?>
-                            </small>
-                        </div>
-                        <hr class="my-2">
-                    <?php 
+                            <div class="mb-2">
+                                <a href="artikel-detail.php?id=<?php echo $latest['id']; ?>" class="text-decoration-none">
+                                    <?php echo htmlspecialchars($latest['judul']); ?>
+                                </a>
+                                <br>
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar"></i> <?php echo formatDateIndo($latest['tanggal_publish']); ?>
+                                </small>
+                            </div>
+                            <hr class="my-2">
+                        <?php
                         endwhile;
                     else:
-                    ?>
+                        ?>
                         <p class="text-muted mb-0">Belum ada artikel lain</p>
                     <?php endif; ?>
                 </div>
@@ -185,34 +185,35 @@ $related_result = mysqli_query($conn, $related_query);
         line-height: 1.8;
         text-align: justify;
     }
-    
+
     .article-content h2 {
         margin-top: 2rem;
         margin-bottom: 1rem;
         color: var(--primary-color);
     }
-    
+
     .article-content h3 {
         margin-top: 1.5rem;
         margin-bottom: 0.75rem;
     }
-    
+
     .article-content p {
         margin-bottom: 1.5rem;
     }
-    
+
     .article-content img {
         max-width: 100%;
         height: auto;
         border-radius: 8px;
         margin: 1.5rem 0;
     }
-    
-    .article-content ul, .article-content ol {
+
+    .article-content ul,
+    .article-content ol {
         margin-bottom: 1.5rem;
         padding-left: 2rem;
     }
-    
+
     .article-content blockquote {
         border-left: 4px solid var(--primary-color);
         padding-left: 1rem;

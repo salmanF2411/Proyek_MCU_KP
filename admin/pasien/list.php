@@ -87,7 +87,7 @@ $stats = mysqli_fetch_assoc($stats_result);
                     <?php endif; ?>
                 </div> -->
             </div>
-            
+
             <!-- Filter and Search -->
             <div class="card mb-4">
                 <div class="card-body">
@@ -150,7 +150,7 @@ $stats = mysqli_fetch_assoc($stats_result);
                     </div>
                 </div>
             </div>
-            
+
             <!-- Patients Table -->
             <div class="card">
                 <div class="card-header">
@@ -209,46 +209,46 @@ $stats = mysqli_fetch_assoc($stats_result);
                                             <td>
                                                 <div class="btn-group btn-group-sm">
                                                     <a href="<?php echo ADMIN_URL; ?>/pasien/detail.php?id=<?php echo $patient['id']; ?>"
-                                                       class="btn btn-info"
-                                                       title="Detail">
+                                                        class="btn btn-info"
+                                                        title="Detail">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
-                                                    
+
                                                     <?php if (hasRole('pendaftaran') || $_SESSION['role'] == 'super_admin'): ?>
                                                         <?php if (!$patient['cek_pendaftaran']): ?>
-                                                        <a href="<?php echo ADMIN_URL; ?>/pasien/pemeriksaan.php?role=pendaftaran&id=<?php echo $patient['id']; ?>"
-                                                           class="btn btn-warning"
-                                                           title="Pemeriksaan Pendaftaran">
-                                                            <i class="fas fa-edit"></i>
-                                                        </a>
+                                                            <a href="<?php echo ADMIN_URL; ?>/pasien/pemeriksaan.php?role=pendaftaran&id=<?php echo $patient['id']; ?>"
+                                                                class="btn btn-warning"
+                                                                title="Pemeriksaan Pendaftaran">
+                                                                <i class="fas fa-edit"></i>
+                                                            </a>
                                                         <?php endif; ?>
                                                     <?php endif; ?>
-                                                    
+
                                                     <?php if (hasRole('dokter_mata') || $_SESSION['role'] == 'super_admin'): ?>
                                                         <?php if ($patient['cek_pendaftaran'] && !$patient['cek_mata']): ?>
-                                                        <a href="<?php echo ADMIN_URL; ?>/pasien/pemeriksaan.php?role=dokter_mata&id=<?php echo $patient['id']; ?>"
-                                                           class="btn btn-primary"
-                                                           title="Pemeriksaan Mata">
-                                                            <i class="fas fa-eye"></i>
-                                                        </a>
+                                                            <a href="<?php echo ADMIN_URL; ?>/pasien/pemeriksaan.php?role=dokter_mata&id=<?php echo $patient['id']; ?>"
+                                                                class="btn btn-primary"
+                                                                title="Pemeriksaan Mata">
+                                                                <i class="fas fa-eye"></i>
+                                                            </a>
                                                         <?php endif; ?>
                                                     <?php endif; ?>
-                                                    
+
                                                     <?php if (hasRole('dokter_umum') || $_SESSION['role'] == 'super_admin'): ?>
                                                         <?php if ($patient['cek_mata'] && !$patient['cek_umum']): ?>
-                                                        <a href="<?php echo ADMIN_URL; ?>/pasien/pemeriksaan.php?role=dokter_umum&id=<?php echo $patient['id']; ?>"
-                                                           class="btn btn-success"
-                                                           title="Pemeriksaan Umum">
-                                                            <i class="fas fa-stethoscope"></i>
-                                                        </a>
+                                                            <a href="<?php echo ADMIN_URL; ?>/pasien/pemeriksaan.php?role=dokter_umum&id=<?php echo $patient['id']; ?>"
+                                                                class="btn btn-success"
+                                                                title="Pemeriksaan Umum">
+                                                                <i class="fas fa-stethoscope"></i>
+                                                            </a>
                                                         <?php endif; ?>
                                                     <?php endif; ?>
-                                                    
+
                                                     <?php if ($can_access_reports): ?>
                                                         <a href="<?php echo ADMIN_URL; ?>/laporan/cetak-hasil.php?id=<?php echo $patient['id']; ?>"
-                                                           target="_blank"
-                                                           class="btn btn-secondary"
-                                                           title="Cetak Hasil">
+                                                            target="_blank"
+                                                            class="btn btn-secondary"
+                                                            title="Cetak Hasil">
                                                             <i class="fas fa-print"></i>
                                                         </a>
                                                     <?php endif; ?>
@@ -259,19 +259,19 @@ $stats = mysqli_fetch_assoc($stats_result);
                                 </tbody>
                             </table>
                         </div>
-                        
+
                         <!-- Pagination -->
                         <?php if ($total_pages > 1): ?>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-center">
                                     <?php if ($page > 1): ?>
                                         <li class="page-item">
-                                            <a class="page-link" href="?page=<?php echo $page-1; ?>&filter=<?php echo $filter; ?>&search=<?php echo urlencode($search); ?>">
+                                            <a class="page-link" href="?page=<?php echo $page - 1; ?>&filter=<?php echo $filter; ?>&search=<?php echo urlencode($search); ?>">
                                                 &laquo;
                                             </a>
                                         </li>
                                     <?php endif; ?>
-                                    
+
                                     <?php for ($i = 1; $i <= $total_pages; $i++): ?>
                                         <li class="page-item <?php echo $i == $page ? 'active' : ''; ?>">
                                             <a class="page-link" href="?page=<?php echo $i; ?>&filter=<?php echo $filter; ?>&search=<?php echo urlencode($search); ?>">
@@ -279,10 +279,10 @@ $stats = mysqli_fetch_assoc($stats_result);
                                             </a>
                                         </li>
                                     <?php endfor; ?>
-                                    
+
                                     <?php if ($page < $total_pages): ?>
                                         <li class="page-item">
-                                            <a class="page-link" href="?page=<?php echo $page+1; ?>&filter=<?php echo $filter; ?>&search=<?php echo urlencode($search); ?>">
+                                            <a class="page-link" href="?page=<?php echo $page + 1; ?>&filter=<?php echo $filter; ?>&search=<?php echo urlencode($search); ?>">
                                                 &raquo;
                                             </a>
                                         </li>
@@ -290,7 +290,7 @@ $stats = mysqli_fetch_assoc($stats_result);
                                 </ul>
                             </nav>
                         <?php endif; ?>
-                        
+
                     <?php else: ?>
                         <div class="alert alert-info">
                             <i class="fas fa-info-circle me-2"></i> Tidak ada data pasien.
@@ -304,60 +304,60 @@ $stats = mysqli_fetch_assoc($stats_result);
 
 <!-- Add Patient Modal -->
 <?php if (hasRole('pendaftaran') || $_SESSION['role'] == 'super_admin'): ?>
-<div class="modal fade" id="addPatientModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">
-                    <i class="fas fa-user-plus me-2"></i> Tambah Pasien Manual
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form id="addPatientForm" action="add-patient.php" method="POST">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Nama Lengkap *</label>
-                            <input type="text" class="form-control" name="nama" required>
+    <div class="modal fade" id="addPatientModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-user-plus me-2"></i> Tambah Pasien Manual
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addPatientForm" action="add-patient.php" method="POST">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nama Lengkap *</label>
+                                <input type="text" class="form-control" name="nama" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Jenis Kelamin *</label>
+                                <select class="form-select" name="jenis_kelamin" required>
+                                    <option value="">- Pilih -</option>
+                                    <option value="L">Laki-laki</option>
+                                    <option value="P">Perempuan</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Jenis Kelamin *</label>
-                            <select class="form-select" name="jenis_kelamin" required>
-                                <option value="">- Pilih -</option>
-                                <option value="L">Laki-laki</option>
-                                <option value="P">Perempuan</option>
-                            </select>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Tanggal Lahir *</label>
+                                <input type="date" class="form-control" name="tanggal_lahir" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">No. Telepon *</label>
+                                <input type="tel" class="form-control" name="no_telp" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Tanggal Lahir *</label>
-                            <input type="date" class="form-control" name="tanggal_lahir" required>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Perusahaan</label>
+                                <input type="text" class="form-control" name="perusahaan">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Tanggal MCU *</label>
+                                <input type="date" class="form-control" name="tanggal_mcu" required>
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">No. Telepon *</label>
-                            <input type="tel" class="form-control" name="no_telp" required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Perusahaan</label>
-                            <input type="text" class="form-control" name="perusahaan">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Tanggal MCU *</label>
-                            <input type="date" class="form-control" name="tanggal_mcu" required>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="submit" form="addPatientForm" class="btn btn-primary">Simpan</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" form="addPatientForm" class="btn btn-primary">Simpan</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 <?php endif; ?>
 
 <?php include '../../includes/admin-footer.php'; ?>

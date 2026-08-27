@@ -42,11 +42,9 @@ try {
         'success' => true,
         'message' => 'Status berhasil diupdate'
     ]);
-
 } catch (Exception $e) {
     echo json_encode([
         'success' => false,
         'message' => $e->getMessage()
     ]);
 }
-?>

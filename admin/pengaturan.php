@@ -7,11 +7,11 @@ require_once __DIR__ . '/../includes/functions.php';
 requireLogin();
 requireRole('super_admin');
 
-    // Get current settings
-    $query = "SELECT * FROM pengaturan LIMIT 1";
-    $result = mysqli_query($conn, $query);
-    $settings = mysqli_fetch_assoc($result);
-    $settings['hero_image'] = $settings['hero_image'] ?? '';
+// Get current settings
+$query = "SELECT * FROM pengaturan LIMIT 1";
+$result = mysqli_query($conn, $query);
+$settings = mysqli_fetch_assoc($result);
+$settings['hero_image'] = $settings['hero_image'] ?? '';
 
 // If no settings exist, create default
 if (!$settings) {
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = escape($_POST['email']);
     $whatsapp = escape($_POST['whatsapp']);
     $tentang = escape($_POST['tentang']);
-    
+
     // Handle logo upload
     $logo = $settings['logo'];
     if (isset($_FILES['logo']) && $_FILES['logo']['error'] == 0) {
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $logo = $upload_result['success'];
         }
     }
-    
+
     // Delete logo if checkbox is checked
     if (isset($_POST['delete_logo']) && $_POST['delete_logo'] == '1') {
         if ($logo && file_exists('../assets/' . $logo)) {
@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         $hero_image = '';
     }
-    
+
     // Update settings
     $query = "UPDATE pengaturan SET
               nama_klinik = '$nama_klinik',
@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               tentang = '$tentang',
               logo = '$logo',
               hero_image = '$hero_image'";
-    
+
     if (mysqli_query($conn, $query)) {
         $_SESSION['success'] = "Pengaturan berhasil diperbarui!";
         // Reload settings
@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <i class="fas fa-cog me-2"></i> Pengaturan Sistem
                 </h1>
             </div>
-            
+
             <!-- Settings Form -->
             <div class="card">
                 <div class="card-header bg-primary text-white">
@@ -129,12 +129,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <form method="POST" action="" enctype="multipart/form-data">
                         <!-- Clinic Information -->
                         <h5 class="border-bottom pb-2 mb-3">Informasi Klinik</h5>
-                        
+
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="form-label">Nama Klinik *</label>
-                                <input type="text" class="form-control" name="nama_klinik" 
-                                       value="<?php echo htmlspecialchars($settings['nama_klinik']); ?>" required>
+                                <input type="text" class="form-control" name="nama_klinik"
+                                    value="<?php echo htmlspecialchars($settings['nama_klinik']); ?>" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Logo Klinik</label>
@@ -142,27 +142,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <small class="text-muted">Format: JPG, PNG, GIF. Max: 5MB</small>
                             </div>
                         </div>
-                        
+
                         <!-- Current Logo -->
                         <?php if ($settings['logo']): ?>
-                        <div class="row mb-3">
-                            <div class="col-md-6 offset-md-6">
-                                <div class="border p-3 rounded">
-                                    <p class="mb-2"><strong>Logo Saat Ini:</strong></p>
-                                    <img src="<?php echo ASSETS_URL . '/' . $settings['logo']; ?>"
-                                         class="img-fluid" style="max-height: 100px;">
-                                    <div class="mt-2">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox"
-                                                   name="delete_logo" value="1" id="deleteLogo">
-                                            <label class="form-check-label text-danger" for="deleteLogo">
-                                                Hapus logo
-                                            </label>
+                            <div class="row mb-3">
+                                <div class="col-md-6 offset-md-6">
+                                    <div class="border p-3 rounded">
+                                        <p class="mb-2"><strong>Logo Saat Ini:</strong></p>
+                                        <img src="<?php echo ASSETS_URL . '/' . $settings['logo']; ?>"
+                                            class="img-fluid" style="max-height: 100px;">
+                                        <div class="mt-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox"
+                                                    name="delete_logo" value="1" id="deleteLogo">
+                                                <label class="form-check-label text-danger" for="deleteLogo">
+                                                    Hapus logo
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         <?php endif; ?>
 
                         <div class="row mb-3">
@@ -175,57 +175,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                         <!-- Current Hero Image -->
                         <?php if ($settings['hero_image']): ?>
-                        <div class="row mb-3">
-                            <div class="col-md-6 offset-md-6">
-                                <div class="border p-3 rounded">
-                                    <p class="mb-2"><strong>Gambar Hero Saat Ini:</strong></p>
-                                    <img src="<?php echo ASSETS_URL . '/' . $settings['hero_image']; ?>"
-                                         class="img-fluid" style="max-height: 100px;">
-                                    <div class="mt-2">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox"
-                                                   name="delete_hero_image" value="1" id="deleteHeroImage">
-                                            <label class="form-check-label text-danger" for="deleteHeroImage">
-                                                Hapus gambar hero
-                                            </label>
+                            <div class="row mb-3">
+                                <div class="col-md-6 offset-md-6">
+                                    <div class="border p-3 rounded">
+                                        <p class="mb-2"><strong>Gambar Hero Saat Ini:</strong></p>
+                                        <img src="<?php echo ASSETS_URL . '/' . $settings['hero_image']; ?>"
+                                            class="img-fluid" style="max-height: 100px;">
+                                        <div class="mt-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox"
+                                                    name="delete_hero_image" value="1" id="deleteHeroImage">
+                                                <label class="form-check-label text-danger" for="deleteHeroImage">
+                                                    Hapus gambar hero
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         <?php endif; ?>
-                        
+
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <label class="form-label">Alamat Lengkap *</label>
                                 <textarea class="form-control" name="alamat" rows="3" required><?php echo htmlspecialchars($settings['alamat']); ?></textarea>
                             </div>
                         </div>
-                        
+
                         <!-- Contact Information -->
                         <h5 class="border-bottom pb-2 mb-3 mt-4">Kontak</h5>
-                        
+
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <label class="form-label">Telepon *</label>
-                                <input type="text" class="form-control" name="telepon" 
-                                       value="<?php echo htmlspecialchars($settings['telepon']); ?>" required>
+                                <input type="text" class="form-control" name="telepon"
+                                    value="<?php echo htmlspecialchars($settings['telepon']); ?>" required>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Email</label>
-                                <input type="email" class="form-control" name="email" 
-                                       value="<?php echo htmlspecialchars($settings['email']); ?>">
+                                <input type="email" class="form-control" name="email"
+                                    value="<?php echo htmlspecialchars($settings['email']); ?>">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">WhatsApp</label>
-                                <input type="text" class="form-control" name="whatsapp" 
-                                       value="<?php echo htmlspecialchars($settings['whatsapp']); ?>">
+                                <input type="text" class="form-control" name="whatsapp"
+                                    value="<?php echo htmlspecialchars($settings['whatsapp']); ?>">
                             </div>
                         </div>
-                        
+
                         <!-- About Clinic -->
                         <h5 class="border-bottom pb-2 mb-3 mt-4">Tentang Klinik</h5>
-                        
+
                         <div class="row mb-4">
                             <div class="col-md-12">
                                 <label class="form-label">Deskripsi Klinik</label>
@@ -233,7 +233,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <small class="text-muted">Teks ini akan ditampilkan di halaman "Tentang Kami"</small>
                             </div>
                         </div>
-                        
+
                         <!-- Submit Button -->
                         <div class="text-center">
                             <button type="submit" class="btn btn-success btn-lg">
@@ -243,7 +243,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </form>
                 </div>
             </div>
-            
+
             <!-- System Information -->
             <div class="card mt-4">
                 <div class="card-header bg-info text-white">
@@ -286,7 +286,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </table>
                         </div>
                     </div>
-                    
+
 
                 </div>
             </div>
@@ -295,44 +295,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </div>
 
 <script>
-// Delete logo confirmation
-const deleteCheckbox = document.getElementById('deleteLogo');
-if (deleteCheckbox) {
-    deleteCheckbox.addEventListener('change', function() {
-        if (this.checked) {
-            if (!confirm('Yakin ingin menghapus logo?')) {
-                this.checked = false;
+    // Delete logo confirmation
+    const deleteCheckbox = document.getElementById('deleteLogo');
+    if (deleteCheckbox) {
+        deleteCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                if (!confirm('Yakin ingin menghapus logo?')) {
+                    this.checked = false;
+                }
             }
-        }
-    });
-}
+        });
+    }
 
-// Delete hero image confirmation
-const deleteHeroCheckbox = document.getElementById('deleteHeroImage');
-if (deleteHeroCheckbox) {
-    deleteHeroCheckbox.addEventListener('change', function() {
-        if (this.checked) {
-            if (!confirm('Yakin ingin menghapus gambar hero?')) {
-                this.checked = false;
+    // Delete hero image confirmation
+    const deleteHeroCheckbox = document.getElementById('deleteHeroImage');
+    if (deleteHeroCheckbox) {
+        deleteHeroCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                if (!confirm('Yakin ingin menghapus gambar hero?')) {
+                    this.checked = false;
+                }
             }
+        });
+    }
+
+    // System actions
+    function clearCache() {
+        if (confirm('Clear cache sistem?')) {
+            // AJAX request to clear cache
+            alert('Cache berhasil dibersihkan!');
         }
-    });
-}
-
-// System actions
-function clearCache() {
-    if (confirm('Clear cache sistem?')) {
-        // AJAX request to clear cache
-        alert('Cache berhasil dibersihkan!');
     }
-}
 
-function systemMaintenance() {
-    if (confirm('Aktifkan mode maintenance? Sistem akan sementara tidak dapat diakses oleh pengunjung.')) {
-        // AJAX request to toggle maintenance mode
-        alert('Mode maintenance diaktifkan!');
+    function systemMaintenance() {
+        if (confirm('Aktifkan mode maintenance? Sistem akan sementara tidak dapat diakses oleh pengunjung.')) {
+            // AJAX request to toggle maintenance mode
+            alert('Mode maintenance diaktifkan!');
+        }
     }
-}
 </script>
 
 <?php include '../includes/admin-footer.php'; ?>

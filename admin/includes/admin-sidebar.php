@@ -16,13 +16,13 @@ $can_access_reports = hasRole('pendaftaran');
         <div class="text-center mb-4">
             <div class="mb-3">
                 <?php if (!empty($_SESSION['foto'])): ?>
-                    <img src="<?php echo ASSETS_URL . '/' . $_SESSION['foto']; ?>" 
-                         class="rounded-circle" 
-                         alt="<?php echo $_SESSION['nama_lengkap']; ?>"
-                         width="80" height="80">
+                    <img src="<?php echo ASSETS_URL . '/' . $_SESSION['foto']; ?>"
+                        class="rounded-circle"
+                        alt="<?php echo $_SESSION['nama_lengkap']; ?>"
+                        width="80" height="80">
                 <?php else: ?>
-                    <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center" 
-                         style="width: 80px; height: 80px; margin: 0 auto;">
+                    <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center"
+                        style="width: 80px; height: 80px; margin: 0 auto;">
                         <span class="text-white fs-4">
                             <?php echo strtoupper(substr($_SESSION['nama_lengkap'], 0, 1)); ?>
                         </span>
@@ -32,55 +32,55 @@ $can_access_reports = hasRole('pendaftaran');
             <h6 class="mb-1"><?php echo $_SESSION['nama_lengkap']; ?></h6>
             <small class="text-muted"><?php echo ucfirst(str_replace('_', ' ', $_SESSION['role'])); ?></small>
         </div>
-        
+
         <!-- Navigation -->
         <ul class="nav flex-column">
             <li class="nav-item">
                 <a class="nav-link <?php echo ($current_page == 'dashboard.php' && !isset($_GET['page'])) ? 'active' : ''; ?>"
-                   href="<?php echo ADMIN_URL; ?>/dashboard.php">
+                    href="<?php echo ADMIN_URL; ?>/dashboard.php">
                     <i class="fas fa-tachometer-alt"></i> Dashboard
                 </a>
             </li>
-            
+
             <li class="nav-item mt-2">
                 <small class="text-muted ps-3">MANAJEMEN PASIEN</small>
             </li>
-            
+
             <?php if (hasRole('pendaftaran') || $_SESSION['role'] == 'super_admin'): ?>
-            <li class="nav-item">
-                <a class="nav-link <?php echo (($current_page == 'list.php' && strpos($_SERVER['REQUEST_URI'], '/pasien/') !== false) || $is_patients_page) ? 'active' : ''; ?>"
-                   href="<?php echo ADMIN_URL; ?>/pasien/list.php">
-                    <i class="fas fa-users"></i> Daftar Pasien
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo (($current_page == 'list.php' && strpos($_SERVER['REQUEST_URI'], '/pasien/') !== false) || $is_patients_page) ? 'active' : ''; ?>"
+                        href="<?php echo ADMIN_URL; ?>/pasien/list.php">
+                        <i class="fas fa-users"></i> Daftar Pasien
+                    </a>
+                </li>
             <?php endif; ?>
 
             <?php if ((hasRole('dokter_mata') || hasRole('dokter_umum')) && !$is_super_admin): ?>
-            <li class="nav-item">
-                <a class="nav-link <?php echo (($current_page == 'list.php' && strpos($_SERVER['REQUEST_URI'], '/pasien/') !== false) || $is_patients_page) ? 'active' : ''; ?>"
-                   href="<?php echo ADMIN_URL; ?>/pasien/list.php">
-                    <i class="fas fa-users"></i> Daftar Pasien
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo (($current_page == 'list.php' && strpos($_SERVER['REQUEST_URI'], '/pasien/') !== false) || $is_patients_page) ? 'active' : ''; ?>"
+                        href="<?php echo ADMIN_URL; ?>/pasien/list.php">
+                        <i class="fas fa-users"></i> Daftar Pasien
+                    </a>
+                </li>
             <?php endif; ?>
-            
+
             <?php if ($can_access_reports): ?>
-            <li class="nav-item mt-2">
-                <small class="text-muted ps-3">LAPORAN</small>
-            </li>
-            
-            <li class="nav-item">
-                <a class="nav-link <?php echo ($current_page == 'cetak-pasien.php') ? 'active' : ''; ?>"
-                   href="<?php echo ADMIN_URL; ?>/laporan/cetak-pasien.php">
-                    <i class="fas fa-print"></i> Cetak Data Pasien
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link <?php echo ($current_page == 'cetak-hasil.php') ? 'active' : ''; ?>"
-                   href="<?php echo ADMIN_URL; ?>/laporan/cetak-hasil.php">
-                    <i class="fas fa-print"></i> Cetak Hasil MCU
-                </a>
-            </li>
+                <li class="nav-item mt-2">
+                    <small class="text-muted ps-3">LAPORAN</small>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link <?php echo ($current_page == 'cetak-pasien.php') ? 'active' : ''; ?>"
+                        href="<?php echo ADMIN_URL; ?>/laporan/cetak-pasien.php">
+                        <i class="fas fa-print"></i> Cetak Data Pasien
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo ($current_page == 'cetak-hasil.php') ? 'active' : ''; ?>"
+                        href="<?php echo ADMIN_URL; ?>/laporan/cetak-hasil.php">
+                        <i class="fas fa-print"></i> Cetak Hasil MCU
+                    </a>
+                </li>
             <?php endif; ?>
 
             <li class="nav-item mt-2">
@@ -89,7 +89,7 @@ $can_access_reports = hasRole('pendaftaran');
 
             <li class="nav-item">
                 <a class="nav-link <?php echo ($current_page == 'evaluasi.php') ? 'active' : ''; ?>"
-                   href="<?php echo ADMIN_URL; ?>/evaluasi.php">
+                    href="<?php echo ADMIN_URL; ?>/evaluasi.php">
                     <i class="fas fa-comments"></i> Feedback Pasien
                 </a>
             </li>
@@ -100,66 +100,66 @@ $can_access_reports = hasRole('pendaftaran');
 
             <li class="nav-item">
                 <a class="nav-link <?php echo ($current_page == 'profile.php') ? 'active' : ''; ?>"
-                   href="<?php echo ADMIN_URL; ?>/profile.php">
+                    href="<?php echo ADMIN_URL; ?>/profile.php">
                     <i class="fas fa-user"></i> Profile
                 </a>
             </li>
 
             <?php if ($is_super_admin): ?>
-            <li class="nav-item mt-2">
-                <small class="text-muted ps-3">MANAJEMEN USER</small>
-            </li>
+                <li class="nav-item mt-2">
+                    <small class="text-muted ps-3">MANAJEMEN USER</small>
+                </li>
 
-            <li class="nav-item">
-                <a class="nav-link <?php echo ($current_page == 'list.php' && strpos($_SERVER['REQUEST_URI'], '/users/') !== false) ? 'active' : ''; ?>"
-                   href="<?php echo ADMIN_URL; ?>/users/list.php">
-                    <i class="fas fa-user-cog"></i> Kelola User
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo ($current_page == 'list.php' && strpos($_SERVER['REQUEST_URI'], '/users/') !== false) ? 'active' : ''; ?>"
+                        href="<?php echo ADMIN_URL; ?>/users/list.php">
+                        <i class="fas fa-user-cog"></i> Kelola User
+                    </a>
+                </li>
             <?php endif; ?>
 
             <?php if ($can_manage_content): ?>
-            <li class="nav-item mt-2">
-                <small class="text-muted ps-3">KONTEN</small>
-            </li>
+                <li class="nav-item mt-2">
+                    <small class="text-muted ps-3">KONTEN</small>
+                </li>
 
-            <li class="nav-item">
-                <a class="nav-link <?php echo ($current_page == 'list.php' && strpos($_SERVER['REQUEST_URI'], '/artikel/') !== false) ? 'active' : ''; ?>"
-                   href="<?php echo ADMIN_URL; ?>/artikel/list.php">
-                    <i class="fas fa-newspaper"></i> Artikel
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo ($current_page == 'list.php' && strpos($_SERVER['REQUEST_URI'], '/artikel/') !== false) ? 'active' : ''; ?>"
+                        href="<?php echo ADMIN_URL; ?>/artikel/list.php">
+                        <i class="fas fa-newspaper"></i> Artikel
+                    </a>
+                </li>
 
-            <li class="nav-item mt-2">
-                <small class="text-muted ps-3">HOME VISIT</small>
-            </li>
+                <li class="nav-item mt-2">
+                    <small class="text-muted ps-3">HOME VISIT</small>
+                </li>
 
-            <li class="nav-item">
-                <a class="nav-link <?php echo ($current_page == 'list.php' && strpos($_SERVER['REQUEST_URI'], '/home-visit/') !== false) ? 'active' : ''; ?>"
-                   href="<?php echo ADMIN_URL; ?>/home-visit/list.php">
-                    <i class="fas fa-cogs"></i> Pengaturan Home Visit
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo ($current_page == 'list.php' && strpos($_SERVER['REQUEST_URI'], '/home-visit/') !== false) ? 'active' : ''; ?>"
+                        href="<?php echo ADMIN_URL; ?>/home-visit/list.php">
+                        <i class="fas fa-cogs"></i> Pengaturan Home Visit
+                    </a>
+                </li>
 
-            <li class="nav-item">
-                <a class="nav-link <?php echo ($current_page == 'process.php' && strpos($_SERVER['REQUEST_URI'], '/home-visit/') !== false) ? 'active' : ''; ?>"
-                   href="<?php echo ADMIN_URL; ?>/home-visit/process.php">
-                    <i class="fas fa-home"></i> Home Visit
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo ($current_page == 'process.php' && strpos($_SERVER['REQUEST_URI'], '/home-visit/') !== false) ? 'active' : ''; ?>"
+                        href="<?php echo ADMIN_URL; ?>/home-visit/process.php">
+                        <i class="fas fa-home"></i> Home Visit
+                    </a>
+                </li>
             <?php endif; ?>
 
             <?php if ($is_super_admin): ?>
-            <li class="nav-item mt-2">
-                <small class="text-muted ps-3">PENGATURAN</small>
-            </li>
+                <li class="nav-item mt-2">
+                    <small class="text-muted ps-3">PENGATURAN</small>
+                </li>
 
-            <li class="nav-item">
-                <a class="nav-link <?php echo ($current_page == 'pengaturan.php') ? 'active' : ''; ?>"
-                   href="<?php echo ADMIN_URL; ?>/pengaturan.php">
-                    <i class="fas fa-cog"></i> Pengaturan Sistem
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo ($current_page == 'pengaturan.php') ? 'active' : ''; ?>"
+                        href="<?php echo ADMIN_URL; ?>/pengaturan.php">
+                        <i class="fas fa-cog"></i> Pengaturan Sistem
+                    </a>
+                </li>
             <?php endif; ?>
 
         </ul>

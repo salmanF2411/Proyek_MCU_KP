@@ -20,61 +20,61 @@ $services = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
     <!-- Services Gallery -->
     <?php if (count($services) > 0): ?>
-    <div class="row mb-5">
-        <div class="col-12">
-            <h3 class="mb-4">Layanan Tersedia</h3>
-            <div class="services-gallery" style="overflow-x: auto; white-space: nowrap; padding-bottom: 20px;">
-                <div class="d-flex" style="gap: 20px;">
-                    <?php foreach ($services as $service): ?>
-                    <div class="service-card" style="min-width: 300px; max-width: 300px; display: inline-block; vertical-align: top; cursor: pointer;">
-                        <div class="card shadow-sm h-100">
-                            <?php if ($service['gambar']): ?>
-                            <img src="<?php echo ASSETS_URL . '/' . $service['gambar']; ?>"
-                                 class="card-img-top" alt="<?php echo htmlspecialchars($service['judul_layanan']); ?>"
-                                 style="height: 200px; object-fit: cover;">
-                            <?php else: ?>
-                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center"
-                                 style="height: 200px;">
-                                <i class="fas fa-home fa-3x text-muted"></i>
-                            </div>
-                            <?php endif; ?>
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title"><?php echo htmlspecialchars($service['judul_layanan']); ?></h5>
-                                <div class="mt-auto">
-                                    <p class="text-success fw-bold mb-2">
-                                        Rp <?php echo number_format($service['harga'], 0, ',', '.'); ?>
-                                    </p>
-                                    <div class="d-grid gap-2">
-                                        <button type="button" class="btn btn-outline-primary btn-sm view-detail"
-                                                data-id="<?php echo $service['id_setting']; ?>">
-                                            <i class="fas fa-eye me-1"></i>Lihat Detail
-                                        </button>
-                                        <button type="button" class="btn btn-primary btn-sm select-service"
-                                                data-id="<?php echo $service['id_setting']; ?>"
-                                                data-title="<?php echo htmlspecialchars($service['judul_layanan']); ?>"
-                                                data-price="<?php echo $service['harga']; ?>">
-                                            Pilih Layanan
-                                        </button>
+        <div class="row mb-5">
+            <div class="col-12">
+                <h3 class="mb-4">Layanan Tersedia</h3>
+                <div class="services-gallery" style="overflow-x: auto; white-space: nowrap; padding-bottom: 20px;">
+                    <div class="d-flex" style="gap: 20px;">
+                        <?php foreach ($services as $service): ?>
+                            <div class="service-card" style="min-width: 300px; max-width: 300px; display: inline-block; vertical-align: top; cursor: pointer;">
+                                <div class="card shadow-sm h-100">
+                                    <?php if ($service['gambar']): ?>
+                                        <img src="<?php echo ASSETS_URL . '/' . $service['gambar']; ?>"
+                                            class="card-img-top" alt="<?php echo htmlspecialchars($service['judul_layanan']); ?>"
+                                            style="height: 200px; object-fit: cover;">
+                                    <?php else: ?>
+                                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center"
+                                            style="height: 200px;">
+                                            <i class="fas fa-home fa-3x text-muted"></i>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title"><?php echo htmlspecialchars($service['judul_layanan']); ?></h5>
+                                        <div class="mt-auto">
+                                            <p class="text-success fw-bold mb-2">
+                                                Rp <?php echo number_format($service['harga'], 0, ',', '.'); ?>
+                                            </p>
+                                            <div class="d-grid gap-2">
+                                                <button type="button" class="btn btn-outline-primary btn-sm view-detail"
+                                                    data-id="<?php echo $service['id_setting']; ?>">
+                                                    <i class="fas fa-eye me-1"></i>Lihat Detail
+                                                </button>
+                                                <button type="button" class="btn btn-primary btn-sm select-service"
+                                                    data-id="<?php echo $service['id_setting']; ?>"
+                                                    data-title="<?php echo htmlspecialchars($service['judul_layanan']); ?>"
+                                                    data-price="<?php echo $service['harga']; ?>">
+                                                    Pilih Layanan
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
-                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
-    </div>
     <?php else: ?>
-    <div class="row mb-5">
-        <div class="col-12">
-            <div class="alert alert-info text-center">
-                <i class="fas fa-info-circle fa-3x mb-3"></i>
-                <h4>Tidak ada layanan tersedia saat ini</h4>
-                <p>Silakan kembali lagi nanti atau hubungi kami untuk informasi lebih lanjut.</p>
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    <i class="fas fa-info-circle fa-3x mb-3"></i>
+                    <h4>Tidak ada layanan tersedia saat ini</h4>
+                    <p>Silakan kembali lagi nanti atau hubungi kami untuk informasi lebih lanjut.</p>
+                </div>
             </div>
         </div>
-    </div>
     <?php endif; ?>
 
     <!-- Booking Form -->
@@ -107,10 +107,10 @@ $services = mysqli_fetch_all($result, MYSQLI_ASSOC);
                                     <select class="form-select" name="id_setting" id="serviceSelect" required>
                                         <option value="">Pilih Layanan</option>
                                         <?php foreach ($services as $service): ?>
-                                        <option value="<?php echo $service['id_setting']; ?>"
+                                            <option value="<?php echo $service['id_setting']; ?>"
                                                 data-price="<?php echo $service['harga']; ?>">
-                                            <?php echo htmlspecialchars($service['judul_layanan']); ?>
-                                        </option>
+                                                <?php echo htmlspecialchars($service['judul_layanan']); ?>
+                                            </option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -120,13 +120,13 @@ $services = mysqli_fetch_all($result, MYSQLI_ASSOC);
                         <div class="mb-3">
                             <label class="form-label">Keluhan *</label>
                             <textarea class="form-control" name="keluhan" rows="4" required
-                                      placeholder="Jelaskan keluhan atau gejala yang Anda alami..."></textarea>
+                                placeholder="Jelaskan keluhan atau gejala yang Anda alami..."></textarea>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Alamat Lengkap *</label>
                             <textarea class="form-control" name="alamat_visit" rows="3" required
-                                      placeholder="Masukkan alamat lengkap tempat kunjungan..."></textarea>
+                                placeholder="Masukkan alamat lengkap tempat kunjungan..."></textarea>
                         </div>
 
                         <div class="row">
@@ -134,7 +134,7 @@ $services = mysqli_fetch_all($result, MYSQLI_ASSOC);
                                 <div class="mb-3">
                                     <label class="form-label">Tanggal Kunjungan</label>
                                     <input type="date" class="form-control" name="tanggal_kunjungan"
-                                           min="<?php echo date('Y-m-d'); ?>">
+                                        min="<?php echo date('Y-m-d'); ?>">
                                     <small class="text-muted">Kosongkan jika belum ada preferensi tanggal</small>
                                 </div>
                             </div>
@@ -205,188 +205,192 @@ $services = mysqli_fetch_all($result, MYSQLI_ASSOC);
 </div>
 
 <script>
-// Check for pre-selected service from detail page
-document.addEventListener('DOMContentLoaded', function() {
-    const selectedService = sessionStorage.getItem('selectedService');
-    if (selectedService) {
-        const service = JSON.parse(selectedService);
+    // Check for pre-selected service from detail page
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectedService = sessionStorage.getItem('selectedService');
+        if (selectedService) {
+            const service = JSON.parse(selectedService);
 
-        // Set select value
-        document.getElementById('serviceSelect').value = service.id;
+            // Set select value
+            document.getElementById('serviceSelect').value = service.id;
 
-        // Update price display
-        updatePrice();
+            // Update price display
+            updatePrice();
 
-        // Scroll to form
-        document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth' });
+            // Scroll to form
+            document.getElementById('bookingForm').scrollIntoView({
+                behavior: 'smooth'
+            });
 
-        // Highlight selected service
-        document.querySelectorAll('.service-card').forEach(card => {
-            card.classList.remove('border-primary');
-        });
-        document.querySelector(`[data-id="${service.id}"]`).closest('.service-card').classList.add('border-primary');
-
-        // Clear sessionStorage
-        sessionStorage.removeItem('selectedService');
-    }
-});
-
-// View detail button
-document.querySelectorAll('.view-detail').forEach(button => {
-    button.addEventListener('click', function(e) {
-        e.stopPropagation(); // Prevent card click
-        const serviceId = this.getAttribute('data-id');
-        window.location.href = `home-visit-detail.php?id=${serviceId}`;
-    });
-});
-
-// Service card click (goes to detail)
-document.querySelectorAll('.service-card').forEach(card => {
-    card.addEventListener('click', function() {
-        const serviceId = this.querySelector('.view-detail').getAttribute('data-id');
-        window.location.href = `home-visit-detail.php?id=${serviceId}`;
-    });
-});
-
-// Service selection from gallery
-document.querySelectorAll('.select-service').forEach(button => {
-    button.addEventListener('click', function(e) {
-        e.stopPropagation(); // Prevent card click
-
-        const serviceId = this.getAttribute('data-id');
-        const serviceTitle = this.getAttribute('data-title');
-        const servicePrice = this.getAttribute('data-price');
-
-        // Set select value
-        document.getElementById('serviceSelect').value = serviceId;
-
-        // Update price display
-        updatePrice();
-
-        // Scroll to form
-        document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth' });
-
-        // Highlight selected service
-        document.querySelectorAll('.service-card').forEach(card => {
-            card.classList.remove('border-primary');
-        });
-        this.closest('.service-card').classList.add('border-primary');
-    });
-});
-
-// Update price when service is selected
-document.getElementById('serviceSelect').addEventListener('change', updatePrice);
-
-function updatePrice() {
-    const select = document.getElementById('serviceSelect');
-    const priceInput = document.getElementById('totalPrice');
-    const selectedOption = select.options[select.selectedIndex];
-
-    if (selectedOption.value) {
-        const price = selectedOption.getAttribute('data-price');
-        priceInput.value = new Intl.NumberFormat('id-ID').format(price);
-    } else {
-        priceInput.value = '';
-    }
-}
-
-// Form submission
-document.getElementById('bookingForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    const formData = new FormData(this);
-
-    // Show loading state
-    const submitBtn = this.querySelector('button[type="submit"]');
-    const originalText = submitBtn.innerHTML;
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Mengirim...';
-
-    // Send AJAX request
-    fetch('process-home-visit.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Show success modal
-            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-            successModal.show();
-
-            // Reset form
-            this.reset();
-            document.getElementById('totalPrice').value = '';
-
-            // Remove highlight
+            // Highlight selected service
             document.querySelectorAll('.service-card').forEach(card => {
                 card.classList.remove('border-primary');
             });
-        } else {
-            // Show error modal
-            document.getElementById('errorMessage').textContent = data.message;
-            const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-            errorModal.show();
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        document.getElementById('errorMessage').textContent = 'Terjadi kesalahan koneksi. Silakan coba lagi.';
-        const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-        errorModal.show();
-    })
-    .finally(() => {
-        // Reset button state
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalText;
-    });
-});
+            document.querySelector(`[data-id="${service.id}"]`).closest('.service-card').classList.add('border-primary');
 
-// Gallery scroll hint
-document.addEventListener('DOMContentLoaded', function() {
-    const gallery = document.querySelector('.services-gallery');
-    if (gallery && gallery.scrollWidth > gallery.clientWidth) {
-        // Add scroll hint
-        const hint = document.createElement('div');
-        hint.className = 'text-center text-muted mt-2';
-        hint.innerHTML = '<i class="fas fa-arrows-alt-h"></i> Geser untuk melihat layanan lainnya';
-        gallery.parentNode.appendChild(hint);
+            // Clear sessionStorage
+            sessionStorage.removeItem('selectedService');
+        }
+    });
+
+    // View detail button
+    document.querySelectorAll('.view-detail').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent card click
+            const serviceId = this.getAttribute('data-id');
+            window.location.href = `home-visit-detail.php?id=${serviceId}`;
+        });
+    });
+
+    // Service card click (goes to detail)
+    document.querySelectorAll('.service-card').forEach(card => {
+        card.addEventListener('click', function() {
+            const serviceId = this.querySelector('.view-detail').getAttribute('data-id');
+            window.location.href = `home-visit-detail.php?id=${serviceId}`;
+        });
+    });
+
+    // Service selection from gallery
+    document.querySelectorAll('.select-service').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent card click
+
+            const serviceId = this.getAttribute('data-id');
+            const serviceTitle = this.getAttribute('data-title');
+            const servicePrice = this.getAttribute('data-price');
+
+            // Set select value
+            document.getElementById('serviceSelect').value = serviceId;
+
+            // Update price display
+            updatePrice();
+
+            // Scroll to form
+            document.getElementById('bookingForm').scrollIntoView({
+                behavior: 'smooth'
+            });
+
+            // Highlight selected service
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.classList.remove('border-primary');
+            });
+            this.closest('.service-card').classList.add('border-primary');
+        });
+    });
+
+    // Update price when service is selected
+    document.getElementById('serviceSelect').addEventListener('change', updatePrice);
+
+    function updatePrice() {
+        const select = document.getElementById('serviceSelect');
+        const priceInput = document.getElementById('totalPrice');
+        const selectedOption = select.options[select.selectedIndex];
+
+        if (selectedOption.value) {
+            const price = selectedOption.getAttribute('data-price');
+            priceInput.value = new Intl.NumberFormat('id-ID').format(price);
+        } else {
+            priceInput.value = '';
+        }
     }
-});
+
+    // Form submission
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+
+        // Show loading state
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Mengirim...';
+
+        // Send AJAX request
+        fetch('process-home-visit.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success modal
+                    const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                    successModal.show();
+
+                    // Reset form
+                    this.reset();
+                    document.getElementById('totalPrice').value = '';
+
+                    // Remove highlight
+                    document.querySelectorAll('.service-card').forEach(card => {
+                        card.classList.remove('border-primary');
+                    });
+                } else {
+                    // Show error modal
+                    document.getElementById('errorMessage').textContent = data.message;
+                    const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                    errorModal.show();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('errorMessage').textContent = 'Terjadi kesalahan koneksi. Silakan coba lagi.';
+                const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                errorModal.show();
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            });
+    });
+
+    // Gallery scroll hint
+    document.addEventListener('DOMContentLoaded', function() {
+        const gallery = document.querySelector('.services-gallery');
+        if (gallery && gallery.scrollWidth > gallery.clientWidth) {
+            // Add scroll hint
+            const hint = document.createElement('div');
+            hint.className = 'text-center text-muted mt-2';
+            hint.innerHTML = '<i class="fas fa-arrows-alt-h"></i> Geser untuk melihat layanan lainnya';
+            gallery.parentNode.appendChild(hint);
+        }
+    });
 </script>
 
 <style>
-.services-gallery::-webkit-scrollbar {
-    height: 8px;
-}
+    .services-gallery::-webkit-scrollbar {
+        height: 8px;
+    }
 
-.services-gallery::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-}
+    .services-gallery::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
 
-.services-gallery::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
-    border-radius: 4px;
-}
+    .services-gallery::-webkit-scrollbar-thumb {
+        background: var(--primary-color);
+        border-radius: 4px;
+    }
 
-.services-gallery::-webkit-scrollbar-thumb:hover {
-    background: #0b5ed7;
-}
+    .services-gallery::-webkit-scrollbar-thumb:hover {
+        background: #0b5ed7;
+    }
 
-.service-card .card {
-    transition: transform 0.2s, box-shadow 0.2s;
-}
+    .service-card .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
 
-.service-card .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
+    .service-card .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
 
-.service-card.border-primary .card {
-    border-color: var(--primary-color) !important;
-    border-width: 2px;
-}
+    .service-card.border-primary .card {
+        border-color: var(--primary-color) !important;
+        border-width: 2px;
+    }
 </style>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

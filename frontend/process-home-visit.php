@@ -54,7 +54,7 @@ try {
     // Insert booking
     $query = "INSERT INTO home_visit (nama_pasien, no_hp, keluhan, alamat_visit, id_setting, harga, tanggal_kunjungan)
               VALUES ('$nama_pasien', '$no_hp', '$keluhan', '$alamat_visit', $id_setting, $harga, " .
-              ($tanggal_kunjungan ? "'$tanggal_kunjungan'" : "NULL") . ")";
+        ($tanggal_kunjungan ? "'$tanggal_kunjungan'" : "NULL") . ")";
 
     if (!mysqli_query($conn, $query)) {
         throw new Exception('Gagal menyimpan pesanan: ' . mysqli_error($conn));
@@ -65,7 +65,6 @@ try {
         'success' => true,
         'message' => 'Pesanan berhasil dikirim'
     ]);
-
 } catch (Exception $e) {
     // Return error response
     echo json_encode([
@@ -73,4 +72,3 @@ try {
         'message' => $e->getMessage()
     ]);
 }
-?>

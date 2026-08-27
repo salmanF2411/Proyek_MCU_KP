@@ -72,9 +72,9 @@ $result = mysqli_stmt_get_result($stmt);
                     <div class="card h-100">
                         <?php if (!empty($article['gambar'])): ?>
                             <img src="<?php echo ASSETS_URL . '/' . $article['gambar']; ?>"
-                                 class="card-img-top"
-                                 alt="<?php echo htmlspecialchars($article['judul']); ?>"
-                                 style="height: 200px; object-fit: cover;">
+                                class="card-img-top"
+                                alt="<?php echo htmlspecialchars($article['judul']); ?>"
+                                style="height: 200px; object-fit: cover;">
                         <?php endif; ?>
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title"><?php echo htmlspecialchars($article['judul']); ?></h5>
@@ -139,14 +139,14 @@ $result = mysqli_stmt_get_result($stmt);
 </div>
 
 <style>
-.article-description {
-    display: block;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
-    line-height: 1.5;
-    margin-bottom: 1rem;
-}
+    .article-description {
+        display: block;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+    }
 </style>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

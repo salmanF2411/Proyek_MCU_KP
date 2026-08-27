@@ -68,45 +68,45 @@ $settings = mysqli_fetch_assoc($result);
         <div class="col-12">
             <h2 class="page-title">Artikel Kesehatan Terbaru</h2>
         </div>
-        
+
         <?php
         $query = "SELECT * FROM artikel
                   WHERE status = 'published'
                   ORDER BY created_at DESC
                   LIMIT 3";
         $result = mysqli_query($conn, $query);
-        
+
         while ($article = mysqli_fetch_assoc($result)):
         ?>
-        <div class="col-md-4">
-            <div class="card h-100">
-                <?php if (!empty($article['gambar'])): ?>
-                <img src="<?php echo ASSETS_URL . '/' . $article['gambar']; ?>" class="card-img-top" alt="<?php echo $article['judul']; ?>" style="height: 200px; object-fit: cover;">
-                <?php endif; ?>
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title"><?php echo $article['judul']; ?></h5>
-                    <div class="card-text flex-grow-1">
-                        <?php echo substr(strip_tags($article['konten']), 0, 100) . '...'; ?>
-                    </div>
-                    <div class="mt-auto">
-                        <small class="text-muted d-block">
-                            <i class="fas fa-calendar"></i> Dipublikasikan <?php echo formatDateIndo($article['tanggal_publish']); ?>
-                        </small>
-                        <a href="artikel-detail.php?id=<?php echo $article['id']; ?>" class="btn btn-primary btn-sm mt-2">
-                            Baca Selengkapnya <i class="fas fa-arrow-right"></i>
-                        </a>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <?php if (!empty($article['gambar'])): ?>
+                        <img src="<?php echo ASSETS_URL . '/' . $article['gambar']; ?>" class="card-img-top" alt="<?php echo $article['judul']; ?>" style="height: 200px; object-fit: cover;">
+                    <?php endif; ?>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title"><?php echo $article['judul']; ?></h5>
+                        <div class="card-text flex-grow-1">
+                            <?php echo substr(strip_tags($article['konten']), 0, 100) . '...'; ?>
+                        </div>
+                        <div class="mt-auto">
+                            <small class="text-muted d-block">
+                                <i class="fas fa-calendar"></i> Dipublikasikan <?php echo formatDateIndo($article['tanggal_publish']); ?>
+                            </small>
+                            <a href="artikel-detail.php?id=<?php echo $article['id']; ?>" class="btn btn-primary btn-sm mt-2">
+                                Baca Selengkapnya <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         <?php endwhile; ?>
-        
+
         <?php if (mysqli_num_rows($result) == 0): ?>
-        <div class="col-12">
-            <div class="alert alert-info">
-                Belum ada artikel yang dipublikasikan.
+            <div class="col-12">
+                <div class="alert alert-info">
+                    Belum ada artikel yang dipublikasikan.
+                </div>
             </div>
-        </div>
         <?php endif; ?>
     </div>
 

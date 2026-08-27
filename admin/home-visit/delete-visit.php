@@ -40,4 +40,3 @@ if (mysqli_query($conn, $query)) {
 }
 
 redirect('process.php');
-?>

@@ -9,6 +9,7 @@ require_once __DIR__ . '/functions.php';
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,7 +64,7 @@ require_once __DIR__ . '/functions.php';
 
         .card {
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
 
@@ -99,7 +100,7 @@ require_once __DIR__ . '/functions.php';
         .sidebar {
             background-color: #fff;
             min-height: calc(100vh - 56px);
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
 
         .sidebar .nav-link {
@@ -127,12 +128,14 @@ require_once __DIR__ . '/functions.php';
             padding: 20px 0;
         }
 
-        .form-control, .form-select {
+        .form-control,
+        .form-select {
             border-radius: 8px;
             border: 1px solid #ddd;
         }
 
-        .form-control:focus, .form-select:focus {
+        .form-control:focus,
+        .form-select:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
         }
@@ -149,6 +152,7 @@ require_once __DIR__ . '/functions.php';
         }
     </style>
 </head>
+
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
@@ -193,7 +197,9 @@ require_once __DIR__ . '/functions.php';
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="<?php echo ADMIN_URL; ?>/dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li><a class="dropdown-item" href="<?php echo ADMIN_URL; ?>/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                             </ul>
                         </li>

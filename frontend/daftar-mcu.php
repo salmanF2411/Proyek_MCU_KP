@@ -32,10 +32,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'menunggu')";
 
     $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, 'sssssisssssssss',
-        $kode_mcu, $nama, $jenis_kelamin, $tempat_lahir, $tanggal_lahir, $usia,
-        $alamat, $pendidikan, $agama, $golongan_darah, $no_telp, $email,
-        $perusahaan, $posisi_pekerjaan, $tanggal_mcu
+    mysqli_stmt_bind_param(
+        $stmt,
+        'sssssisssssssss',
+        $kode_mcu,
+        $nama,
+        $jenis_kelamin,
+        $tempat_lahir,
+        $tanggal_lahir,
+        $usia,
+        $alamat,
+        $pendidikan,
+        $agama,
+        $golongan_darah,
+        $no_telp,
+        $email,
+        $perusahaan,
+        $posisi_pekerjaan,
+        $tanggal_mcu
     );
 
     if (mysqli_stmt_execute($stmt)) {
@@ -199,13 +213,13 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
         <div class="card-body p-4">
             <form method="POST" action="" id="form-mcu" onsubmit="return validateForm()" novalidate>
-                
+
                 <!-- Bagian 1: Biodata -->
                 <div class="section mb-5">
                     <h5 class="section-title border-bottom pb-2 mb-4">
                         <i class="fas fa-user me-2"></i> 1. BIODATA PELAMAR
                     </h5>
-                    
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="nama" class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
@@ -224,7 +238,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <input type="number" class="form-control" id="usia" name="usia" readonly>
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label for="tempat_lahir" class="form-label">Tempat Lahir <span class="text-danger">*</span></label>
@@ -245,7 +259,7 @@ require_once __DIR__ . '/../includes/header.php';
                             </select>
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="alamat" class="form-label">Alamat Lengkap <span class="text-danger">*</span></label>
@@ -277,7 +291,7 @@ require_once __DIR__ . '/../includes/header.php';
                             </select>
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label for="no_telp" class="form-label">Nomor Telepon/HP <span class="text-danger">*</span></label>
@@ -292,7 +306,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <input type="text" class="form-control" id="perusahaan" name="perusahaan">
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="posisi_pekerjaan" class="form-label">Posisi Pekerjaan</label>
@@ -304,13 +318,13 @@ require_once __DIR__ . '/../includes/header.php';
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Bagian 2: Data Keluarga -->
                 <div class="section mb-5">
                     <h5 class="section-title border-bottom pb-2 mb-4">
                         <i class="fas fa-users me-2"></i> 2. DATA KELUARGA
                     </h5>
-                    
+
                     <div class="row mb-4">
                         <div class="col-12">
                             <h6>Ayah</h6>
@@ -337,7 +351,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <input type="number" class="form-control" id="meninggal_ayah" name="meninggal_ayah" min="1900" max="<?php echo date('Y'); ?>">
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-12">
                             <h6>Ibu</h6>
@@ -365,13 +379,13 @@ require_once __DIR__ . '/../includes/header.php';
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Bagian 3: Riwayat Kesehatan -->
                 <div class="section mb-5">
                     <h5 class="section-title border-bottom pb-2 mb-4">
                         <i class="fas fa-heartbeat me-2"></i> 3. RIWAYAT KESEHATAN
                     </h5>
-                    
+
                     <!-- Status Kesehatan Sekarang -->
                     <div class="row mb-3">
                         <div class="col-12 mb-3">
@@ -402,7 +416,7 @@ require_once __DIR__ . '/../includes/header.php';
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Penyakit Dahulu -->
                     <div class="row mb-3">
                         <div class="col-12 mb-3">
@@ -443,7 +457,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <input type="text" class="form-control" id="penyakit_lain" name="penyakit_lain" placeholder="Tulis penyakit lain yang pernah diderita">
                         </div>
                     </div>
-                    
+
                     <!-- Riwayat Penyakit Keluarga -->
                     <div class="row mb-3">
                         <div class="col-12 mb-3">
@@ -484,7 +498,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <input type="text" class="form-control" id="riwayat_keluarga_lain" name="riwayat_keluarga_lain" placeholder="Tulis penyakit keluarga lainnya">
                         </div>
                     </div>
-                    
+
                     <!-- Alergi -->
                     <div class="row mb-3">
                         <div class="col-12 mb-3">
@@ -532,13 +546,13 @@ require_once __DIR__ . '/../includes/header.php';
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Bagian 4: Kebiasaan -->
                 <div class="section mb-5">
                     <h5 class="section-title border-bottom pb-2 mb-4">
                         <i class="fas fa-smoking me-2"></i> 4. KEBIASAAN SEHARI-HARI
                     </h5>
-                    
+
                     <!-- Merokok -->
                     <div class="row mb-4">
                         <div class="col-12 mb-3">
@@ -567,7 +581,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <input type="number" class="form-control" id="jumlah_rokok" name="jumlah_rokok" min="0" max="100">
                         </div>
                     </div>
-                    
+
                     <!-- Alkohol -->
                     <div class="row mb-4">
                         <div class="col-12 mb-3">
@@ -591,14 +605,14 @@ require_once __DIR__ . '/../includes/header.php';
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Bagian 5: Keluhan -->
                 <div class="section mb-5">
                     <h5 class="section-title border-bottom pb-2 mb-4">
                         <i class="fas fa-exclamation-triangle me-2"></i> 5. UMUM
                     </h5>
                     <p class="text-muted mb-3">Ceklis jika ada keluhan Sebelum/Sesudah Medical Check Up:</p>
-                    
+
                     <div class="row">
                         <div class="col-md-4 mb-2">
                             <div class="form-check">
@@ -642,20 +656,20 @@ require_once __DIR__ . '/../includes/header.php';
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Declaration -->
                 <div class="section mb-4">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="declaration" required>
                         <label class="form-check-label" for="declaration">
-                            Saya menyatakan bahwa data yang saya isi dalam formulir ini adalah benar dan akurat. 
-                            Saya memahami dan menyetujui bahwa informasi yang berhubungan dengan pemeriksaan medis 
-                            dan copy catatan medis saya dapat digunakan untuk kepentingan perusahaan maupun medis. 
+                            Saya menyatakan bahwa data yang saya isi dalam formulir ini adalah benar dan akurat.
+                            Saya memahami dan menyetujui bahwa informasi yang berhubungan dengan pemeriksaan medis
+                            dan copy catatan medis saya dapat digunakan untuk kepentingan perusahaan maupun medis.
                             Pernyataan ini saya buat dengan sebenar-benarnya, dengan akal dan pikiran sehat.
                         </label>
                     </div>
                 </div>
-                
+
                 <!-- Submit Button -->
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary btn-lg px-5 btn-mobile-responsive">
@@ -701,17 +715,17 @@ require_once __DIR__ . '/../includes/header.php';
         var today = new Date();
         var age = today.getFullYear() - birthDate.getFullYear();
         var monthDiff = today.getMonth() - birthDate.getMonth();
-        
+
         if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
             age--;
         }
-        
+
         document.getElementById('usia').value = age;
     });
-    
+
     // Set minimum date for MCU date (tomorrow)
     document.getElementById('tanggal_mcu').min = new Date().toISOString().split('T')[0];
-    
+
     // Fungsi untuk menampilkan modal error
     function showErrorModal(message) {
         var modalBody = document.getElementById('errorModalBody');
@@ -726,8 +740,8 @@ require_once __DIR__ . '/../includes/header.php';
         var requiredFields = document.querySelectorAll('[required]');
         for (var i = 0; i < requiredFields.length; i++) {
             if (!requiredFields[i].value.trim()) {
-                var fieldLabel = requiredFields[i].previousElementSibling ? 
-                    requiredFields[i].previousElementSibling.textContent.replace('*', '').trim() : 
+                var fieldLabel = requiredFields[i].previousElementSibling ?
+                    requiredFields[i].previousElementSibling.textContent.replace('*', '').trim() :
                     'Field ini';
                 showErrorModal('<i class="fas fa-exclamation-circle me-2 text-danger"></i>Harap lengkapi semua field yang wajib diisi!');
                 requiredFields[i].focus();
@@ -763,18 +777,18 @@ require_once __DIR__ . '/../includes/header.php';
 
         return true;
     }
-    
+
     function validateEmail(email) {
         var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(email);
     }
-    
+
     function validatePhone(phone) {
         // Remove non-digits
         var digits = phone.replace(/\D/g, '');
         return digits.length >= 10;
     }
-    
+
     // Show/hide fields based on kondisi
     document.getElementById('kondisi_ayah').addEventListener('change', function() {
         var meninggalField = document.getElementById('meninggal_ayah');

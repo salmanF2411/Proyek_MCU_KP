@@ -140,10 +140,18 @@ $result = mysqli_query($conn, $query);
                                                 <?php
                                                 $status_class = '';
                                                 switch ($registration['status']) {
-                                                    case 'pending': $status_class = 'bg-warning'; break;
-                                                    case 'diproses': $status_class = 'bg-info'; break;
-                                                    case 'selesai': $status_class = 'bg-success'; break;
-                                                    case 'batal': $status_class = 'bg-danger'; break;
+                                                    case 'pending':
+                                                        $status_class = 'bg-warning';
+                                                        break;
+                                                    case 'diproses':
+                                                        $status_class = 'bg-info';
+                                                        break;
+                                                    case 'selesai':
+                                                        $status_class = 'bg-success';
+                                                        break;
+                                                    case 'batal':
+                                                        $status_class = 'bg-danger';
+                                                        break;
                                                 }
                                                 ?>
                                                 <span class="badge <?php echo $status_class; ?>">
@@ -156,39 +164,39 @@ $result = mysqli_query($conn, $query);
                                             <td>
                                                 <div class="btn-group btn-group-sm">
                                                     <button type="button"
-                                                            class="btn btn-info"
-                                                            onclick="viewDetails(<?php echo $registration['id_visit']; ?>)"
-                                                            title="Lihat Detail">
+                                                        class="btn btn-info"
+                                                        onclick="viewDetails(<?php echo $registration['id_visit']; ?>)"
+                                                        title="Lihat Detail">
                                                         <i class="fas fa-eye"></i>
                                                     </button>
                                                     <?php if ($registration['status'] == 'pending'): ?>
                                                         <button type="button"
-                                                                class="btn btn-success"
-                                                                onclick="updateStatus(<?php echo $registration['id_visit']; ?>, 'diproses')"
-                                                                title="Proses">
+                                                            class="btn btn-success"
+                                                            onclick="updateStatus(<?php echo $registration['id_visit']; ?>, 'diproses')"
+                                                            title="Proses">
                                                             <i class="fas fa-play"></i>
                                                         </button>
                                                     <?php elseif ($registration['status'] == 'diproses'): ?>
                                                         <button type="button"
-                                                                class="btn btn-success"
-                                                                onclick="updateStatus(<?php echo $registration['id_visit']; ?>, 'selesai')"
-                                                                title="Selesai">
+                                                            class="btn btn-success"
+                                                            onclick="updateStatus(<?php echo $registration['id_visit']; ?>, 'selesai')"
+                                                            title="Selesai">
                                                             <i class="fas fa-check"></i>
                                                         </button>
                                                     <?php endif; ?>
                                                     <?php if (in_array($registration['status'], ['selesai', 'batal'])): ?>
                                                         <button type="button"
-                                                                class="btn btn-danger delete-visit"
-                                                                data-id="<?php echo $registration['id_visit']; ?>"
-                                                                data-nama="<?php echo htmlspecialchars($registration['nama_pasien']); ?>"
-                                                                title="Hapus">
+                                                            class="btn btn-danger delete-visit"
+                                                            data-id="<?php echo $registration['id_visit']; ?>"
+                                                            data-nama="<?php echo htmlspecialchars($registration['nama_pasien']); ?>"
+                                                            title="Hapus">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     <?php else: ?>
                                                         <button type="button"
-                                                                class="btn btn-danger"
-                                                                onclick="updateStatus(<?php echo $registration['id_visit']; ?>, 'batal')"
-                                                                title="Batal">
+                                                            class="btn btn-danger"
+                                                            onclick="updateStatus(<?php echo $registration['id_visit']; ?>, 'batal')"
+                                                            title="Batal">
                                                             <i class="fas fa-times"></i>
                                                         </button>
                                                     <?php endif; ?>
@@ -206,7 +214,7 @@ $result = mysqli_query($conn, $query);
                                 <ul class="pagination justify-content-center">
                                     <?php if ($page > 1): ?>
                                         <li class="page-item">
-                                            <a class="page-link" href="?page=<?php echo $page-1; ?>&status=<?php echo $status; ?>&search=<?php echo urlencode($search); ?>">
+                                            <a class="page-link" href="?page=<?php echo $page - 1; ?>&status=<?php echo $status; ?>&search=<?php echo urlencode($search); ?>">
                                                 &laquo;
                                             </a>
                                         </li>
@@ -222,7 +230,7 @@ $result = mysqli_query($conn, $query);
 
                                     <?php if ($page < $total_pages): ?>
                                         <li class="page-item">
-                                            <a class="page-link" href="?page=<?php echo $page+1; ?>&status=<?php echo $status; ?>&search=<?php echo urlencode($search); ?>">
+                                            <a class="page-link" href="?page=<?php echo $page + 1; ?>&status=<?php echo $status; ?>&search=<?php echo urlencode($search); ?>">
                                                 &raquo;
                                             </a>
                                         </li>
@@ -285,55 +293,55 @@ $result = mysqli_query($conn, $query);
 </div>
 
 <script>
-function viewDetails(id) {
-    fetch(`get-detail.php?id=${id}`)
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('detailContent').innerHTML = data;
-            const modal = new bootstrap.Modal(document.getElementById('detailModal'));
-            modal.show();
-        })
-        .catch(error => {
-            alert('Error loading details: ' + error);
-        });
-}
-
-function updateStatus(id, status) {
-    if (confirm(`Apakah Anda yakin ingin mengubah status menjadi "${status}"?`)) {
-        fetch('update-status.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `id=${id}&status=${status}`
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                location.reload();
-            } else {
-                alert('Error: ' + data.message);
-            }
-        })
-        .catch(error => {
-            alert('Error updating status: ' + error);
-        });
+    function viewDetails(id) {
+        fetch(`get-detail.php?id=${id}`)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('detailContent').innerHTML = data;
+                const modal = new bootstrap.Modal(document.getElementById('detailModal'));
+                modal.show();
+            })
+            .catch(error => {
+                alert('Error loading details: ' + error);
+            });
     }
-}
 
-// Delete confirmation
-document.querySelectorAll('.delete-visit').forEach(button => {
-    button.addEventListener('click', function() {
-        const id = this.getAttribute('data-id');
-        const nama = this.getAttribute('data-nama');
+    function updateStatus(id, status) {
+        if (confirm(`Apakah Anda yakin ingin mengubah status menjadi "${status}"?`)) {
+            fetch('update-status.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `id=${id}&status=${status}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    alert('Error updating status: ' + error);
+                });
+        }
+    }
 
-        document.getElementById('deleteId').value = id;
-        document.getElementById('visitNama').textContent = nama;
+    // Delete confirmation
+    document.querySelectorAll('.delete-visit').forEach(button => {
+        button.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            const nama = this.getAttribute('data-nama');
 
-        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-        deleteModal.show();
+            document.getElementById('deleteId').value = id;
+            document.getElementById('visitNama').textContent = nama;
+
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
+        });
     });
-});
 </script>
 
 <?php include '../../includes/admin-footer.php'; ?>
