@@ -771,7 +771,7 @@ require_once __DIR__ . '/../includes/header.php';
         // Validate phone number
         var phone = document.getElementById('no_telp').value;
         if (!validatePhone(phone)) {
-            showErrorModal('<i class="fas fa-phone me-2 text-danger"></i>Format nomor telepon tidak valid! Minimal 10 digit angka.');
+            showErrorModal('<i class="fas fa-phone me-2 text-danger"></i>Nomor telepon/HP tidak valid! Mohon masukkan nomor yang benar');
             return false;
         }
 
@@ -784,9 +784,15 @@ require_once __DIR__ . '/../includes/header.php';
     }
 
     function validatePhone(phone) {
-        // Remove non-digits
+        // Hapus semua karakter selain angka (misal spasi, strip, atau +)
         var digits = phone.replace(/\D/g, '');
-        return digits.length >= 10;
+
+        // Cek apakah panjangnya 10-13 digit 
+        // DAN apakah diawali dengan '08' atau '628'
+        var isValidLength = digits.length >= 10 && digits.length <= 13;
+        var isValidPrefix = digits.startsWith('08') || digits.startsWith('628');
+
+        return isValidLength && isValidPrefix;
     }
 
     // Show/hide fields based on kondisi

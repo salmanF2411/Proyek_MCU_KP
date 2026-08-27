@@ -171,13 +171,6 @@ if ($page == 'patients') {
                     <h1 class="h3 mb-0">
                         <i class="fas fa-users me-2"></i> Daftar Pasien
                     </h1>
-                    <div>
-                        <?php if (hasRole('pendaftaran') || $_SESSION['role'] == 'super_admin'): ?>
-                            <a href="javascript:void(0)" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPatientModal">
-                                <i class="fas fa-plus me-2"></i> Tambah Pasien
-                            </a>
-                        <?php endif; ?>
-                    </div>
                 </div>
 
                 <!-- Filter and Search -->
@@ -858,63 +851,8 @@ if ($page == 'patients') {
                 });
             </script>
         <?php endif; ?>
+    </div>
 
-        <!-- Add Patient Modal -->
-        <?php if ($page == 'patients' && (hasRole('pendaftaran') || $_SESSION['role'] == 'super_admin')): ?>
-            <div class="modal fade" id="addPatientModal" tabindex="-1">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-primary text-white">
-                            <h5 class="modal-title">
-                                <i class="fas fa-user-plus me-2"></i> Tambah Pasien Manual
-                            </h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="addPatientForm" action="pasien/add-patient.php" method="POST">
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Nama Lengkap *</label>
-                                        <input type="text" class="form-control" name="nama" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Jenis Kelamin *</label>
-                                        <select class="form-select" name="jenis_kelamin" required>
-                                            <option value="">- Pilih -</option>
-                                            <option value="L">Laki-laki</option>
-                                            <option value="P">Perempuan</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Tanggal Lahir *</label>
-                                        <input type="date" class="form-control" name="tanggal_lahir" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">No. Telepon *</label>
-                                        <input type="tel" class="form-control" name="no_telp" required>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Perusahaan</label>
-                                        <input type="text" class="form-control" name="perusahaan">
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Tanggal MCU *</label>
-                                        <input type="date" class="form-control" name="tanggal_mcu" required>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" form="addPatientForm" class="btn btn-primary">Simpan</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <?php endif; ?>
+</div>
 
-        <?php include '../includes/admin-footer.php'; ?>
+<?php include '../includes/admin-footer.php'; ?>

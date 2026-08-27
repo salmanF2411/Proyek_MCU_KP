@@ -98,7 +98,7 @@ $services = mysqli_fetch_all($result, MYSQLI_ASSOC);
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label class="form-label">No. HP *</label>
-                                    <input type="tel" class="form-control" name="no_hp" required>
+                                    <input type="tel" class="form-control" name="no_hp" placeholder="Contoh: 08123456789" required>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -132,10 +132,10 @@ $services = mysqli_fetch_all($result, MYSQLI_ASSOC);
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label">Tanggal Kunjungan</label>
+                                    <label class="form-label">Tanggal Kunjungan *</label>
                                     <input type="date" class="form-control" name="tanggal_kunjungan"
-                                        min="<?php echo date('Y-m-d'); ?>">
-                                    <small class="text-muted">Kosongkan jika belum ada preferensi tanggal</small>
+                                        min="<?php echo date('Y-m-d'); ?>" required>
+                                    <small class="text-danger">Wajib memilih jadwal kunjungan</small>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -205,6 +205,19 @@ $services = mysqli_fetch_all($result, MYSQLI_ASSOC);
 </div>
 
 <script>
+    // Fungsi Validasi Nomor HP Indonesia (10 - 13 digit dan diawali 08/628)
+    function validatePhone(phone) {
+        // hanya bisa nomor
+        var digits = phone.replace(/\D/g, '');
+
+        // panjang 10-13 digit 
+        // harus diawali '08' atau '628'
+        var isValidLength = digits.length >= 10 && digits.length <= 13;
+        var isValidPrefix = digits.startsWith('08') || digits.startsWith('628');
+
+        return isValidLength && isValidPrefix;
+    }
+
     // Check for pre-selected service from detail page
     document.addEventListener('DOMContentLoaded', function() {
         const selectedService = sessionStorage.getItem('selectedService');
@@ -297,6 +310,17 @@ $services = mysqli_fetch_all($result, MYSQLI_ASSOC);
     // Form submission
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
         e.preventDefault();
+
+        // Ambil nilai nomor HP dari form
+        const phoneInput = this.querySelector('input[name="no_hp"]').value;
+
+        // Pengecekan validasi Nomor HP sebelum mengirim (diperbarui sesuai request)
+        if (!validatePhone(phoneInput)) {
+            document.getElementById('errorMessage').textContent = 'Nomor telepon/HP tidak valid! Mohon masukkan nomor yang benar';
+            const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+            errorModal.show();
+            return; // Hentikan proses jika validasi gagal
+        }
 
         const formData = new FormData(this);
 

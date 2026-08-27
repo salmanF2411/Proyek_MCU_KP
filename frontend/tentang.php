@@ -140,13 +140,26 @@ $setting = mysqli_fetch_assoc($result);
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <h4 class="mb-0"><i class="fas fa-map-marked-alt me-2"></i> Lokasi Kami</h4>
+                <div class="card-header d-flex justify-content-between align-items-center bg-light">
+                    <h4 class="mb-0"><i class="fas fa-map-marked-alt me-2 text-primary"></i> Lokasi Kami</h4>
+                    <!-- Tombol di header card (opsional, bagus untuk tampilan desktop) -->
+                    <a href="https://maps.app.goo.gl/AKNm1P7ytehdCE8B8" target="_blank" class="btn btn-primary btn-sm d-none d-md-block">
+                        <i class="fas fa-directions me-1"></i> Dapatkan Rute
+                    </a>
                 </div>
-                <div class="card-body">
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14940.57612772112!2d107.05798757269284!3d-6.752563714709638!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sid!2sid!4v1770438852589!5m2!1sid!2sid" width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <div class="card-body p-0">
+                    <!-- Wrapper agar seluruh area iframe bisa di-klik jika diinginkan -->
+                    <div class="position-relative">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14940.57612772112!2d107.05798757269284!3d-6.752563714709638!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sid!2sid!4v1770438852589!5m2!1sid!2sid" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
                     </div>
+                </div>
+                <div class="card-footer bg-white text-center p-3">
+                    <!-- Tombol utama yang sangat jelas untuk user di HP maupun Desktop -->
+                    <a href="https://maps.app.goo.gl/AKNm1P7ytehdCE8B8" target="_blank" class="btn btn-outline-primary btn-lg w-100 fw-bold">
+                        <i class="fas fa-location-arrow me-2"></i> Buka di Google Maps & Lihat Rute
+                    </a>
                 </div>
             </div>
         </div>
