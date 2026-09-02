@@ -6,6 +6,8 @@ require_once __DIR__ . '/../includes/functions.php';
 
 requireLogin();
 
+$is_doctor = in_array($_SESSION['role'], ['dokter_mata', 'dokter_umum']);
+
 // Check if authorized roles (super admin, doctors, etc.)
 $authorized_roles = ['super_admin', 'dokter_mata', 'dokter_umum', 'pendaftaran'];
 if (!in_array($_SESSION['role'], $authorized_roles)) {
@@ -14,7 +16,7 @@ if (!in_array($_SESSION['role'], $authorized_roles)) {
 }
 
 // Handle mark as read
-if (isset($_POST['mark_read']) && isset($_POST['feedback_id'])) {
+if (!$is_doctor && isset($_POST['mark_read']) && isset($_POST['feedback_id'])) {
     $feedback_id = (int)$_POST['feedback_id'];
     $query = "UPDATE feedback_pasien SET status = 'read' WHERE id = $feedback_id";
     mysqli_query($conn, $query);
@@ -24,7 +26,7 @@ if (isset($_POST['mark_read']) && isset($_POST['feedback_id'])) {
 }
 
 // Handle delete feedback
-if (isset($_POST['delete_feedback']) && isset($_POST['feedback_id'])) {
+if (!$is_doctor && isset($_POST['delete_feedback']) && isset($_POST['feedback_id'])) {
     $feedback_id = (int)$_POST['feedback_id'];
     $query = "DELETE FROM feedback_pasien WHERE id = $feedback_id";
     mysqli_query($conn, $query);
@@ -168,7 +170,9 @@ $result = mysqli_query($conn, $query);
                                         <th>Rating</th>
                                         <th>Kesan</th>
                                         <th>Saran</th>
-                                        <th>Status</th>
+                                        <?php if (!$is_doctor): ?>
+                                            <th>Status</th>
+                                        <?php endif; ?>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -192,32 +196,36 @@ $result = mysqli_query($conn, $query);
                                             <td>
                                                 <?php echo $feedback['saran'] ? htmlspecialchars(substr($feedback['saran'], 0, 50)) . (strlen($feedback['saran']) > 50 ? '...' : '') : '-'; ?>
                                             </td>
-                                            <td>
-                                                <?php if ($feedback['status'] == 'unread'): ?>
-                                                    <span class="badge bg-warning">Belum Dibaca</span>
-                                                <?php else: ?>
-                                                    <span class="badge bg-success">Sudah Dibaca</span>
-                                                <?php endif; ?>
-                                            </td>
+                                            <?php if (!$is_doctor): ?>
+                                                <td>
+                                                    <?php if ($feedback['status'] == 'unread'): ?>
+                                                        <span class="badge bg-warning">Belum Dibaca</span>
+                                                    <?php else: ?>
+                                                        <span class="badge bg-success">Sudah Dibaca</span>
+                                                    <?php endif; ?>
+                                                </td>
+                                            <?php endif; ?>
                                             <td>
                                                 <div class="d-flex gap-1">
                                                     <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#detailModal<?php echo $feedback['id']; ?>" title="Lihat Detail">
                                                         <i class="fas fa-eye"></i>
                                                     </button>
-                                                    <?php if ($feedback['status'] == 'unread'): ?>
-                                                        <form method="POST" class="d-inline">
-                                                            <input type="hidden" name="feedback_id" value="<?php echo $feedback['id']; ?>">
-                                                            <button type="submit" name="mark_read" class="btn btn-sm btn-outline-success" onclick="return confirm('Tandai feedback ini sebagai sudah dibaca?')" title="Tandai sebagai Dibaca">
-                                                                <i class="fas fa-check"></i>
-                                                            </button>
-                                                        </form>
-                                                    <?php else: ?>
-                                                        <form method="POST" class="d-inline">
-                                                            <input type="hidden" name="feedback_id" value="<?php echo $feedback['id']; ?>">
-                                                            <button type="submit" name="delete_feedback" class="btn btn-sm btn-outline-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus feedback ini?')" title="Hapus Feedback">
-                                                                <i class="fas fa-trash"></i>
-                                                            </button>
-                                                        </form>
+                                                    <?php if (!$is_doctor): ?>
+                                                        <?php if ($feedback['status'] == 'unread'): ?>
+                                                            <form method="POST" class="d-inline">
+                                                                <input type="hidden" name="feedback_id" value="<?php echo $feedback['id']; ?>">
+                                                                <button type="submit" name="mark_read" class="btn btn-sm btn-outline-success" onclick="return confirm('Tandai feedback ini sebagai sudah dibaca?')" title="Tandai sebagai Dibaca">
+                                                                    <i class="fas fa-check"></i>
+                                                                </button>
+                                                            </form>
+                                                        <?php else: ?>
+                                                            <form method="POST" class="d-inline">
+                                                                <input type="hidden" name="feedback_id" value="<?php echo $feedback['id']; ?>">
+                                                                <button type="submit" name="delete_feedback" class="btn btn-sm btn-outline-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus feedback ini?')" title="Hapus Feedback">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     <?php endif; ?>
                                                 </div>
                                             </td>
@@ -262,7 +270,7 @@ $result = mysqli_query($conn, $query);
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                                                        <?php if ($feedback['status'] == 'unread'): ?>
+                                                        <?php if (!$is_doctor && $feedback['status'] == 'unread'): ?>
                                                             <form method="POST" class="d-inline">
                                                                 <input type="hidden" name="feedback_id" value="<?php echo $feedback['id']; ?>">
                                                                 <button type="submit" name="mark_read" class="btn btn-success">Tandai sebagai Dibaca</button>
