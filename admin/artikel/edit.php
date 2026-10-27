@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="../dashboard.php">Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="list.php">Artikel</a></li>
                     <li class="breadcrumb-item active">Edit Artikel</li>
                 </ol>

@@ -26,7 +26,10 @@ $arrival_counts = [];
 $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
 $filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
 $search = isset($_GET['search']) ? escape($_GET['search']) : '';
-$arrival_month = isset($_GET['arrival_month']) ? $_GET['arrival_month'] : date('Y-m');
+$arrival_month = isset($_GET['arrival_month']) ? escape($_GET['arrival_month']) : date('Y-m');
+if (!preg_match('/^\d{4}-\d{2}$/', $arrival_month)) {
+    $arrival_month = date('Y-m');
+}
 $can_access_reports = hasRole('pendaftaran');
 
 if ($page == 'reports' && !$can_access_reports) {
@@ -264,7 +267,7 @@ if ($page == 'patients') {
                                                             <i class="fas fa-eye"></i>
                                                         </a>
 
-                                                        <?php if (hasRole('pendaftaran') || $_SESSION['role'] == 'super_admin'): ?>
+                                                        <?php if (canExamine('pendaftaran')): ?>
                                                             <?php if (!$patient['cek_pendaftaran']): ?>
                                                                 <a href="pasien/pemeriksaan.php?role=pendaftaran&id=<?php echo $patient['id']; ?>"
                                                                     class="btn btn-warning"
@@ -274,7 +277,7 @@ if ($page == 'patients') {
                                                             <?php endif; ?>
                                                         <?php endif; ?>
 
-                                                        <?php if (hasRole('dokter_mata') || $_SESSION['role'] == 'super_admin'): ?>
+                                                        <?php if (canExamine('dokter_mata')): ?>
                                                             <?php if ($patient['cek_pendaftaran'] && !$patient['cek_mata']): ?>
                                                                 <a href="pasien/pemeriksaan.php?role=dokter_mata&id=<?php echo $patient['id']; ?>"
                                                                     class="btn btn-primary"
@@ -284,7 +287,7 @@ if ($page == 'patients') {
                                                             <?php endif; ?>
                                                         <?php endif; ?>
 
-                                                        <?php if (hasRole('dokter_umum') || $_SESSION['role'] == 'super_admin'): ?>
+                                                        <?php if (canExamine('dokter_umum')): ?>
                                                             <?php if ($patient['cek_mata'] && !$patient['cek_umum']): ?>
                                                                 <a href="pasien/pemeriksaan.php?role=dokter_umum&id=<?php echo $patient['id']; ?>"
                                                                     class="btn btn-success"

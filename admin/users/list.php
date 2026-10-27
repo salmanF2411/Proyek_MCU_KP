@@ -70,12 +70,14 @@ $result = mysqli_query($conn, $query);
                                                 $role_badges = [
                                                     'super_admin' => 'danger',
                                                     'pendaftaran' => 'primary',
+                                                    'admin' => 'primary',
                                                     'dokter_mata' => 'info',
                                                     'dokter_umum' => 'success'
                                                 ];
                                                 $role_names = [
                                                     'super_admin' => 'Super Admin',
                                                     'pendaftaran' => 'Pendaftaran',
+                                                    'admin' => 'Admin Pendaftaran',
                                                     'dokter_mata' => 'Dokter Mata',
                                                     'dokter_umum' => 'Dokter Umum'
                                                 ];

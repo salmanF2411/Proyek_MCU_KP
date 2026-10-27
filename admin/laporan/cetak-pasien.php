@@ -10,8 +10,8 @@ requireRole('pendaftaran');
 
 // Default/reset view shows today's data. Filters auto-apply from the form controls.
 $today = date('Y-m-d');
-$start_date = !empty($_GET['start_date']) ? $_GET['start_date'] : $today;
-$end_date = !empty($_GET['end_date']) ? $_GET['end_date'] : $today;
+$start_date = !empty($_GET['start_date']) ? escape($_GET['start_date']) : $today;
+$end_date = !empty($_GET['end_date']) ? escape($_GET['end_date']) : $today;
 $status = isset($_GET['status']) ? $_GET['status'] : 'all';
 $allowed_statuses = ['all', 'menunggu', 'proses', 'selesai'];
 if (!in_array($status, $allowed_statuses, true)) {

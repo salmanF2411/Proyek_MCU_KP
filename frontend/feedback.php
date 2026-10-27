@@ -10,8 +10,8 @@ $message_type = '';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Data feedback (anonymous)
     $rating = (int)($_POST['rating'] ?? 0);
-    $kesan = escape($_POST['kesan'] ?? '');
-    $saran = escape($_POST['saran'] ?? '');
+    $kesan = trim($_POST['kesan'] ?? '');
+    $saran = trim($_POST['saran'] ?? '');
 
     // Validasi rating
     if ($rating < 1 || $rating > 5) {

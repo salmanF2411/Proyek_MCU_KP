@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="../dashboard.php">Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="list.php">Users</a></li>
                     <li class="breadcrumb-item active">Edit User</li>
                 </ol>
@@ -156,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <label class="form-label">Role *</label>
                                     <select class="form-select" name="role" required>
                                         <option value="super_admin" <?php echo $user['role'] == 'super_admin' ? 'selected' : ''; ?>>Super Admin</option>
-                                        <option value="pendaftaran" <?php echo $user['role'] == 'pendaftaran' ? 'selected' : ''; ?>>Staff Pendaftaran</option>
+                                        <option value="pendaftaran" <?php echo in_array($user['role'], ['pendaftaran', 'admin']) ? 'selected' : ''; ?>>Staff Pendaftaran</option>
                                         <option value="dokter_mata" <?php echo $user['role'] == 'dokter_mata' ? 'selected' : ''; ?>>Dokter Mata</option>
                                         <option value="dokter_umum" <?php echo $user['role'] == 'dokter_umum' ? 'selected' : ''; ?>>Dokter Umum</option>
                                     </select>

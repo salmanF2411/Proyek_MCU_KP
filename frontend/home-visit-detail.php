@@ -75,12 +75,6 @@ if (!$service) {
                                 </p>
                             </div>
                         </div>
-                        <!-- <div class="col-md-6">
-                            <div class="bg-light p-3 rounded">
-                                <h6 class="mb-1">Status</h6>
-                                <span class="badge bg-success fs-6">Aktif</span>
-                            </div>
-                        </div> -->
                     </div>
 
                     <!-- Action Buttons -->

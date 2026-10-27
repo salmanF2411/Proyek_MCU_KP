@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="../dashboard.php">Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="list.php">Users</a></li>
                     <li class="breadcrumb-item active">Tambah User</li>
                 </ol>
@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <h6>Deskripsi Role:</h6>
                                     <ul class="mb-0">
                                         <li><strong>Super Admin:</strong> Akses penuh ke semua fitur</li>
-                                        <li><strong>Staff Pendaftaran:</strong> Input data sirkulasi dan manajemen pasien</li>
+                                        <li><strong>Staff Pendaftaran:</strong> Input data sirkulasi/pendaftaran, pemeriksaan mata, dan manajemen pasien</li>
                                         <li><strong>Dokter Mata:</strong> Pemeriksaan mata saja</li>
                                         <li><strong>Dokter Umum:</strong> Pemeriksaan umum dan kesimpulan akhir</li>
                                     </ul>

@@ -8,7 +8,7 @@ requireLogin();
 $can_access_reports = hasRole('pendaftaran');
 
 // Check role permissions - allow all medical staff roles
-$authorized_roles = ['super_admin', 'pendaftaran', 'dokter_mata', 'dokter_umum'];
+$authorized_roles = ['super_admin', 'pendaftaran', 'admin', 'dokter_mata', 'dokter_umum'];
 if (!in_array($_SESSION['role'], $authorized_roles)) {
     header('Location: ../dashboard.php');
     exit();
@@ -79,13 +79,6 @@ $stats = mysqli_fetch_assoc($stats_result);
                 <h1 class="h3 mb-0">
                     <i class="fas fa-users me-2"></i> Daftar Pasien
                 </h1>
-                <!-- <div>
-                    <?php if (hasRole('pendaftaran') || $_SESSION['role'] == 'super_admin'): ?>
-                    <a href="javascript:void(0)" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPatientModal">
-                        <i class="fas fa-plus me-2"></i> Tambah Pasien
-                    </a>
-                    <?php endif; ?>
-                </div> -->
             </div>
 
             <!-- Filter and Search -->
@@ -214,7 +207,7 @@ $stats = mysqli_fetch_assoc($stats_result);
                                                         <i class="fas fa-eye"></i>
                                                     </a>
 
-                                                    <?php if (hasRole('pendaftaran') || $_SESSION['role'] == 'super_admin'): ?>
+                                                    <?php if (canExamine('pendaftaran')): ?>
                                                         <?php if (!$patient['cek_pendaftaran']): ?>
                                                             <a href="<?php echo ADMIN_URL; ?>/pasien/pemeriksaan.php?role=pendaftaran&id=<?php echo $patient['id']; ?>"
                                                                 class="btn btn-warning"
@@ -224,7 +217,7 @@ $stats = mysqli_fetch_assoc($stats_result);
                                                         <?php endif; ?>
                                                     <?php endif; ?>
 
-                                                    <?php if (hasRole('dokter_mata') || $_SESSION['role'] == 'super_admin'): ?>
+                                                    <?php if (canExamine('dokter_mata')): ?>
                                                         <?php if ($patient['cek_pendaftaran'] && !$patient['cek_mata']): ?>
                                                             <a href="<?php echo ADMIN_URL; ?>/pasien/pemeriksaan.php?role=dokter_mata&id=<?php echo $patient['id']; ?>"
                                                                 class="btn btn-primary"
@@ -234,7 +227,7 @@ $stats = mysqli_fetch_assoc($stats_result);
                                                         <?php endif; ?>
                                                     <?php endif; ?>
 
-                                                    <?php if (hasRole('dokter_umum') || $_SESSION['role'] == 'super_admin'): ?>
+                                                    <?php if (canExamine('dokter_umum')): ?>
                                                         <?php if ($patient['cek_mata'] && !$patient['cek_umum']): ?>
                                                             <a href="<?php echo ADMIN_URL; ?>/pasien/pemeriksaan.php?role=dokter_umum&id=<?php echo $patient['id']; ?>"
                                                                 class="btn btn-success"

@@ -19,7 +19,7 @@ if (!in_array($role, $valid_roles)) {
 }
 
 // Check permission
-if (!hasRole($role) && $_SESSION['role'] != 'super_admin') {
+if (!canExamine($role)) {
     $_SESSION['error'] = "Anda tidak memiliki izin untuk mengakses halaman ini";
     redirect('dashboard.php');
 }

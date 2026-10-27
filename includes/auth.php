@@ -78,7 +78,38 @@ function hasRole($role)
 {
     if (!isset($_SESSION['role'])) return false;
     if ($_SESSION['role'] == 'super_admin') return true;
+    if ($role == 'pendaftaran' && in_array($_SESSION['role'], ['pendaftaran', 'admin'])) return true;
+    if ($role == 'admin' && in_array($_SESSION['role'], ['pendaftaran', 'admin'])) return true;
     return $_SESSION['role'] == $role;
+}
+
+/**
+ * Check if user can perform specific examination
+ * - Pendaftaran (Sirkulasi): staff pendaftaran, admin, super_admin
+ * - Mata: dokter_mata, staff pendaftaran, admin, super_admin
+ * - Umum: dokter_umum, super_admin
+ */
+function canExamine($role)
+{
+    if (!isset($_SESSION['role'])) return false;
+    if ($_SESSION['role'] == 'super_admin') return true;
+
+    // Pemeriksaan pendaftaran / sirkulasi: staff pendaftaran & admin
+    if ($role == 'pendaftaran') {
+        return in_array($_SESSION['role'], ['pendaftaran', 'admin']);
+    }
+
+    // Pemeriksaan mata: dokter mata serta staff pendaftaran & admin
+    if ($role == 'dokter_mata') {
+        return in_array($_SESSION['role'], ['dokter_mata', 'pendaftaran', 'admin']);
+    }
+
+    // Pemeriksaan dokter umum: dokter umum saja
+    if ($role == 'dokter_umum') {
+        return $_SESSION['role'] == 'dokter_umum';
+    }
+
+    return false;
 }
 
 /**

@@ -416,7 +416,7 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                 $cek_umum = mysqli_num_rows(mysqli_query($conn, "SELECT id FROM pemeriksaan WHERE pasien_id = $id AND pemeriksa_role = 'dokter_umum'"));
 
                                 // Show examination buttons based on role and completion status
-                                if (hasRole('pendaftaran') || $_SESSION['role'] == 'super_admin') {
+                                if (canExamine('pendaftaran')) {
                                     if (!$cek_pendaftaran) {
                                         echo '<a href="pemeriksaan.php?role=pendaftaran&id=' . $id . '" class="btn btn-warning btn-sm me-2">
                                                 <i class="fas fa-edit me-1"></i> Periksa Awal
@@ -424,7 +424,7 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                     }
                                 }
 
-                                if (hasRole('dokter_mata') || $_SESSION['role'] == 'super_admin') {
+                                if (canExamine('dokter_mata')) {
                                     if ($cek_pendaftaran && !$cek_mata) {
                                         echo '<a href="pemeriksaan.php?role=dokter_mata&id=' . $id . '" class="btn btn-primary btn-sm me-2">
                                                 <i class="fas fa-eye me-1"></i> Periksa Mata
@@ -432,7 +432,7 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                     }
                                 }
 
-                                if (hasRole('dokter_umum') || $_SESSION['role'] == 'super_admin') {
+                                if (canExamine('dokter_umum')) {
                                     if ($cek_mata && !$cek_umum) {
                                         echo '<a href="pemeriksaan.php?role=dokter_umum&id=' . $id . '" class="btn btn-success btn-sm">
                                                 <i class="fas fa-stethoscope me-1"></i> Periksa Umum
@@ -701,10 +701,6 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                                         <th>Sikatriks</th>
                                                                         <td class="<?php echo $exam['sikatriks'] ? 'text-danger fw-bold' : ''; ?>"><?php echo $exam['sikatriks'] ? 'Ya' : 'Tidak'; ?></td>
                                                                     </tr>
-                                                                    <!-- <tr>
-                                                                    <th>Penyakit Perut</th>
-                                                                    <td class="<?php echo getDescriptionClass($exam['keterangan_perut']); ?>"><?php echo $exam['keterangan_perut'] ?: '-'; ?></td>
-                                                                </tr> -->
                                                                     <tr>
                                                                         <th>PSOAS SIGN</th>
                                                                         <td class="<?php echo getDescriptionClass($exam['psoas_sign']); ?>"><?php echo $exam['psoas_sign'] ?: '-'; ?></td>
@@ -779,11 +775,9 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                         </div>
 
                                         <!-- Conclusion -->
-                                        <?php if ($exam['kesimpulan'] || $exam['status_mcu']): ?>
+                                        <?php if (!empty($exam['status_mcu']) || !empty($exam['saran'])): ?>
                                             <div class="card mt-3 bg-light">
                                                 <div class="card-body">
-                                                    <!-- <h6 style="font-weight: bold;">Kesimpulan</h6>
-                                                        <p><?php echo nl2br($exam['kesimpulan']); ?></p> -->
                                                     <h6 style="font-weight: bold;">Saran</h6>
                                                     <p><?php echo nl2br($exam['saran']); ?></p>
                                                     <div class="mt-2">

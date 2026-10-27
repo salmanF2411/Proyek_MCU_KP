@@ -9,20 +9,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $kode_mcu = generateKodeMCU();
 
     // Data pasien
-    $nama = escape($_POST['nama']);
-    $jenis_kelamin = escape($_POST['jenis_kelamin']);
-    $tempat_lahir = escape($_POST['tempat_lahir']);
-    $tanggal_lahir = escape($_POST['tanggal_lahir']);
+    $nama = trim($_POST['nama'] ?? '');
+    $jenis_kelamin = trim($_POST['jenis_kelamin'] ?? '');
+    $tempat_lahir = trim($_POST['tempat_lahir'] ?? '');
+    $tanggal_lahir = trim($_POST['tanggal_lahir'] ?? '');
     $usia = calculateAge($tanggal_lahir);
-    $alamat = escape($_POST['alamat']);
-    $pendidikan = escape($_POST['pendidikan']);
-    $agama = escape($_POST['agama']);
-    $golongan_darah = escape($_POST['golongan_darah']);
-    $no_telp = escape($_POST['no_telp']);
-    $email = escape($_POST['email']);
-    $perusahaan = escape($_POST['perusahaan']);
-    $posisi_pekerjaan = escape($_POST['posisi_pekerjaan']);
-    $tanggal_mcu = escape($_POST['tanggal_mcu']);
+    $alamat = trim($_POST['alamat'] ?? '');
+    $pendidikan = trim($_POST['pendidikan'] ?? '');
+    $agama = trim($_POST['agama'] ?? '');
+    $golongan_darah = trim($_POST['golongan_darah'] ?? '');
+    $no_telp = trim($_POST['no_telp'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $perusahaan = trim($_POST['perusahaan'] ?? '');
+    $posisi_pekerjaan = trim($_POST['posisi_pekerjaan'] ?? '');
+    $tanggal_mcu = trim($_POST['tanggal_mcu'] ?? '');
 
     // Insert pasien
     $sql = "INSERT INTO pasien (

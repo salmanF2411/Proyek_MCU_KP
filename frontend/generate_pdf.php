@@ -8,26 +8,6 @@ require_once __DIR__ . '/../includes/functions.php';
 $kode_mcu = isset($_GET['kode']) ? $_GET['kode'] : 'MCU-PENDING';
 $tanggal = isset($_GET['tanggal']) ? $_GET['tanggal'] : date('Y-m-d');
 
-// Fallback jika fungsi getSetting belum ada (untuk mencegah error)
-if (!function_exists('getSetting')) {
-    function getSetting($key)
-    {
-        $settings = [
-            'alamat' => 'Jl. Kesehatan No. 123, Jakarta Pusat 12125',
-            'telepon' => '(021) 12345671122',
-            'whatsapp' => '08123456789022'
-        ];
-        return isset($settings[$key]) ? $settings[$key] : '-';
-    }
-}
-// Fallback formatDateIndo
-if (!function_exists('formatDateIndo')) {
-    function formatDateIndo($date)
-    {
-        return date('d F Y', strtotime($date));
-    }
-}
-
 class PDF extends FPDF
 {
     // Fungsi bantuan untuk menggambar lingkaran dengan warna solid

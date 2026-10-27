@@ -15,7 +15,7 @@ $search = isset($_GET['search']) ? escape($_GET['search']) : '';
 $where = "1=1";
 
 if ($search) {
-    $where .= " AND (nama_pasien LIKE '%$search%' OR keluhan LIKE '%$search%')";
+    $where .= " AND (hv.nama_pasien LIKE '%$search%' OR hv.keluhan LIKE '%$search%')";
 }
 
 if ($status != 'all') {

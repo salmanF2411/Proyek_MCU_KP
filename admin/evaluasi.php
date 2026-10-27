@@ -9,7 +9,7 @@ requireLogin();
 $is_doctor = in_array($_SESSION['role'], ['dokter_mata', 'dokter_umum']);
 
 // Check if authorized roles (super admin, doctors, etc.)
-$authorized_roles = ['super_admin', 'dokter_mata', 'dokter_umum', 'pendaftaran'];
+$authorized_roles = ['super_admin', 'dokter_mata', 'dokter_umum', 'pendaftaran', 'admin'];
 if (!in_array($_SESSION['role'], $authorized_roles)) {
     header('Location: dashboard.php');
     exit();
