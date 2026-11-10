@@ -1147,6 +1147,17 @@ ALTER TABLE `pemeriksaan`
 --
 ALTER TABLE `riwayat_kesehatan`
   ADD CONSTRAINT `riwayat_kesehatan_ibfk_1` FOREIGN KEY (`pasien_id`) REFERENCES `pasien` (`id`) ON DELETE CASCADE;
+
+--
+-- Penyesuaian pemisahan Konjungtiva dan Sklera pada tabel pemeriksaan
+--
+ALTER TABLE `pemeriksaan` MODIFY COLUMN `anemia` VARCHAR(50) DEFAULT NULL;
+ALTER TABLE `pemeriksaan` ADD COLUMN `anemia_keterangan` TEXT DEFAULT NULL AFTER `anemia`;
+ALTER TABLE `pemeriksaan` ADD COLUMN `sklera` VARCHAR(50) DEFAULT NULL AFTER `anemia_keterangan`;
+UPDATE `pemeriksaan` SET `sklera` = CASE WHEN `anemia` = 'Ikterik (-' THEN 'Ikterik (-)' ELSE `anemia` END, `anemia` = 'Normal' WHERE `anemia` LIKE 'Ikterik%';
+UPDATE `pemeriksaan` SET `sklera` = 'Normal' WHERE `pemeriksa_role` = 'dokter_mata' AND (`sklera` IS NULL OR `sklera` = '');
+UPDATE `pemeriksaan` SET `anemia` = 'Normal' WHERE `pemeriksa_role` = 'dokter_mata' AND (`anemia` IS NULL OR `anemia` = '');
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

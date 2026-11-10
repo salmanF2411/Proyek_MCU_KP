@@ -1,8 +1,28 @@
 USE mcu_system;
 -- Add missing columns to pemeriksaan table (only if they don't exist)
+ALTER TABLE pemeriksaan MODIFY COLUMN anemia VARCHAR(50) DEFAULT NULL;
+
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'mcu_system' AND TABLE_NAME = 'pemeriksaan' AND COLUMN_NAME = 'anemia_keterangan') = 0,
+    'ALTER TABLE pemeriksaan ADD COLUMN anemia_keterangan TEXT DEFAULT NULL AFTER anemia;',
+    'SELECT "anemia_keterangan already exists";'
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'mcu_system' AND TABLE_NAME = 'pemeriksaan' AND COLUMN_NAME = 'sklera') = 0,
+    'ALTER TABLE pemeriksaan ADD COLUMN sklera VARCHAR(50) DEFAULT NULL AFTER anemia_keterangan;',
+    'SELECT "sklera already exists";'
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
 SET @sql = (SELECT IF(
     (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'mcu_system' AND TABLE_NAME = 'pemeriksaan' AND COLUMN_NAME = 'ikterik_keterangan') = 0,
-    'ALTER TABLE pemeriksaan ADD COLUMN ikterik_keterangan TEXT AFTER anemia;',
+    'ALTER TABLE pemeriksaan ADD COLUMN ikterik_keterangan TEXT AFTER sklera;',
     'SELECT "ikterik_keterangan already exists";'
 ));
 PREPARE stmt FROM @sql;

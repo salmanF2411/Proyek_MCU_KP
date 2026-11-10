@@ -8,7 +8,7 @@ requireLogin();
 requireRole('pendaftaran');
 
 // Get patient ID
-$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
 if ($id == 0) {
     $_SESSION['error'] = "Pasien tidak ditemukan";
@@ -287,13 +287,16 @@ $settings = mysqli_fetch_assoc($settings_result);
                     <th>Suhu Tubuh</th>
                     <td><?php echo $exams['pendaftaran']['suhu'] ? $exams['pendaftaran']['suhu'] . ' °C' : '-'; ?></td>
                     <th>Respirasi</th>
-                    <td><?php echo $exams['pendaftaran']['respirasi'] ? $exams['pendaftaran']['respirasi'] . ' x/menit' : '-'; ?></td>
+                    <td><?php echo $exams['pendaftaran']['respirasi'] ? $exams['pendaftaran']['respirasi'] . ' x/menit' : '-'; ?>
+                    </td>
                 </tr>
                 <tr>
                     <th>Tinggi Badan</th>
-                    <td><?php echo $exams['pendaftaran']['tinggi_badan'] ? $exams['pendaftaran']['tinggi_badan'] . ' cm' : '-'; ?></td>
+                    <td><?php echo $exams['pendaftaran']['tinggi_badan'] ? $exams['pendaftaran']['tinggi_badan'] . ' cm' : '-'; ?>
+                    </td>
                     <th>Berat Badan</th>
-                    <td><?php echo $exams['pendaftaran']['berat_badan'] ? $exams['pendaftaran']['berat_badan'] . ' kg' : '-'; ?></td>
+                    <td><?php echo $exams['pendaftaran']['berat_badan'] ? $exams['pendaftaran']['berat_badan'] . ' kg' : '-'; ?>
+                    </td>
                 </tr>
             </table>
         <?php endif; ?>
@@ -309,14 +312,18 @@ $settings = mysqli_fetch_assoc($settings_result);
                     <td><?php echo $exams['dokter_mata']['visus_kiri_jauh'] ?: '-'; ?></td>
                 </tr>
                 <tr>
-                    <th>Anemia</th>
-                    <td><?php echo $exams['dokter_mata']['anemia'] ?: '-'; ?></td>
-                    <th>Buta Warna</th>
-                    <td><?php echo $exams['dokter_mata']['buta_warna'] ?: '-'; ?></td>
+                    <th>Konjungtiva</th>
+                    <td><?php echo !empty($exams['dokter_mata']['anemia']) ? $exams['dokter_mata']['anemia'] : 'Normal'; ?>
+                    </td>
+                    <th>Sklera</th>
+                    <td><?php echo !empty($exams['dokter_mata']['sklera']) ? $exams['dokter_mata']['sklera'] : 'Normal'; ?>
+                    </td>
                 </tr>
                 <tr>
+                    <th>Buta Warna</th>
+                    <td><?php echo $exams['dokter_mata']['buta_warna'] ?: '-'; ?></td>
                     <th>Lapang Pandang</th>
-                    <td colspan="3"><?php echo $exams['dokter_mata']['lapang_pandang'] ?: '-'; ?></td>
+                    <td><?php echo $exams['dokter_mata']['lapang_pandang'] ?: '-'; ?></td>
                 </tr>
             </table>
         <?php endif; ?>
@@ -430,10 +437,14 @@ $settings = mysqli_fetch_assoc($settings_result);
                     ?>
                     <span class="status-badge <?php echo $status_class; ?>">
                         <?php
-                        if ($exams['dokter_umum']['status_mcu'] == 'FIT') echo 'FIT TO WORK';
-                        elseif ($exams['dokter_umum']['status_mcu'] == 'UNFIT') echo 'UNFIT';
-                        elseif ($exams['dokter_umum']['status_mcu'] == 'FIT WITH NOTE') echo 'FIT WITH NOTE';
-                        else echo '-';
+                        if ($exams['dokter_umum']['status_mcu'] == 'FIT')
+                            echo 'FIT TO WORK';
+                        elseif ($exams['dokter_umum']['status_mcu'] == 'UNFIT')
+                            echo 'UNFIT';
+                        elseif ($exams['dokter_umum']['status_mcu'] == 'FIT WITH NOTE')
+                            echo 'FIT WITH NOTE';
+                        else
+                            echo '-';
                         ?>
                     </span>
                 </p>
@@ -456,20 +467,21 @@ $settings = mysqli_fetch_assoc($settings_result);
         <div class="footer-note">
             <p><strong>Catatan:</strong></p>
             <p>1. Hasil MCU ini hanya berlaku untuk keperluan yang disebutkan di atas.</p>
-            <p>2. Untuk pemeriksaan lebih lanjut atau keluhan kesehatan, silakan konsultasi dengan dokter spesialis terkait.</p>
+            <p>2. Untuk pemeriksaan lebih lanjut atau keluhan kesehatan, silakan konsultasi dengan dokter spesialis
+                terkait.</p>
             <p>3. Dokumen ini dicetak secara elektronik dan tidak memerlukan tanda tangan basah.</p>
         </div>
     </div>
 
     <script>
         // Auto print when page loads (optional)
-        window.onload = function() {
+        window.onload = function () {
             // Uncomment to auto print
             // window.print();
         };
 
         // Print button
-        document.querySelector('.btn-print').addEventListener('click', function() {
+        document.querySelector('.btn-print').addEventListener('click', function () {
             window.print();
         });
 

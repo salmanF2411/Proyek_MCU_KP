@@ -28,7 +28,8 @@ function calculateAge($birth_date)
  */
 function formatDateIndo($date, $with_time = false)
 {
-    if (empty($date)) return '-';
+    if (empty($date))
+        return '-';
 
     $months = array(
         1 => 'Januari',
@@ -255,11 +256,22 @@ function getValueClass($parameter, $value)
 }
 
 /**
- * Get CSS class for status display (abnormal = red)
+ * Get CSS class for status display (abnormal / (+) = red)
  */
 function getStatusClass($status)
 {
-    return (strtolower($status) == 'abnormal') ? 'text-danger fw-bold' : '';
+    if (empty($status))
+        return '';
+    $status_lower = strtolower(trim($status));
+    if (
+        $status_lower === 'abnormal' ||
+        strpos($status_lower, '+') !== false ||
+        $status_lower === 'merah/hijau' ||
+        $status_lower === 'lainnya'
+    ) {
+        return 'text-danger fw-bold';
+    }
+    return '';
 }
 
 /**
@@ -267,7 +279,8 @@ function getStatusClass($status)
  */
 function calculateBMI($weight, $height)
 {
-    if (!$weight || !$height || $height == 0) return null;
+    if (!$weight || !$height || $height == 0)
+        return null;
     $height_m = $height / 100; // convert cm to m
     return $weight / ($height_m * $height_m);
 }
@@ -278,7 +291,8 @@ function calculateBMI($weight, $height)
 function isBMIAbnormal($weight, $height)
 {
     $bmi = calculateBMI($weight, $height);
-    if (!$bmi) return false;
+    if (!$bmi)
+        return false;
     // Normal BMI range: 18.5 - 24.9
     return $bmi < 18.5 || $bmi > 24.9;
 }

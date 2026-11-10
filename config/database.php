@@ -22,6 +22,20 @@ if (!$conn) {
 // Set charset
 mysqli_set_charset($conn, "utf8");
 
+// Ensure Konjungtiva (anemia, anemia_keterangan) & Sklera (sklera, ikterik_keterangan) columns exist in pemeriksaan table
+$check_sklera_col = mysqli_query($conn, "SHOW COLUMNS FROM pemeriksaan LIKE 'sklera'");
+if ($check_sklera_col && mysqli_num_rows($check_sklera_col) == 0) {
+    mysqli_query($conn, "ALTER TABLE pemeriksaan MODIFY COLUMN anemia VARCHAR(50) DEFAULT NULL");
+    $check_anemia_ket_col = mysqli_query($conn, "SHOW COLUMNS FROM pemeriksaan LIKE 'anemia_keterangan'");
+    if ($check_anemia_ket_col && mysqli_num_rows($check_anemia_ket_col) == 0) {
+        mysqli_query($conn, "ALTER TABLE pemeriksaan ADD COLUMN anemia_keterangan TEXT DEFAULT NULL AFTER anemia");
+    }
+    mysqli_query($conn, "ALTER TABLE pemeriksaan ADD COLUMN sklera VARCHAR(50) DEFAULT NULL AFTER anemia_keterangan");
+    mysqli_query($conn, "UPDATE pemeriksaan SET sklera = CASE WHEN anemia = 'Ikterik (-' THEN 'Ikterik (-)' ELSE anemia END, anemia = 'Normal' WHERE anemia LIKE 'Ikterik%'");
+    mysqli_query($conn, "UPDATE pemeriksaan SET sklera = 'Normal' WHERE pemeriksa_role = 'dokter_mata' AND (sklera IS NULL OR sklera = '')");
+    mysqli_query($conn, "UPDATE pemeriksaan SET anemia = 'Normal' WHERE pemeriksa_role = 'dokter_mata' AND (anemia IS NULL OR anemia = '')");
+}
+
 // Timezone
 date_default_timezone_set('Asia/Jakarta');
 

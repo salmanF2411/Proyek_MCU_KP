@@ -9,7 +9,7 @@ requireLogin();
 
 // Get parameters
 $role = isset($_GET['role']) ? $_GET['role'] : '';
-$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
 // Validate role
 $valid_roles = ['pendaftaran', 'dokter_mata', 'dokter_umum'];
@@ -68,15 +68,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($role == 'pendaftaran') {
         $tekanan_darah = escape($_POST['tekanan_darah']);
-        $nadi = (int)$_POST['nadi'];
+        $nadi = (int) $_POST['nadi'];
 
         // Convert comma to dot so PHP float conversion works properly (e.g. 36,7 to 36.7)
-        $suhu = (float)str_replace(',', '.', $_POST['suhu']);
-        $respirasi = (int)$_POST['respirasi'];
-        $tinggi_badan = (int)$_POST['tinggi_badan'];
+        $suhu = (float) str_replace(',', '.', $_POST['suhu']);
+        $respirasi = (int) $_POST['respirasi'];
+        $tinggi_badan = (int) $_POST['tinggi_badan'];
 
         // Berat badan juga memungkinkan angka desimal
-        $berat_badan = (float)str_replace(',', '.', $_POST['berat_badan']);
+        $berat_badan = (float) str_replace(',', '.', $_POST['berat_badan']);
 
         // Update patient status
         $update_query = "UPDATE pasien SET status_pendaftaran = 'proses' WHERE id = $id";
@@ -93,7 +93,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Jika form kosong, set otomatis ke "Normal"
         $anemia = empty($_POST['anemia']) ? 'Normal' : escape($_POST['anemia']);
-        $ikterik_keterangan = escape($_POST['ikterik_keterangan']);
+        $anemia_keterangan = isset($_POST['anemia_keterangan']) ? escape($_POST['anemia_keterangan']) : '';
+
+        $sklera = empty($_POST['sklera']) ? 'Normal' : escape($_POST['sklera']);
+        $ikterik_keterangan = isset($_POST['ikterik_keterangan']) ? escape($_POST['ikterik_keterangan']) : '';
 
         $buta_warna = empty($_POST['buta_warna']) ? 'Normal' : escape($_POST['buta_warna']);
         $buta_warna_keterangan = escape($_POST['buta_warna_keterangan']);
@@ -101,8 +104,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $lapang_pandang = empty($_POST['lapang_pandang']) ? 'Normal' : escape($_POST['lapang_pandang']);
         $lapang_pandang_keterangan = escape($_POST['lapang_pandang_keterangan']);
 
-        $insert_query = "INSERT INTO pemeriksaan (pasien_id, pemeriksa_role, visus_kanan_jauh, visus_kanan_dekat, visus_kiri_jauh, visus_kiri_dekat, anemia,ikterik_keterangan, buta_warna,buta_warna_keterangan, lapang_pandang,lapang_pandang_keterangan, pemeriksa_id)
-                         VALUES ($id, '$role', '$visus_kanan_jauh', '$visus_kanan_dekat', '$visus_kiri_jauh', '$visus_kiri_dekat', '$anemia', '$ikterik_keterangan', '$buta_warna','$buta_warna_keterangan', '$lapang_pandang','$lapang_pandang_keterangan', {$_SESSION['admin_id']})";
+        $insert_query = "INSERT INTO pemeriksaan (pasien_id, pemeriksa_role, visus_kanan_jauh, visus_kanan_dekat, visus_kiri_jauh, visus_kiri_dekat, anemia, anemia_keterangan, sklera, ikterik_keterangan, buta_warna, buta_warna_keterangan, lapang_pandang, lapang_pandang_keterangan, pemeriksa_id)
+                         VALUES ($id, '$role', '$visus_kanan_jauh', '$visus_kanan_dekat', '$visus_kiri_jauh', '$visus_kiri_dekat', '$anemia', '$anemia_keterangan', '$sklera', '$ikterik_keterangan', '$buta_warna', '$buta_warna_keterangan', '$lapang_pandang', '$lapang_pandang_keterangan', {$_SESSION['admin_id']})";
     } elseif ($role == 'dokter_umum') {
         // THT & Gigi
         $telinga_status = escape($_POST['telinga_status']);
@@ -300,21 +303,18 @@ $role_title = $role_titles[$role];
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label class="form-label">Tekanan Darah (mmHg)</label>
-                                    <input type="text" class="form-control" name="tekanan_darah"
-                                        placeholder="120/80" required
-                                        oninput="this.value = this.value.replace(/[^0-9/]/g, '')">
+                                    <input type="text" class="form-control" name="tekanan_darah" placeholder="120/80"
+                                        required oninput="this.value = this.value.replace(/[^0-9/]/g, '')">
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Nadi (x/menit)</label>
-                                    <input type="number" class="form-control" name="nadi"
-                                        min="40" max="200" required
+                                    <input type="number" class="form-control" name="nadi" min="40" max="200" required
                                         oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Suhu (°C)</label>
                                     <!-- Menggunakan text agar user bebas mengetik . atau , -->
-                                    <input type="text" class="form-control" name="suhu"
-                                        placeholder="Contoh: 36,7" required
+                                    <input type="text" class="form-control" name="suhu" placeholder="Contoh: 36,7" required
                                         oninput="this.value = this.value.replace(/[^0-9.,]/g, '')">
                                 </div>
                             </div>
@@ -322,21 +322,18 @@ $role_title = $role_titles[$role];
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label class="form-label">Respirasi (x/menit)</label>
-                                    <input type="number" class="form-control" name="respirasi"
-                                        min="10" max="40" required
+                                    <input type="number" class="form-control" name="respirasi" min="10" max="40" required
                                         oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Tinggi Badan (cm)</label>
-                                    <input type="number" class="form-control" name="tinggi_badan"
-                                        min="50" max="250" required
-                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                    <input type="number" class="form-control" name="tinggi_badan" min="50" max="250"
+                                        required oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Berat Badan (kg)</label>
-                                    <input type="text" class="form-control" name="berat_badan"
-                                        placeholder="Contoh: 65,5" required
-                                        oninput="this.value = this.value.replace(/[^0-9.,]/g, '')">
+                                    <input type="text" class="form-control" name="berat_badan" placeholder="Contoh: 65,5"
+                                        required oninput="this.value = this.value.replace(/[^0-9.,]/g, '')">
                                 </div>
                             </div>
 
@@ -353,374 +350,451 @@ $role_title = $role_titles[$role];
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">VISUS KIRI <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="visus_kiri_jauh"
-                                        placeholder="Contoh: 6/6" required
-                                        oninput="this.value = this.value.replace(/[^0-9/]/g, '')">
+                                    <input type="text" class="form-control" name="visus_kiri_jauh" placeholder="Contoh: 6/6"
+                                        required oninput="this.value = this.value.replace(/[^0-9/]/g, '')">
                                 </div>
                             </div>
 
                             <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <label class="form-label">Anemis : Ikterik</label>
-                                    <!-- Jika tidak dipilih (kosong), akan tersimpan sebagai Normal dari script PHP -->
-                                    <select class="form-select" name="anemia">
-                                        <option value="">- Pilih (Otomatis Normal) -</option>
-                                        <option value="Normal">Normal</option>
-                                        <option value="Ikterik(-)">Ikterik (-)</option>
-                                        <option value="Ikterik(+)">Ikterik (+)</option>
-                                        <option value="Anemis">Anemis</option>
-                                    </select>
-                                    <textarea class="form-control mt-2" name="ikterik_keterangan" rows="2" placeholder="Keterangan Anemis : Ikterik/Anemis..."></textarea>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Buta Warna</label>
-                                    <select class="form-select" name="buta_warna">
-                                        <option value="">- Pilih (Otomatis Normal) -</option>
-                                        <option value="Normal">Normal</option>
-                                        <option value="Merah/Hijau">Merah/Hijau</option>
-                                        <option value="Lainnya">Lainnya</option>
-                                    </select>
-                                    <textarea class="form-control mt-2" name="buta_warna_keterangan" rows="2" placeholder="Keterangan Buta Warna..."></textarea>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Lapang Pandang</label>
-                                    <select class="form-select" name="lapang_pandang">
-                                        <option value="">- Pilih (Otomatis Normal) -</option>
-                                        <option value="Normal">Normal</option>
-                                        <option value="Abnormal">Abnormal</option>
-                                    </select>
-                                    <textarea class="form-control mt-2" name="lapang_pandang_keterangan" rows="2" placeholder="Keterangan Lapang Pandang..."></textarea>
-                                </div>
-                            </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Konjungtiva</label>
+                                        <!-- Jika tidak dipilih (kosong), akan tersimpan sebagai Normal dari script PHP -->
+                                        <select class="form-select" name="anemia">
+                                            <option value="">- Pilih (Otomatis Normal) -</option>
+                                            <option value="Anemis (-)">Anemis (-)</option>
+                                            <option value="Anemis (+)">Anemis (+)</option>
+                                        </select>
+                                        <textarea class="form-control mt-2" name="anemia_keterangan" rows="2"
+                                            placeholder="Keterangan Konjungtiva..."></textarea>
+                                    </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Sklera</label>
+                                            <!-- Jika tidak dipilih (kosong), akan tersimpan sebagai Normal dari script PHP -->
+                                            <select class="form-select" name="sklera">
+                                                <option value="">- Pilih (Otomatis Normal) -</option>
+                                                <option value="Ikterik (-)">Ikterik (-)</option>
+                                                <option value="Ikterik (+)">Ikterik (+)</option>
+                                            </select>
+                                            <textarea class="form-control mt-2" name="ikterik_keterangan" rows="2"
+                                                placeholder="Keterangan Sklera..."></textarea>
+                                        </div>
+                                    </div>
 
-                        <?php elseif ($role == 'dokter_umum'): ?>
-                            <!-- DOKTER UMUM FORM -->
-                            <div class="card mb-4">
-                                <div class="card-header bg-light">
-                                    <h6 class="mb-0">TELINGA, HIDUNG, TENGGOROKAN</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <label class="form-label">Telinga</label>
-                                            <select class="form-select" name="telinga_status">
-                                                <option value="Normal">Normal</option>
-                                                <option value="Abnormal">Abnormal</option>
-                                            </select>
-                                            <textarea class="form-control mt-2" name="telinga_keterangan" rows="2" placeholder="Keterangan Telinga..."></textarea>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Hidung</label>
-                                            <select class="form-select" name="hidung_status">
-                                                <option value="Normal">Normal</option>
-                                                <option value="Abnormal">Abnormal</option>
-                                            </select>
-                                            <textarea class="form-control mt-2" name="hidung_keterangan" rows="2" placeholder="Keterangan Hidung..."></textarea>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Tenggorokan</label>
-                                            <select class="form-select" name="tenggorokan_status">
-                                                <option value="Normal">Normal</option>
-                                                <option value="Abnormal">Abnormal</option>
-                                            </select>
-                                            <textarea class="form-control mt-2" name="tenggorokan_keterangan" rows="2" placeholder="Keterangan Tenggorokan..."></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label class="form-label">Gigi</label>
-                                            <select class="form-select" name="gigi_status">
-                                                <option value="Normal">Normal</option>
-                                                <option value="Abnormal">Abnormal</option>
-                                            </select>
-                                            <textarea class="form-control mt-2" name="gigi_keterangan" rows="2" placeholder="Keterangan Gigi..."></textarea>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Leher (KGB)</label>
-                                            <textarea class="form-control" name="leher_kgb" rows="2" placeholder="Pembesaran KGB..."></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card mb-4">
-                                <div class="card-header bg-light">
-                                    <h6 class="mb-0">PEMERIKSAAN THORAX PARU - PARU</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label class="form-label">Auskultasi Paru</label>
-                                            <select class="form-select" name="paru_auskultasi">
-                                                <option value="Normal">Normal</option>
-                                                <option value="Wheezing">Wheezing</option>
-                                                <option value="Ronchi">Ronchi</option>
-                                                <option value="Crackles">Crackles</option>
-                                            </select>
-                                            <textarea class="form-control mt-2" name="auskultasi_keterangan" rows="2" placeholder="Keterangan Auskultasi Paru..."></textarea>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Palpasi</label>
-                                            <input type="text" class="form-control" name="paru_palpasi" placeholder="Vokal Fremitus...">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Perkusi</label>
-                                            <select class="form-select" name="paru_perkusi">
-                                                <option value="Sonor">Sonor</option>
-                                                <option value="Hipersonor">Hipersonor</option>
-                                                <option value="Pekak">Pekak</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card mb-4">
-                                <div class="card-header bg-light">
-                                    <h6 class="mb-0">PEMERIKSAAN THORAX JANTUNG</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label class="form-label">Auskultasi Jantung</label>
-                                            <select class="form-select" name="jantung_auskultasi">
-                                                <option value="Suara Normal">Suara Normal</option>
-                                                <option value="Suara Tambahan">Suara Tambahan</option>
-                                            </select>
-                                            <textarea class="form-control mt-2" name="jantung_keterangan" rows="2" placeholder="Keterangan Auskultasi Jantung..."></textarea>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Perkusi (Batas Jantung)</label>
-                                            <select class="form-select" name="jantung_perkusi">
-                                                <option value="Apex">Apex</option>
-                                                <option value="Basal">Basal</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card mb-4">
-                                <div class="card-header bg-light">
-                                    <h6 class="mb-0">ABDOMINAL</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <div class="form-check mb-2">
-                                                <input class="form-check-input" type="checkbox" name="operasi" id="operasi">
-                                                <label class="form-check-label" for="operasi">Riwayat Operasi</label>
-                                            </div>
-                                            <textarea class="form-control" name="keterangan_operasi" rows="2" placeholder="Keterangan operasi/penyakit perut..."></textarea>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-check mb-2">
-                                                <input class="form-check-input" type="checkbox" name="obesitas" id="obesitas">
-                                                <label class="form-check-label" for="obesitas">Obesitas</label>
-                                            </div>
-                                            <div class="form-check mb-2">
-                                                <input class="form-check-input" type="checkbox" name="organomegali" id="organomegali">
-                                                <label class="form-check-label" for="organomegali">Organomegali</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="hernia" id="hernia">
-                                                <label class="form-check-label" for="hernia">Hernia</label>
-                                            </div>
-                                            <div class="form-check mb-2">
-                                                <input class="form-check-input" type="checkbox" name="nyeri_epigastrium" id="nyeri_epigastrium">
-                                                <label class="form-check-label" for="nyeri_epigastrium">Nyeri Epigastrium</label>
-                                            </div>
-                                            <div class="form-check mb-2">
-                                                <input class="form-check-input" type="checkbox" name="nyeri_abdomen" id="nyeri_abdomen">
-                                                <label class="form-check-label" for="nyeri_abdomen">Nyeri Abdomen</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="bising_usus" id="bising_usus">
-                                                <label class="form-check-label" for="bising_usus">Bising Usus</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="hepar" id="hepar">
-                                                <label class="form-check-label" for="hepar">Hepar</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="striae" id="striae">
-                                                <label class="form-check-label" for="striae">Striae</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="sikatriks" id="sikatriks">
-                                                <label class="form-check-label" for="sikatriks">Sikatriks</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <label class="form-label">PSOAS SIGN</label>
-                                            <input type="text" class="form-control" name="psoas_sign" placeholder="PSOAS SIGN...">
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <label class="form-label">GENITALIA</label>
-                                            <input type="text" class="form-control" name="hepatomegali" placeholder="Genitalia...">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card mb-4">
-                                <div class="card-header bg-light">
-                                    <h6 class="mb-0">REFLEKS</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <label class="form-label">Biceps</label>
-                                            <select class="form-select" name="biceps">
-                                                <option value="Normal">Normal</option>
-                                                <option value="Abnormal">Abnormal</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">Triceps</label>
-                                            <select class="form-select" name="triceps">
-                                                <option value="Normal">Normal</option>
-                                                <option value="Abnormal">Abnormal</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">Patella</label>
-                                            <select class="form-select" name="patella">
-                                                <option value="Normal">Normal</option>
-                                                <option value="Abnormal">Abnormal</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">Achilles</label>
-                                            <select class="form-select" name="achilles">
-                                                <option value="Normal">Normal</option>
-                                                <option value="Abnormal">Abnormal</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-md-3">
-                                            <label class="form-label">Plantar Response</label>
-                                            <select class="form-select" name="plantar_response">
-                                                <option value="Normal">Normal</option>
-                                                <option value="Abnormal">Abnormal</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="row-md-6">
-                                            <label class="form-label">Penyakit Tangan</label>
-                                            <textarea class="form-control" name="keterangan_tangan" rows="2" placeholder="Keterangan Penyakit Tangan..."></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="row-md-6">
-                                            <label class="form-label">Penyakit Kaki</label>
-                                            <textarea class="form-control" name="keterangan_kaki" rows="2" placeholder="Keterangan Penyakit Kaki..."></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card mb-4">
-                                <div class="card-header bg-light">
-                                    <h6 class="mb-0">HASIL LANJUTAN</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="row-md-6">
-                                            <label class="form-label">Pemeriksaan Laboratorium</label>
-                                            <textarea class="form-control" name="hasil_lab" rows="2" placeholder="Pemeriksaan Lab..."></textarea>
-                                        </div>
-                                        <div class="row-md-6">
-                                            <label class="form-label">Riwayat Penyakit Dahulu / Sekarang</label>
-                                            <textarea class="form-control" name="keterangan_penyakit" rows="2" placeholder="Riwayat Penyakit Dahulu / Sekarang..."></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card mb-4">
-                                <div class="card-header bg-light">
-                                    <h6 class="mb-0">KESIMPULAN HASIL MCU</h6>
-                                </div>
-                                <div class="card-body">
                                     <div class="row mb-3">
                                         <div class="col-md-6">
-                                            <label class="form-label">Nama Dokter Pemeriksa</label>
-                                            <input type="text" class="form-control" name="dokter_pemeriksa" value="<?php echo $_SESSION['nama_lengkap']; ?>" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Status MCU</label>
-                                            <select class="form-select" name="status_mcu" required>
-                                                <option value="">- Pilih -</option>
-                                                <option value="FIT">FIT TO WORK</option>
-                                                <option value="UNFIT">UNFIT</option>
-                                                <option value="FIT WITH NOTE">FIT WITH NOTE</option>
+                                            <label class="form-label">Buta Warna</label>
+                                            <select class="form-select" name="buta_warna">
+                                                <option value="">- Pilih (Otomatis Normal) -</option>
+                                                <option value="Normal">Normal</option>
+                                                <option value="Merah/Hijau">Merah/Hijau</option>
+                                                <option value="Lainnya">Lainnya</option>
                                             </select>
+                                            <textarea class="form-control mt-2" name="buta_warna_keterangan" rows="2"
+                                                placeholder="Keterangan Buta Warna..."></textarea>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <label class="form-label">Saran</label>
-                                            <div class="mb-3">
-                                                <small class="text-muted">Pilih saran yang sesuai (boleh lebih dari satu):</small>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="saran_options[]" value="Jika terdapat keluhan mengenai Gigi, Konsultasi ke Dentist" id="saran1">
-                                                            <label class="form-check-label" for="saran1">- Jika terdapat keluhan mengenai Gigi, Konsultasi ke Dentist</label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="saran_options[]" value="Konsultasi ke Opthalmologist jika penglihatan makin menurun" id="saran2">
-                                                            <label class="form-check-label" for="saran2">- Konsultasi ke Opthalmologist jika penglihatan makin menurun</label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="saran_options[]" value="Diet Tinggi Zat Besi" id="saran3">
-                                                            <label class="form-check-label" for="saran3">- Diet Tinggi Zat Besi</label>
-                                                        </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Lapang Pandang</label>
+                                                <select class="form-select" name="lapang_pandang">
+                                                    <option value="">- Pilih (Otomatis Normal) -</option>
+                                                    <option value="Normal">Normal</option>
+                                                    <option value="Abnormal">Abnormal</option>
+                                                </select>
+                                                <textarea class="form-control mt-2" name="lapang_pandang_keterangan"
+                                                    rows="2" placeholder="Keterangan Lapang Pandang..."></textarea>
+                                            </div>
+                                        </div>
+
+                                    <?php elseif ($role == 'dokter_umum'): ?>
+                                        <!-- DOKTER UMUM FORM -->
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0">TELINGA, HIDUNG, TENGGOROKAN</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row mb-3">
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Telinga</label>
+                                                        <select class="form-select" name="telinga_status">
+                                                            <option value="Normal">Normal</option>
+                                                            <option value="Abnormal">Abnormal</option>
+                                                        </select>
+                                                        <textarea class="form-control mt-2" name="telinga_keterangan"
+                                                            rows="2" placeholder="Keterangan Telinga..."></textarea>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="saran_options[]" value="Jangan mengkonsumsi alkohol sehari sebelum bekerja." id="saran4">
-                                                            <label class="form-check-label" for="saran4">- Jangan mengkonsumsi alkohol sehari sebelum bekerja.</label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="saran_options[]" value="Batasi aktivitas yang dapat mengganggu kesehatan saat kehamilan." id="saran5">
-                                                            <label class="form-check-label" for="saran5">- Batasi aktivitas yang dapat mengganggu kesehatan saat kehamilan.</label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="saran_options[]" value="Jaga kebersihan telinga secara rutin dan berkala" id="saran6">
-                                                            <label class="form-check-label" for="saran6">- Jaga kebersihan telinga secara rutin dan berkala</label>
-                                                        </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Hidung</label>
+                                                        <select class="form-select" name="hidung_status">
+                                                            <option value="Normal">Normal</option>
+                                                            <option value="Abnormal">Abnormal</option>
+                                                        </select>
+                                                        <textarea class="form-control mt-2" name="hidung_keterangan"
+                                                            rows="2" placeholder="Keterangan Hidung..."></textarea>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Tenggorokan</label>
+                                                        <select class="form-select" name="tenggorokan_status">
+                                                            <option value="Normal">Normal</option>
+                                                            <option value="Abnormal">Abnormal</option>
+                                                        </select>
+                                                        <textarea class="form-control mt-2" name="tenggorokan_keterangan"
+                                                            rows="2" placeholder="Keterangan Tenggorokan..."></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Gigi</label>
+                                                        <select class="form-select" name="gigi_status">
+                                                            <option value="Normal">Normal</option>
+                                                            <option value="Abnormal">Abnormal</option>
+                                                        </select>
+                                                        <textarea class="form-control mt-2" name="gigi_keterangan" rows="2"
+                                                            placeholder="Keterangan Gigi..."></textarea>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Leher (KGB)</label>
+                                                        <textarea class="form-control" name="leher_kgb" rows="2"
+                                                            placeholder="Pembesaran KGB..."></textarea>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <textarea class="form-control" name="saran_manual" rows="3" placeholder="Saran tambahan (manual)..."></textarea>
+                                        </div>
+
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0">PEMERIKSAAN THORAX PARU - PARU</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Auskultasi Paru</label>
+                                                        <select class="form-select" name="paru_auskultasi">
+                                                            <option value="Normal">Normal</option>
+                                                            <option value="Wheezing">Wheezing</option>
+                                                            <option value="Ronchi">Ronchi</option>
+                                                            <option value="Crackles">Crackles</option>
+                                                        </select>
+                                                        <textarea class="form-control mt-2" name="auskultasi_keterangan"
+                                                            rows="2" placeholder="Keterangan Auskultasi Paru..."></textarea>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Palpasi</label>
+                                                        <input type="text" class="form-control" name="paru_palpasi"
+                                                            placeholder="Vokal Fremitus...">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Perkusi</label>
+                                                        <select class="form-select" name="paru_perkusi">
+                                                            <option value="Sonor">Sonor</option>
+                                                            <option value="Hipersonor">Hipersonor</option>
+                                                            <option value="Pekak">Pekak</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0">PEMERIKSAAN THORAX JANTUNG</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Auskultasi Jantung</label>
+                                                        <select class="form-select" name="jantung_auskultasi">
+                                                            <option value="Suara Normal">Suara Normal</option>
+                                                            <option value="Suara Tambahan">Suara Tambahan</option>
+                                                        </select>
+                                                        <textarea class="form-control mt-2" name="jantung_keterangan"
+                                                            rows="2"
+                                                            placeholder="Keterangan Auskultasi Jantung..."></textarea>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Perkusi (Batas Jantung)</label>
+                                                        <select class="form-select" name="jantung_perkusi">
+                                                            <option value="Apex">Apex</option>
+                                                            <option value="Basal">Basal</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0">ABDOMINAL</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row mb-3">
+                                                    <div class="col-md-4">
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox" name="operasi"
+                                                                id="operasi">
+                                                            <label class="form-check-label" for="operasi">Riwayat
+                                                                Operasi</label>
+                                                        </div>
+                                                        <textarea class="form-control" name="keterangan_operasi" rows="2"
+                                                            placeholder="Keterangan operasi/penyakit perut..."></textarea>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox" name="obesitas"
+                                                                id="obesitas">
+                                                            <label class="form-check-label" for="obesitas">Obesitas</label>
+                                                        </div>
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="organomegali" id="organomegali">
+                                                            <label class="form-check-label"
+                                                                for="organomegali">Organomegali</label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="hernia"
+                                                                id="hernia">
+                                                            <label class="form-check-label" for="hernia">Hernia</label>
+                                                        </div>
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="nyeri_epigastrium" id="nyeri_epigastrium">
+                                                            <label class="form-check-label" for="nyeri_epigastrium">Nyeri
+                                                                Epigastrium</label>
+                                                        </div>
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="nyeri_abdomen" id="nyeri_abdomen">
+                                                            <label class="form-check-label" for="nyeri_abdomen">Nyeri
+                                                                Abdomen</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="bising_usus" id="bising_usus">
+                                                            <label class="form-check-label" for="bising_usus">Bising
+                                                                Usus</label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="hepar"
+                                                                id="hepar">
+                                                            <label class="form-check-label" for="hepar">Hepar</label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="striae"
+                                                                id="striae">
+                                                            <label class="form-check-label" for="striae">Striae</label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="sikatriks"
+                                                                id="sikatriks">
+                                                            <label class="form-check-label"
+                                                                for="sikatriks">Sikatriks</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label class="form-label">PSOAS SIGN</label>
+                                                        <input type="text" class="form-control" name="psoas_sign"
+                                                            placeholder="PSOAS SIGN...">
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label class="form-label">GENITALIA</label>
+                                                        <input type="text" class="form-control" name="hepatomegali"
+                                                            placeholder="Genitalia...">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0">REFLEKS</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">Biceps</label>
+                                                        <select class="form-select" name="biceps">
+                                                            <option value="Normal">Normal</option>
+                                                            <option value="Abnormal">Abnormal</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">Triceps</label>
+                                                        <select class="form-select" name="triceps">
+                                                            <option value="Normal">Normal</option>
+                                                            <option value="Abnormal">Abnormal</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">Patella</label>
+                                                        <select class="form-select" name="patella">
+                                                            <option value="Normal">Normal</option>
+                                                            <option value="Abnormal">Abnormal</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">Achilles</label>
+                                                        <select class="form-select" name="achilles">
+                                                            <option value="Normal">Normal</option>
+                                                            <option value="Abnormal">Abnormal</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">Plantar Response</label>
+                                                        <select class="form-select" name="plantar_response">
+                                                            <option value="Normal">Normal</option>
+                                                            <option value="Abnormal">Abnormal</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="row-md-6">
+                                                        <label class="form-label">Penyakit Tangan</label>
+                                                        <textarea class="form-control" name="keterangan_tangan" rows="2"
+                                                            placeholder="Keterangan Penyakit Tangan..."></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="row-md-6">
+                                                        <label class="form-label">Penyakit Kaki</label>
+                                                        <textarea class="form-control" name="keterangan_kaki" rows="2"
+                                                            placeholder="Keterangan Penyakit Kaki..."></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0">HASIL LANJUTAN</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="row-md-6">
+                                                        <label class="form-label">Pemeriksaan Laboratorium</label>
+                                                        <textarea class="form-control" name="hasil_lab" rows="2"
+                                                            placeholder="Pemeriksaan Lab..."></textarea>
+                                                    </div>
+                                                    <div class="row-md-6">
+                                                        <label class="form-label">Riwayat Penyakit Dahulu / Sekarang</label>
+                                                        <textarea class="form-control" name="keterangan_penyakit" rows="2"
+                                                            placeholder="Riwayat Penyakit Dahulu / Sekarang..."></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0">KESIMPULAN HASIL MCU</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Nama Dokter Pemeriksa</label>
+                                                        <input type="text" class="form-control" name="dokter_pemeriksa"
+                                                            value="<?php echo $_SESSION['nama_lengkap']; ?>" required>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Status MCU</label>
+                                                        <select class="form-select" name="status_mcu" required>
+                                                            <option value="">- Pilih -</option>
+                                                            <option value="FIT">FIT TO WORK</option>
+                                                            <option value="UNFIT">UNFIT</option>
+                                                            <option value="FIT WITH NOTE">FIT WITH NOTE</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label class="form-label">Saran</label>
+                                                        <div class="mb-3">
+                                                            <small class="text-muted">Pilih saran yang sesuai (boleh lebih
+                                                                dari satu):</small>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            name="saran_options[]"
+                                                                            value="Jika terdapat keluhan mengenai Gigi, Konsultasi ke Dentist"
+                                                                            id="saran1">
+                                                                        <label class="form-check-label" for="saran1">- Jika
+                                                                            terdapat keluhan mengenai Gigi, Konsultasi ke
+                                                                            Dentist</label>
+                                                                    </div>
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            name="saran_options[]"
+                                                                            value="Konsultasi ke Opthalmologist jika penglihatan makin menurun"
+                                                                            id="saran2">
+                                                                        <label class="form-check-label" for="saran2">-
+                                                                            Konsultasi ke Opthalmologist jika penglihatan
+                                                                            makin menurun</label>
+                                                                    </div>
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            name="saran_options[]"
+                                                                            value="Diet Tinggi Zat Besi" id="saran3">
+                                                                        <label class="form-check-label" for="saran3">- Diet
+                                                                            Tinggi Zat Besi</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            name="saran_options[]"
+                                                                            value="Jangan mengkonsumsi alkohol sehari sebelum bekerja."
+                                                                            id="saran4">
+                                                                        <label class="form-check-label" for="saran4">-
+                                                                            Jangan mengkonsumsi alkohol sehari sebelum
+                                                                            bekerja.</label>
+                                                                    </div>
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            name="saran_options[]"
+                                                                            value="Batasi aktivitas yang dapat mengganggu kesehatan saat kehamilan."
+                                                                            id="saran5">
+                                                                        <label class="form-check-label" for="saran5">-
+                                                                            Batasi aktivitas yang dapat mengganggu kesehatan
+                                                                            saat kehamilan.</label>
+                                                                    </div>
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            name="saran_options[]"
+                                                                            value="Jaga kebersihan telinga secara rutin dan berkala"
+                                                                            id="saran6">
+                                                                        <label class="form-check-label" for="saran6">- Jaga
+                                                                            kebersihan telinga secara rutin dan
+                                                                            berkala</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <textarea class="form-control" name="saran_manual" rows="3"
+                                                            placeholder="Saran tambahan (manual)..."></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <!-- Form Actions -->
+                                    <div class="row mt-4">
+                                        <div class="col-md-12 text-center">
+                                            <a href="../dashboard.php?page=patients" class="btn btn-secondary me-2">
+                                                <i class="fas fa-times me-1"></i> Batal
+                                            </a>
+                                            <button type="submit" class="btn btn-success">
+                                                <i class="fas fa-save me-1"></i> Simpan Pemeriksaan
+                                            </button>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        <?php endif; ?>
-
-                        <!-- Form Actions -->
-                        <div class="row mt-4">
-                            <div class="col-md-12 text-center">
-                                <a href="../dashboard.php?page=patients" class="btn btn-secondary me-2">
-                                    <i class="fas fa-times me-1"></i> Batal
-                                </a>
-                                <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-save me-1"></i> Simpan Pemeriksaan
-                                </button>
-                            </div>
-                        </div>
                     </form>
                 </div>
             </div>
@@ -758,16 +832,16 @@ $role_title = $role_titles[$role];
     }
 
     // Form validation On Submit
-    document.getElementById('examinationForm').addEventListener('submit', function(e) {
+    document.getElementById('examinationForm').addEventListener('submit', function (e) {
         var isValid = true;
         var requiredFields = this.querySelectorAll('[required]');
 
-        requiredFields.forEach(function(field) {
+        requiredFields.forEach(function (field) {
             field.classList.remove('is-invalid');
         });
 
         // 1. Cek apakah ada field wajib yang kosong
-        requiredFields.forEach(function(field) {
+        requiredFields.forEach(function (field) {
             if (!field.value.trim()) {
                 isValid = false;
                 field.classList.add('is-invalid');
@@ -839,8 +913,8 @@ $role_title = $role_titles[$role];
 
     // Remove invalid class when user starts typing
     var inputs = document.querySelectorAll('input, select, textarea');
-    inputs.forEach(function(input) {
-        input.addEventListener('input', function() {
+    inputs.forEach(function (input) {
+        input.addEventListener('input', function () {
             this.classList.remove('is-invalid');
         });
     });
